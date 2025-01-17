@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
+import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_expenses_notifier.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/widgets/transactions_widget.dart';
+import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+
+class MoneyOutPage extends ConsumerStatefulWidget {
+  const MoneyOutPage({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MoneyOutPageState();
+}
+
+class _MoneyOutPageState extends ConsumerState<MoneyOutPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(getAllExpensesNotifierProvider.notifier).getAllExpenses();
+
+      await ref.read(getAccessTokenNotifier.notifier).accessToken();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final expensesList = ref.watch(getAllExpensesNotifierProvider
+        .select((v) => v.getAllExpenses.data?.expenses));
+    return  Column(
+      children: [
+
+
+            expensesList == null
+            ? const SizedBox.shrink()
+            : expensesList.isEmpty
+                ? Column(
+                    children: [
+                      SvgPicture.asset('assets/icons/empty_data.svg'),
+                      const VerticalSpacing(10),
+                      Text(
+                        'No Sales Available',
+                        style: context.textTheme.s14w500.copyWith(
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: expensesList.length,
+                      itemBuilder: (_, index) {
+                        final data = expensesList[index];
+                        String inputDate = "${data.createdAt}";
+                        DateTime parsedDate = DateTime.parse(inputDate);
+
+                        String formattedDate =
+                            DateFormat("MMM d yyyy").format(parsedDate);
+                        return Column(
+                          children: [
+                            TransactionsWidget(
+                              expenseName: '${data.expenseType}',
+                              expenseType: 'Expenses | ${data.supplierName}',
+                              expenseAmount: '\$${data.amount}',
+                              expenseDate: formattedDate,
+                              amountColor: AppColors.primaryF94D4D,
+                            ),
+                            const VerticalSpacing(10)
+                          ],
+                        );
+                      },
+                    ),
+                  )
+      ],
+    );
+  }
+}
