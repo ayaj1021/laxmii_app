@@ -22,7 +22,7 @@ class TransactionsWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary010101,
+        color: AppColors.primary101010,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

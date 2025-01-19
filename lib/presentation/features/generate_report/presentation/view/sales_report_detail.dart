@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/bottom_section.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/report_dropdown_widget.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/table_section.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -21,13 +23,22 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
         title: 'Sales Report',
       ),
       body: SafeArea(
-          child: Column(
+          child: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23),
-            child: ReportDropDownWidget(),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 23),
+                child: ReportDropDownWidget(),
+              ),
+              VerticalSpacing(20),
+              TableSection()
+            ],
           ),
-          VerticalSpacing(20)
+          Positioned(
+            bottom: 0,
+            child: BottomSection(),
+          )
         ],
       )),
     );

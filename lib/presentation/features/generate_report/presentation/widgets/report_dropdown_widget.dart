@@ -33,12 +33,12 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
             colorScheme: ColorScheme.light(
               primary: AppColors.primaryColor,
 
-              surface: AppColors.primary010101, // Background color
+              surface: AppColors.primary101010, // Background color
               onSurface: Colors.white, // Text color
               secondary: AppColors.primaryColor.withOpacity(0.5),
             ),
-            dialogBackgroundColor: AppColors.primary010101,
-            scaffoldBackgroundColor: AppColors.primary010101,
+            dialogBackgroundColor: AppColors.primary101010,
+            scaffoldBackgroundColor: AppColors.primary101010,
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
@@ -90,7 +90,7 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
             ),
           ),
           child: DropdownButton(
-              dropdownColor: AppColors.primary010101,
+              dropdownColor: AppColors.primary101010,
               underline: const SizedBox.shrink(),
               isExpanded: true,
               icon: const Icon(

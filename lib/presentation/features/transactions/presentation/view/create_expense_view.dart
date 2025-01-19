@@ -134,7 +134,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                     ),
                   ),
                   child: DropdownButton(
-                      dropdownColor: AppColors.primary010101,
+                      dropdownColor: AppColors.primary101010,
                       value: _selectedValue,
                       padding: EdgeInsets.zero,
                       hint: Text(

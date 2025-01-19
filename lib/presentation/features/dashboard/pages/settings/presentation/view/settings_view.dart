@@ -62,7 +62,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                         vertical: 10, horizontal: 16),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: AppColors.primary010101),
+                        color: AppColors.primary101010),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -139,7 +139,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                           vertical: 10, horizontal: 16),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: AppColors.primary010101),
+                          color: AppColors.primary101010),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

@@ -15,7 +15,7 @@ class ExpensesTaxWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-          color: AppColors.primary010101,
+          color: AppColors.primary101010,
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

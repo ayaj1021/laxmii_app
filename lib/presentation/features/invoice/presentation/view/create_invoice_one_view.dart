@@ -119,7 +119,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
               padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 17),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: AppColors.primary010101),
+                  color: AppColors.primary101010),
               child: Column(
                 children: [
                   TextField(
@@ -256,7 +256,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: AppColors.primary010101),
+                  color: AppColors.primary101010),
               child: Row(
                 children: [
                   const Icon(
@@ -280,7 +280,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16),
                       topRight: Radius.circular(16)),
-                  color: AppColors.primary010101),
+                  color: AppColors.primary101010),
               child: Column(
                 children: [
                   const InvoiceWidget(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -45,7 +44,7 @@ class SuccessWidget extends StatelessWidget {
           const VerticalSpacing(60),
           LaxmiiSendButton(
             backgroundColor: AppColors.primaryFFCBBA,
-            textColor: AppColors.primary010101,
+            textColor: AppColors.primary101010,
             onTap: () {
               Navigator.pop(context);
             },
@@ -54,7 +53,7 @@ class SuccessWidget extends StatelessWidget {
           const VerticalSpacing(24),
           LaxmiiSendButton(
             onTap: () {
-            //  context.pushReplacementNamed(Dashboard.routeName);
+              //  context.pushReplacementNamed(Dashboard.routeName);
             },
             title: 'Go to Homepage',
           ),

@@ -29,7 +29,7 @@ class TodoListWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary010101.withOpacity(0.6),
+        color: AppColors.primary101010.withOpacity(0.6),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,14 +119,14 @@ class TodoListWidget extends StatelessWidget {
               const VerticalSpacing(10),
               // isCompleted == true
               //     ? const SizedBox.shrink()
-              //     : 
-                  GestureDetector(
-                      onTap: onDeleteTapped,
-                      child: const Icon(
-                        Icons.delete_outline,
-                        color: AppColors.primary3B3522,
-                      ),
-                    )
+              //     :
+              GestureDetector(
+                onTap: onDeleteTapped,
+                child: const Icon(
+                  Icons.delete_outline,
+                  color: AppColors.primary3B3522,
+                ),
+              )
             ],
           ),
         ],

@@ -20,7 +20,7 @@ class PasswordSuccessAlertDialog extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 25),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: AppColors.primary010101),
+          color: AppColors.primary101010),
       child: Column(
         children: [
           SvgPicture.asset('assets/icons/service_success.svg'),

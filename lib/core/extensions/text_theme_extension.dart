@@ -49,6 +49,9 @@ extension TextThem on TextTheme {
       TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600);
   TextStyle get s10w600 =>
       TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600);
+
+  TextStyle get s11w600 =>
+      TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600);
   TextStyle get s12w600 =>
       TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600);
   TextStyle get s14w600 =>

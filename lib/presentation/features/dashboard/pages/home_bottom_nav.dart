@@ -67,7 +67,7 @@ class HomeBottomNavSelectionsWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.primary010101),
+            color: AppColors.primary101010),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -77,7 +77,7 @@ class HomeBottomNavSelectionsWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary010101,
+                    color: AppColors.primary101010,
                   ),
                   child: SvgPicture.asset(icon),
                 ),

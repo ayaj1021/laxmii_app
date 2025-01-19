@@ -22,9 +22,7 @@ class AddSalesDropdown extends StatefulWidget {
 class _AddSalesDropdownState extends State<AddSalesDropdown> {
   @override
   Widget build(BuildContext context) {
-    return 
-    
-    Container(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -34,7 +32,7 @@ class _AddSalesDropdownState extends State<AddSalesDropdown> {
         ),
       ),
       child: DropdownButton<Inventory>(
-        dropdownColor: AppColors.primary010101,
+        dropdownColor: AppColors.primary101010,
         value: widget.selectedValue,
         padding: EdgeInsets.zero,
         hint: Text(
@@ -70,7 +68,5 @@ class _AddSalesDropdownState extends State<AddSalesDropdown> {
         },
       ),
     );
- 
- 
   }
 }

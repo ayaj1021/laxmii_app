@@ -39,7 +39,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
             ),
           ),
           child: DropdownButton(
-              dropdownColor: AppColors.primary010101,
+              dropdownColor: AppColors.primary101010,
               value: widget.selectedValue,
               padding: EdgeInsets.zero,
               hint: Text(
