@@ -6,10 +6,12 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/remember_me_provider.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/widgets/login_header_section.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
@@ -55,6 +57,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final rememberMe = ref.watch(rememberMeProvider);
     final isLoading =
         ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
     return PageLoader(
@@ -89,17 +92,44 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     bordercolor: AppColors.primary212121,
                   ),
                   const VerticalSpacing(16),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () => context.pushNamed(ForgotPassword.routeName),
-                      child: Text(
-                        'Forgot Password?',
-                        style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.primaryColor,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                              activeColor: AppColors.primaryColor,
+                              value: rememberMe,
+                              onChanged: (value) async {
+                                if (value != null) {
+                                  ref.read(rememberMeProvider.notifier).state =
+                                      value;
+                                  await AppDataStorage()
+                                      .saveRememberMe('remember_me', value);
+                                }
+                              }),
+                          Text(
+                            'Remember me',
+                            style: context.textTheme.s14w400.copyWith(
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () =>
+                              context.pushNamed(ForgotPassword.routeName),
+                          child: Text(
+                            'Forgot Password?',
+                            style: context.textTheme.s14w400.copyWith(
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   const VerticalSpacing(37),
                   ValueListenableBuilder(

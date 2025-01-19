@@ -112,6 +112,7 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
       isLoading: isLoading,
       child: Scaffold(
         appBar: const LaxmiiAppBar(
+          centerTitle: true,
           title: 'New Task',
         ),
         body: SafeArea(
@@ -125,8 +126,7 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
                   product: _titleController,
                   title: 'Title',
                 ),
-               
-                
+
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //   children: [
@@ -192,8 +192,7 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
                 //     ),
                 //   ],
                 // ),
-              
-              
+
                 const VerticalSpacing(10),
                 TodoPriorityDropDown(
                   selectedValue: _selectedPriority,
@@ -214,7 +213,7 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
                               context.showError(
                                   message: 'Priority is compulsory');
                               return;
-                            }  else {
+                            } else {
                               createTask();
                             }
                           },
@@ -234,7 +233,6 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
           data: CreateTaskRequest(
             title: _titleController.text.trim(),
             priority: _selectedPriority!.toLowerCase().toString(),
-           
           ),
           onError: (error) {
             context.showError(message: error);

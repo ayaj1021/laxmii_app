@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/tools/widgets/tabs_selection_widget.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
@@ -72,9 +73,10 @@ class ToolsView extends ConsumerWidget {
                   title: 'Generate Quote',
                 ),
                 const VerticalSpacing(20),
-                const TabsSelectionWidget(
+                TabsSelectionWidget(
+                  onTap: () => context.pushNamed(GenerateReport.routeName),
                   icon: 'assets/icons/quote.svg',
-                  title: 'Create Report',
+                  title: 'Generate Report',
                 ),
               ],
             ),

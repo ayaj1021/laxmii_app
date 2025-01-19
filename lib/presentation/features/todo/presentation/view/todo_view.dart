@@ -30,7 +30,7 @@ class _TodoViewState extends ConsumerState<TodoView>
   late TabController _tabController;
   @override
   void initState() {
-      _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
@@ -46,14 +46,12 @@ class _TodoViewState extends ConsumerState<TodoView>
 
   @override
   Widget build(BuildContext context) {
- 
     final isLoading = ref.watch(
         getAllTasksNotifierProvider.select((v) => v.loadState.isLoading));
     final isDeleteLoading = ref
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
     final isUpdateLoading = ref
         .watch(updateTaskNotifier.select((v) => v.updateTaskState.isLoading));
-
 
     return PageLoader(
       isLoading: isUpdateLoading,
@@ -63,6 +61,7 @@ class _TodoViewState extends ConsumerState<TodoView>
           isLoading: isLoading,
           child: Scaffold(
             appBar: const LaxmiiAppBar(
+              centerTitle: true,
               title: 'My Task',
             ),
             body: SafeArea(
@@ -123,7 +122,6 @@ class _TodoViewState extends ConsumerState<TodoView>
                     ],
                   ),
                 ),
-                
               ],
             )),
           ),
@@ -131,6 +129,4 @@ class _TodoViewState extends ConsumerState<TodoView>
       ),
     );
   }
-
-  
 }

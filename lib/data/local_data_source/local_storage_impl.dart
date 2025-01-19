@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class SecureStorage {
-  SecureStorage._();
+class AppDataStorage {
+  AppDataStorage._();
 
   // Singleton instance
-  static final SecureStorage _instance = SecureStorage._();
+  static final AppDataStorage _instance = AppDataStorage._();
 
   // Factory constructor to return the same instance every time
-  factory SecureStorage() => _instance;
+  factory AppDataStorage() => _instance;
 
   final _storage = const FlutterSecureStorage(
 
@@ -80,6 +80,17 @@ class SecureStorage {
   Future<String?> getUserAccountNumber() async {
     String? value = await _storage.read(key: 'account_number');
     return value;
+  }
+
+  // Store a boolean value
+  Future<void> saveRememberMe(String key, bool value) async {
+    await _storage.write(key: key, value: value.toString());
+  }
+
+// Retrieve the boolean value
+  Future<bool> getRememberMe(String key) async {
+    final value = await _storage.read(key: key);
+    return value == 'true'; // Convert the string back to a boolean
   }
 
   Future<void> saveUserToken(String token) async {
@@ -183,6 +194,6 @@ class SecureStorage {
   }
 }
 
-final localStorageProvider = Provider<SecureStorage>(
-  (ref) => SecureStorage(),
+final localStorageProvider = Provider<AppDataStorage>(
+  (ref) => AppDataStorage(),
 );

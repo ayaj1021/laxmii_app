@@ -22,13 +22,13 @@ class GetAccessTokenNotifier
 
   Future<void> accessToken() async {
     state = state.copyWith(getAccessTokenState: LoadState.loading);
-    final refreshToken = await SecureStorage().getUserRefreshToken();
+    final refreshToken = await AppDataStorage().getUserRefreshToken();
     final data = GetAccessTokenRequest(token: '$refreshToken');
     try {
       final value = await _getAccessTokenRepository.getAccessToken(data);
       debugLog(data);
       if (!value.status) throw value.message.toException;
-      await SecureStorage().saveUserAccessToken('${value.data?.accessToken}');
+      await AppDataStorage().saveUserAccessToken('${value.data?.accessToken}');
 
       state = state.copyWith(getAccessTokenState: LoadState.idle);
       // onSuccess(value.message.toString());

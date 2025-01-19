@@ -30,10 +30,11 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
       final value = await _loginRepository.login(data);
       debugLog(data);
       if (!value.status) throw value.message.toException;
-      await SecureStorage().saveUserAccessToken('${value.data?.accessToken}');
-      await SecureStorage().saveUserRefreshToken('${value.data?.refreshToken}');
-      await SecureStorage().saveUserAccountName('${value.data?.name}');
-      await SecureStorage().saveUserEmail('${value.data?.email}');
+      await AppDataStorage().saveUserAccessToken('${value.data?.accessToken}');
+      await AppDataStorage()
+          .saveUserRefreshToken('${value.data?.refreshToken}');
+      await AppDataStorage().saveUserAccountName('${value.data?.name}');
+      await AppDataStorage().saveUserEmail('${value.data?.email}');
       state = state.copyWith(loginState: LoadState.idle);
       onSuccess(value.message.toString());
     } catch (e) {

@@ -166,7 +166,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
   }
 
   void _logout() async {
-    final refreshToken = await SecureStorage().getUserRefreshToken();
+    final refreshToken = await AppDataStorage().getUserRefreshToken();
     final data = LogoutRequest(refreshToken: refreshToken.toString());
     ref.read(logOutNotifer.notifier).logOut(
         data: data,
@@ -177,7 +177,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
           context.hideOverLay();
           context.showSuccess(message: message);
           context.pushReplacementNamed(LoginView.routeName);
-          await SecureStorage().clearToken();
+          await AppDataStorage().clearToken();
         });
   }
 }

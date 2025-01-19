@@ -11,7 +11,7 @@ class HeaderInterCeptor extends Interceptor {
     required this.onTokenExpired,
   });
   final Dio dio;
-  final SecureStorage secureStorage;
+  final AppDataStorage secureStorage;
   final void Function() onTokenExpired;
 
   final _authRoutes = [

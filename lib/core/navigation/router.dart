@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_invoice_one_view.dart';
@@ -30,6 +31,7 @@ class AppRouter {
     CreateInvoiceOneView.routeName: (context) => const CreateInvoiceOneView(),
     TodoView.routeName: (context) => const TodoView(),
     CreateTaskView.routeName: (context) => const CreateTaskView(),
+    GenerateReport.routeName: (context) => const GenerateReport(),
     // ChangePassword.routeName: (context) => const ChangePassword(),
 
     // TransactionDetailsView.routeName: (context) =>

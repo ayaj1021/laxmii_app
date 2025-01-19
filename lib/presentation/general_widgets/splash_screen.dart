@@ -1,14 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/remember_me_provider.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -22,30 +19,26 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  SecureStorage secureStorage = SecureStorage();
+  AppDataStorage secureStorage = AppDataStorage();
   @override
   void initState() {
+    _initializeRememberMe();
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // sendToken();
-    });
-    Future.delayed(const Duration(seconds: 3), () async {
-      final accessToken = await secureStorage.getUserAccessToken();
-      log('This is accesstoken $accessToken');
-      context.pushReplacementNamed(SignUpView.routeName);
-
-      // if (accessToken != null) {
-      //   context.pushReplacementNamed(Dashboard.routeName);
-      // } else {
-      //   context.pushReplacementNamed(SignUpView.routeName);
-      // }
-    });
+    // });
   }
 
-  // sendToken() async {
-  //   await ref.read(sendTokenNotifier.notifier).sendToken();
-  // }
+  Future<void> _initializeRememberMe() async {
+    final storedRememberMe = await secureStorage.getRememberMe('remember_me');
+    ref.read(rememberMeProvider.notifier).state = storedRememberMe;
+
+    if (storedRememberMe) {
+      if (mounted) context.pushReplacementNamed(Dashboard.routeName);
+    } else {
+      if (mounted) context.pushReplacementNamed(SignUpView.routeName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

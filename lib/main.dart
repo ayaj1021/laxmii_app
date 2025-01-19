@@ -42,7 +42,6 @@ class _MyAppState extends State<MyApp> {
               child: AppOverLay(
                 controller: _controller,
                 child: MaterialApp(
-             
                   theme: AppThemes.darkTheme(),
                   debugShowCheckedModeBanner: false,
                   routes: AppRouter.routes,

@@ -43,7 +43,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   String userName = '';
 
   getUserName() async {
-    final name = await SecureStorage().getUserAccountName();
+    final name = await AppDataStorage().getUserAccountName();
 
     setState(() {
       userName = name.toString();
@@ -125,6 +125,23 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       ],
                     ),
                     const VerticalSpacing(24),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'AI Insights',
+                            style: context.textTheme.s16w500.copyWith(
+                              color: AppColors.primary5E5E5E,
+                            ),
+                          ),
+                          Text(
+                            'See all',
+                            style: context.textTheme.s12w500.copyWith(
+                              color: AppColors.primary3B3522,
+                            ),
+                          ),
+                        ]),
+                    const VerticalSpacing(10),
                     const ExpensesTaxWidget(
                       title: 'Expenses',
                       subTitle:
