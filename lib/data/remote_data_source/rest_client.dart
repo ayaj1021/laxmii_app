@@ -10,6 +10,14 @@ import 'package:laxmii_app/presentation/features/forgot_password/data/model/chan
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/forgot_password_request.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/forgot_password_response.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/add_report_to_favorite_request.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/add_report_to_favorite_response.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/delete_favorite_response.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/delete_report_favorite_request.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/get_all_favorite_response.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/get_all_report_response.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_request.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/create_inventory_request.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/create_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/delete_inventory_response.dart';
@@ -109,6 +117,16 @@ abstract class RestClient {
     @Body() CreateTaskRequest createTasksRequest,
   );
 
+  @POST('/api/favourites/add/')
+  Future<AddReportToFavoriteResponse> addReportToFavorite(
+    @Body() AddReportToFavoriteRequest addReportToFavoriteRequest,
+  );
+
+  @DELETE('/api/favourites/')
+  Future<DeleteFavoriteReportResponse> deleteReportFavorite(
+    @Body() DeleteReportFavoriteRequest deleteReportFavoriteRequest,
+  );
+
   @POST('/auth/get-access-token')
   Future<GetAccessTokenResponse> getAccessToken(
     @Body() GetAccessTokenRequest getAccessTokenRequest,
@@ -163,6 +181,17 @@ abstract class RestClient {
   @GET('/api/sales')
   Future<GetAllSalesResponse> getAllSales();
 
+  @GET('/api/reports')
+  Future<GetSingleReportResponse> getSingleReport(
+    @Body() GetSingleReportRequest request,
+  );
+
+  @GET('/api/reports/all')
+  Future<GetAllReportsResponse> getAllReports();
+
+  @GET('/api/favourites/')
+  Future<GetAllFavoriteResponse> getAllFavoritesReports();
+
   @GET('/api/tasks')
   Future<GetAllTasksResponse> getAllTasks();
 
@@ -185,7 +214,7 @@ ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(
   (ref, env) {
     final dio = Dio();
     // dio.options.baseUrl = 'http://10.0.2.2';
-    dio.options.baseUrl = 'http://16.170.255.32:3000';
+    dio.options.baseUrl = 'http://localhost:3000';
     // dio.options.baseUrl = 'https://abakon.onrender.com/api/users';
 
     dio.options.headers = {

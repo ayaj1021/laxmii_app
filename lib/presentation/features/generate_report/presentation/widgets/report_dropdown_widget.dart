@@ -3,63 +3,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/view/sales_report_detail.dart';
 
+// ignore: must_be_immutable
 class ReportDropDownWidget extends StatefulWidget {
-  const ReportDropDownWidget({
+  ReportDropDownWidget({
     super.key,
+    required this.selectedStartDate,
+    required this.selectedPeriod,
+    this.onChanged,
+    this.onTap,
   });
+  String selectedPeriod;
+
+  DateTimeRange? selectedStartDate;
+  final void Function(String?)? onChanged;
+  final void Function()? onTap;
 
   @override
   State<ReportDropDownWidget> createState() => _ReportDropDownWidgetState();
 }
 
 class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
-  DateTimeRange? _selectedStartDate;
-
-  Future<void> _selectStartDate(BuildContext context) async {
-    final now = DateTime.now();
-    final DateTimeRange? picked = await showDateRangePicker(
-      helpText: 'Select date range',
-      context: context,
-      initialDateRange: _selectedStartDate,
-      //??DateTimeRange(),
-      firstDate: DateTime(2000),
-      barrierColor: Colors.white,
-      lastDate: DateTime(now.year, now.month, now.day),
-      saveText: 'Done',
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: AppColors.primaryColor,
-
-              surface: AppColors.primary101010, // Background color
-              onSurface: Colors.white, // Text color
-              secondary: AppColors.primaryColor.withOpacity(0.5),
-            ),
-            dialogBackgroundColor: AppColors.primary101010,
-            scaffoldBackgroundColor: AppColors.primary101010,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white, // Button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null && picked != _selectedStartDate) {
-      setState(() {
-        _selectedStartDate = picked;
-      });
-    }
-  }
+  // DateTimeRange? _selectedStartDate;
 
   String _formatStartDate(DateTimeRange date) {
     return DateFormat('d MMM, yy').format(date.start);
@@ -69,7 +35,6 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
     return DateFormat('d MMM, yy').format(date.end);
   }
 
-  String _selectedItem = reportOptions[0];
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -90,36 +55,34 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
             ),
           ),
           child: DropdownButton(
-              dropdownColor: AppColors.primary101010,
-              underline: const SizedBox.shrink(),
-              isExpanded: true,
-              icon: const Icon(
-                Icons.keyboard_arrow_down,
-                color: AppColors.primary7E7E7E,
-              ),
-              value: _selectedItem,
-              items: reportOptions.map((option) {
-                return DropdownMenuItem<String>(
-                  value: option,
-                  child: Text(
-                    option,
-                    style: context.textTheme.s12w400.copyWith(
-                        color: AppColors.primary7E7E7E,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                _selectedItem = value.toString();
-                setState(() {});
-              }),
+            dropdownColor: AppColors.primary101010,
+            underline: const SizedBox.shrink(),
+            isExpanded: true,
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: AppColors.primary7E7E7E,
+            ),
+            value: widget.selectedPeriod,
+            items: reportOptions.map((option) {
+              return DropdownMenuItem<String>(
+                value: option,
+                child: Text(
+                  option,
+                  style: context.textTheme.s12w400.copyWith(
+                      color: AppColors.primary7E7E7E,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11),
+                ),
+              );
+            }).toList(),
+            onChanged: widget.onChanged,
+          ),
         ),
-        if (_selectedItem == 'Custom')
+        if (widget.selectedPeriod == 'Custom')
           Row(
             children: [
               GestureDetector(
-                onTap: () => _selectStartDate(context),
+                onTap: widget.onTap,
                 child: Container(
                   height: 35,
                   padding: const EdgeInsets.symmetric(
@@ -135,9 +98,9 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
                     ),
                   ),
                   child: Text(
-                    _selectedStartDate == null
+                    widget.selectedStartDate == null
                         ? 'Select Date'
-                        : "${_formatStartDate(_selectedStartDate!)} - ${_formaEndDate(_selectedStartDate!)}",
+                        : "${_formatStartDate(widget.selectedStartDate!)} - ${_formaEndDate(widget.selectedStartDate!)}",
                     // '$_formatDate',
                     style: context.textTheme.s12w600.copyWith(
                       color: AppColors.primaryA67C00,
@@ -152,10 +115,3 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
     );
   }
 }
-
-List<String> reportOptions = [
-  'Weekly',
-  'Monthly',
-  'Yearly',
-  'Custom',
-];

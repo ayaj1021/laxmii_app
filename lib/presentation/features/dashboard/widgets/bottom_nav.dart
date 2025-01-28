@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/space_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/home_bottom_nav.dart';
 
 class NavBar extends ConsumerWidget {
   const NavBar({super.key});
@@ -22,7 +23,7 @@ class NavBar extends ConsumerWidget {
     final items = [
       'Home',
       'Activity',
-      
+      '',
       'Tools',
       'Settings',
     ];
@@ -52,23 +53,44 @@ class NavBar extends ConsumerWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   transform: Matrix4.identity()..scale(index == v ? 1.02 : 1.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/${index == v ? '${items[index].toLowerCase()}-filled' : items[index].toLowerCase()}.svg',
-                      ),
-                      5.hSpace,
-                      Text(
-                        items[index],
-                        style: context.textTheme.s12w400.copyWith(
-                          color: index == v
-                              ? AppColors.primaryColor
-                              : AppColors.primaryA29FB3,
+                  child: index == 2
+                      ? GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (_) {
+                                  return const HomeBottomNav();
+                                });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.circle),
+                            child: const Icon(
+                              Icons.add,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/${index == v ? '${items[index].toLowerCase()}-filled' : items[index].toLowerCase()}.svg',
+                            ),
+                            5.hSpace,
+                            Text(
+                              items[index],
+                              style: context.textTheme.s12w400.copyWith(
+                                color: index == v
+                                    ? AppColors.primaryColor
+                                    : AppColors.primaryA29FB3,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

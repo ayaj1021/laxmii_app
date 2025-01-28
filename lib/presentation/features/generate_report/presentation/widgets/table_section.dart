@@ -1,29 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_response.dart';
 
 class TableSection extends StatelessWidget {
-  const TableSection({super.key});
+  const TableSection({super.key, required this.headers, required this.report});
+
+  final List<String> headers;
+  final List<ReportData> report;
+
+  String _formatDate(date) {
+    return DateFormat('d MMM, yy').format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Table(
-        border: TableBorder.all(
-            color: AppColors.primaryC4C4C4.withOpacity(0.6), width: 1),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 23),
+      child: Column(
         children: [
-          buildRow(['Daily', 'Item', 'Customer', 'Amount(\$)'], context,
-              isHeader: true),
-          buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              context),
-          buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              context),
-          buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              context),
-          buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              context),
-          buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              context),
+          Table(
+            border: TableBorder.all(
+              color: AppColors.primaryC4C4C4.withOpacity(0.6),
+              width: 1,
+            ),
+
+            //['Daily', 'Item', 'Customer', 'Amount(\$)']
+            children: [
+              buildRow(headers, context, isHeader: true),
+
+              // buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
+              //     context),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: report.isEmpty
+                ? Center(
+                    child: Text(
+                    'No reports available',
+                    style: context.textTheme.s11w600
+                        .copyWith(color: AppColors.primaryC4C4C4),
+                  ))
+                : ListView.builder(
+                    itemCount: report.length,
+                    itemBuilder: (_, index) {
+                      final reportData = report[index];
+
+                      return Table(
+                        border: TableBorder.all(
+                            color: AppColors.primaryC4C4C4.withOpacity(0.6),
+                            width: 1),
+                        children: [
+                          buildRow([
+                            _formatDate(reportData.date),
+                            '${reportData.expenseType}',
+                            '${reportData.supplier}',
+                            '${reportData.amount}'
+                          ], context),
+                        ],
+                      );
+                    }),
+          )
         ],
       ),
     );

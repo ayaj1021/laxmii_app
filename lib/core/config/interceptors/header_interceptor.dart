@@ -89,7 +89,7 @@ class HeaderInterCeptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     // if (err.response != null && err.response!.statusCode == 401) {
-    //   ref.read(logoutProvider.notifier).state = ActivityStatus.loggedOut;
+    //   ref.read(getAccessTokenNotifier.notifier);
     //   return;
     // }
     debugLog('[ERROR] ${err.requestOptions.uri}');
@@ -120,10 +120,10 @@ class HeaderInterCeptor extends Interceptor {
 //   DioException error,
 //   ErrorInterceptorHandler handler,
 //   Dio dio,
-//   UserRepository userRepository,
+//   // UserRepository userRepository,
 //   Ref ref,
 // ) async {
-//   final refreshToken = userRepository.getRefreshToken();
+//  // final refreshToken = userRepository.getRefreshToken();
 //   try {
 //     final r = await Dio().post<Response<Map<String, dynamic>?>>(
 //       '${AuthStrings.baseUrl}/auth/refresh-token',

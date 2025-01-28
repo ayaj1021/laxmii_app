@@ -7,7 +7,9 @@ import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 class BottomSection extends StatelessWidget {
   const BottomSection({
     super.key,
+    required this.totalAmount,
   });
+  final String totalAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +31,19 @@ class BottomSection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '3,600.00',
+                  totalAmount,
                   style: context.textTheme.s11w600.copyWith(
                     color: AppColors.primaryC4C4C4,
                   ),
                 ),
                 Text(
-                  '3,600.00',
+                  totalAmount,
                   style: context.textTheme.s11w600.copyWith(
                     color: AppColors.primaryC4C4C4,
                   ),
                 ),
                 Text(
-                  '3,600.00',
+                  totalAmount,
                   style: context.textTheme.s11w600.copyWith(
                     color: AppColors.primaryC4C4C4,
                   ),

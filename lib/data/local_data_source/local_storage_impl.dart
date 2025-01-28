@@ -116,6 +116,7 @@ class AppDataStorage {
     await _storage.delete(key: 'user_account_name');
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'refresh_token');
+    await _storage.delete(key: 'remember_me');
   }
 
   Future<void> saveResetPasswordToken(String token) async {

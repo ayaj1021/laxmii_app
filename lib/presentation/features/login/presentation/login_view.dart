@@ -16,6 +16,7 @@ import 'package:laxmii_app/presentation/features/login/presentation/widgets/logi
 import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/laxmii_checkbox.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_email_field.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_password_field.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
@@ -97,17 +98,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     children: [
                       Row(
                         children: [
-                          Checkbox(
-                              activeColor: AppColors.primaryColor,
-                              value: rememberMe,
-                              onChanged: (value) async {
+                          LaxmiiCheckbox(
+                              isChecked: rememberMe,
+                              onChecked: (value) async {
                                 if (value != null) {
                                   ref.read(rememberMeProvider.notifier).state =
-                                      value;
-                                  await AppDataStorage()
-                                      .saveRememberMe('remember_me', value);
+                                      rememberMe;
+                                  await AppDataStorage().saveRememberMe(
+                                      'remember_me', rememberMe);
                                 }
                               }),
+                          const HorizontalSpacing(10),
                           Text(
                             'Remember me',
                             style: context.textTheme.s14w400.copyWith(

@@ -30,6 +30,7 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  final _pageController = PageController();
   @override
   void initState() {
     getUserName();
@@ -60,6 +61,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
       return "Good Evening";
     }
   }
+
+  final List<String> aiInsights = [
+    'High Expense Alert',
+    'Income Insight',
+    'Tax Insight',
+    'Investment Insight',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -142,16 +150,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           ),
                         ]),
                     const VerticalSpacing(10),
-                    const ExpensesTaxWidget(
-                      title: 'Expenses',
-                      subTitle:
-                          'Your utility bills were 30% higher this month due to increased energy use',
-                    ),
-                    const VerticalSpacing(11),
-                    const ExpensesTaxWidget(
-                      title: 'Tax Optimization',
-                      subTitle:
-                          'You\'ve spent \$300 on home office supplies this month. Add these to your deductions',
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.18,
+                      child: PageView(
+                        controller: _pageController,
+                        children: List.generate(aiInsights.length, (index) {
+                          final data = aiInsights[index];
+
+                          return ExpensesTaxWidget(
+                            title: data,
+                            subTitle:
+                                'Your utility bills were 30% higher this month due to increased energy use',
+                          );
+                        }),
+                      ),
                     ),
                     const VerticalSpacing(14),
                     const LaxmiAiTabWidget(),
