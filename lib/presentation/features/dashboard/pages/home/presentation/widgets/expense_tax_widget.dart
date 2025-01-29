@@ -74,9 +74,7 @@ class ExpensesTaxWidget extends StatelessWidget {
                   width: 47.w,
                   height: 26.w,
                   child: LaxmiiSendButton(
-                      // backgroundColor: Colors.transparent,
                       borderColor: AppColors.primary3B3522,
-                      // textColor: AppColors.primary3B3522,
                       textColor: AppColors.white,
                       hasBorder: true,
                       onTap: () {},

@@ -6,12 +6,16 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/core/utils/select_date.dart';
+import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/create_expense_request.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/create_expenses_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/widgets/add_sales_textfield.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/custom_app_dropdown.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -33,6 +37,9 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+      await ref
+          .read(getAllInventoryNotifierProvider.notifier)
+          .getAllInventory();
     });
     _amountController = TextEditingController()..addListener(_validateInput);
     _supplierNameController = TextEditingController()
@@ -41,6 +48,8 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   }
 
   String? _selectedValue;
+  Inventory? _selectedExpense;
+  String? _selectedGeneralExpense;
 
   void _validateInput() {
     _isAddSalesEnabled.value = _selectedValue != null &&
@@ -57,29 +66,21 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
 
   DateTime? _selectedDate;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  String _formatDate(DateTime date) {
+    return DateFormat('MMM d, yyyy').format(date);
+  }
+
+  void _pickDate() async {
+    final DateTime? picked = await selectDate(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child!,
-        );
-      },
+      selectedDate: _selectedDate,
     );
 
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null) {
       setState(() {
         _selectedDate = picked;
       });
     }
-  }
-
-  String _formatDate(DateTime date) {
-    return DateFormat('MMM d, yyyy').format(date);
   }
 
   final List<String> expensesTypeList = const {
@@ -97,10 +98,17 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
     'Others',
   }.toList();
 
+  final List<String> expenseType = [
+    'Inventory',
+    'General Expenses',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
         getAccessTokenNotifier.select((v) => v.getAccessTokenState.isLoading));
+    final inventoryList = ref.watch(getAllInventoryNotifierProvider
+        .select((v) => v.getAllInventory.data?.inventory));
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -121,64 +129,84 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   ),
                 ),
                 const VerticalSpacing(10),
-                // AddExpenseDropdown(
-                //   selectedValue: _selectedValue.toString(),
-                // ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      width: 1.5,
-                      color: AppColors.primary5E5E5E.withOpacity(0.5),
-                    ),
-                  ),
-                  child: DropdownButton(
-                      dropdownColor: AppColors.primary101010,
-                      value: _selectedValue,
-                      padding: EdgeInsets.zero,
-                      hint: Text(
-                        'Expense Type',
-                        style: context.textTheme.s12w300.copyWith(
-                          color: AppColors.primaryC4C4C4.withOpacity(0.4),
-                        ),
-                      ),
-                      underline: const SizedBox.shrink(),
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      isExpanded: true,
-                      items: expensesTypeList.map((item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: context.textTheme.s12w400.copyWith(
-                              color: AppColors.primary5E5E5E,
-                            ),
+                CustomDropdown(
+                    value: _selectedValue,
+                    hintText: 'Select Expense',
+                    items: expenseType.map((item) {
+                      return DropdownMenuItem(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: context.textTheme.s12w400.copyWith(
+                            color: AppColors.primary5E5E5E,
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          _selectedValue = v;
-                        });
-                      }),
-                ),
-
-                const VerticalSpacing(10),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (v) {
+                      setState(() {
+                        _amountController.text = '';
+                        _selectedValue = v;
+                      });
+                    }),
+                const VerticalSpacing(20),
+                _selectedValue == null
+                    ? const SizedBox.shrink()
+                    : _selectedValue == expenseType[0]
+                        ? CustomDropdown<Inventory>(
+                            value: _selectedExpense,
+                            hintText: 'Select Inventory',
+                            items: inventoryList?.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(
+                                  item.productName ?? '',
+                                  style: context.textTheme.s12w400.copyWith(
+                                    color: AppColors.primary5E5E5E,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (Inventory? v) {
+                              setState(() {
+                                _selectedExpense = v;
+                                _amountController.text = "${v?.costPrice}";
+                              });
+                            })
+                        : CustomDropdown(
+                            value: _selectedGeneralExpense,
+                            hintText: 'Select Expense',
+                            items: expensesTypeList.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: context.textTheme.s12w400.copyWith(
+                                    color: AppColors.primary5E5E5E,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (v) {
+                              setState(() {
+                                _selectedGeneralExpense = v;
+                              });
+                            }),
+                const VerticalSpacing(20),
                 AddSalesTextField(
                   hintText: 'Amount',
                   controller: _amountController,
                   isMoney: true,
                   keyboardType: TextInputType.number,
                 ),
-                const VerticalSpacing(10),
+                const VerticalSpacing(20),
                 AddSalesTextField(
                   hintText: 'Supplier Name',
                   controller: _supplierNameController,
                 ),
-                const VerticalSpacing(10),
+                const VerticalSpacing(20),
                 GestureDetector(
-                  onTap: () => _selectDate(context),
+                  onTap: () => _pickDate(),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(

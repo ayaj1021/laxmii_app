@@ -13,6 +13,7 @@ import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart'
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ConfirmInvoiceView extends ConsumerStatefulWidget {
   const ConfirmInvoiceView(
@@ -64,58 +65,72 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Invoices',
-                            style: context.textTheme.s24w600.copyWith(
-                              color: AppColors.black,
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.14,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 0),
+                        decoration: const BoxDecoration(
+                            color: AppColors.primaryC4C4C4,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(24),
+                                topRight: Radius.circular(24))),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Invoices',
+                                  style: context.textTheme.s24w600.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                const HorizontalSpacing(5),
+                                Text(
+                                  '# ${widget.invoiceNumber}',
+                                  style: context.textTheme.s24w600.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const HorizontalSpacing(5),
-                          Text(
-                            '# ${widget.invoiceNumber}',
-                            style: context.textTheme.s24w600.copyWith(
-                              color: AppColors.black,
+                            const VerticalSpacing(9),
+                            Row(
+                              children: [
+                                Text(
+                                  'Invoice date:',
+                                  style: context.textTheme.s12w500.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                const HorizontalSpacing(3),
+                                Text(
+                                  widget.issueDate,
+                                  style: context.textTheme.s12w500.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const VerticalSpacing(9),
-                      Row(
-                        children: [
-                          Text(
-                            'Invoice date:',
-                            style: context.textTheme.s12w500.copyWith(
-                              color: AppColors.black,
+                            const VerticalSpacing(10),
+                            Row(
+                              children: [
+                                Text(
+                                  'Due date:',
+                                  style: context.textTheme.s12w500.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                const HorizontalSpacing(3),
+                                Text(
+                                  widget.dueDate,
+                                  style: context.textTheme.s12w500.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const HorizontalSpacing(3),
-                          Text(
-                            widget.issueDate,
-                            style: context.textTheme.s12w500.copyWith(
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const VerticalSpacing(10),
-                      Row(
-                        children: [
-                          Text(
-                            'Due date:',
-                            style: context.textTheme.s12w500.copyWith(
-                              color: AppColors.black,
-                            ),
-                          ),
-                          const HorizontalSpacing(3),
-                          Text(
-                            widget.dueDate,
-                            style: context.textTheme.s12w500.copyWith(
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const VerticalSpacing(400),
                       widget.invoiceStatus == 'unpaid'
@@ -138,7 +153,9 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                                 hasBorder: true,
                                 icon: 'assets/icons/share.svg',
                                 borderColor: AppColors.primary212121,
-                                onTap: () {},
+                                onTap: () async {
+                                  _shareInvoiceDetails();
+                                },
                                 title: 'Share',
                               )),
                           SizedBox(
@@ -175,9 +192,19 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-           // context.pushNamed(InvoiceView.routeName);
+            // context.pushNamed(InvoiceView.routeName);
           },
           invoiceId: invoiceId,
         );
+  }
+
+  void _shareInvoiceDetails() {
+    final String shareText = '''
+Invoice #${widget.invoiceNumber}
+Invoice Date: ${widget.issueDate}
+Due Date: ${widget.dueDate}
+''';
+
+    Share.share(shareText);
   }
 }

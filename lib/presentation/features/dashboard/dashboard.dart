@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/activity.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/view/activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/view/home.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home_bottom_nav.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/view/settings_view.dart';

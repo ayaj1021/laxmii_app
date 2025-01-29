@@ -121,9 +121,9 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
-        appBar: const LaxmiiAppBar(
+        appBar: LaxmiiAppBar(
           centerTitle: true,
-          title: 'Sales Report',
+          title: '${widget.reportType} Report',
         ),
         body: SafeArea(
             child: Stack(
@@ -131,7 +131,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 23),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: ReportDropDownWidget(
                     onChanged: (String? value) {
                       selectedPeriod = value.toString();

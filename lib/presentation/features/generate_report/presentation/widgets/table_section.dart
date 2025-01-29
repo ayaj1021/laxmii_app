@@ -17,7 +17,7 @@ class TableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 23),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Table(
@@ -25,13 +25,9 @@ class TableSection extends StatelessWidget {
               color: AppColors.primaryC4C4C4.withOpacity(0.6),
               width: 1,
             ),
-
-            //['Daily', 'Item', 'Customer', 'Amount(\$)']
             children: [
-              buildRow(headers, context, isHeader: true),
-
-              // buildRow(['18-11-2024', 'MacBook 2020', 'Lorem ipsum', '300.00)'],
-              //     context),
+              if (headers.isNotEmpty)
+                buildRow(headers, context, isHeader: true),
             ],
           ),
           SizedBox(
@@ -47,18 +43,25 @@ class TableSection extends StatelessWidget {
                     itemCount: report.length,
                     itemBuilder: (_, index) {
                       final reportData = report[index];
+                      final rowData = [
+                        _formatDate(reportData.date),
+                        '${reportData.expenseType}',
+                        '${reportData.supplier}',
+                        '${reportData.amount}'
+                      ];
 
                       return Table(
                         border: TableBorder.all(
                             color: AppColors.primaryC4C4C4.withOpacity(0.6),
                             width: 1),
                         children: [
-                          buildRow([
-                            _formatDate(reportData.date),
-                            '${reportData.expenseType}',
-                            '${reportData.supplier}',
-                            '${reportData.amount}'
-                          ], context),
+                          if (rowData.isNotEmpty) buildRow(rowData, context),
+                          // buildRow([
+                          //   _formatDate(reportData.date),
+                          //   '${reportData.expenseType}',
+                          //   '${reportData.supplier}',
+                          //   '${reportData.amount}'
+                          // ], context),
                         ],
                       );
                     }),
