@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:laxmii_app/core/utils/enums.dart';
 
 class AppDataStorage {
   AppDataStorage._();
@@ -182,6 +183,25 @@ class AppDataStorage {
   //   }
   //   return null;
   // }
+
+  Future<CurrentState> loadCurrentState() async {
+    final stateString =
+        await _storage.read(key: "currentState") ?? CurrentState.initial.name;
+    switch (stateString) {
+      case 'onboarded':
+        return CurrentState.onboarded;
+
+      case 'loggedIn':
+        return CurrentState.loggedIn;
+
+      default:
+        return CurrentState.initial;
+    }
+  }
+
+  Future<void> saveCurrentState(CurrentState val) async {
+    await _storage.write(key: "currentState", value: val.name);
+  }
 
   Future<void> logout({
     bool partialLogout = false,

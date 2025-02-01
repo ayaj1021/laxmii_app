@@ -1,41 +1,46 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/config/env/dev_env.dart';
 import 'package:laxmii_app/core/config/exception/logger.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
 
 class HeaderInterCeptor extends Interceptor {
   HeaderInterCeptor({
     required this.dio,
     required this.secureStorage,
     required this.onTokenExpired,
+    required this.ref,
   });
   final Dio dio;
+  final Ref ref;
   final AppDataStorage secureStorage;
   final void Function() onTokenExpired;
 
-  final _authRoutes = [
-    '/login',
-    '/register',
-    '/auth/create-pin',
-    '/resendtoken',
-    '/user/logout',
-    '/auth/forgot-password',
-    '/auth/reset-password',
-    '/auth/verify-signup-otp',
-    '/user/change-pin',
-    '/user/change-password',
-    '/user/delete',
-  ];
+  // final _authRoutes = [
+  //   '/login',
+  //   '/register',
+  //   '/auth/create-pin',
+  //   '/resendtoken',
+  //   '/user/logout',
+  //   '/auth/forgot-password',
+  //   '/auth/reset-password',
+  //   '/auth/verify-signup-otp',
+  //   '/user/change-pin',
+  //   '/user/change-password',
+  //   '/user/delete',
+  // ];
 
-  final _optionalRoutes = [
-    '/user/change-pin',
-    '/user/change-password',
-    '/auth/recover',
-    '/user/logout',
-    '/user/refer',
-    '/user/delete',
-  ];
+  // final _optionalRoutes = [
+  //   '/user/change-pin',
+  //   '/user/change-password',
+  //   '/auth/recover',
+  //   '/user/logout',
+  //   '/user/refer',
+  //   '/user/delete',
+  // ];
   @override
   FutureOr<dynamic> onRequest(
     RequestOptions options,
@@ -43,23 +48,17 @@ class HeaderInterCeptor extends Interceptor {
   ) async {
     try {
       final accessToken = await secureStorage.getUserAccessToken();
-      final token = await secureStorage.getUserToken();
+
       debugLog("This is user accesstoken $accessToken");
       // log("This is user token $token");
 
       debugLog('[ACCESS TOKEN]$accessToken');
-      debugLog('[TOKEN]$token');
 
-      if (_optionalRoutes.contains(options.path) &&
-          token.toString().isNotEmpty) {
-        options.headers['Authorization'] = 'Bearer $token';
-      } else {
+      // options.headers['Authorization'] = 'Bearer $accessToken';
+
+      if (accessToken.toString().isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $accessToken';
       }
-
-      // if (accessToken.toString().isNotEmpty) {
-      //   options.headers['Authorization'] = 'Bearer $accessToken';
-      // }
     } catch (e) {
       debugLog(e);
     }
@@ -88,17 +87,12 @@ class HeaderInterCeptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    // if (err.response != null && err.response!.statusCode == 401) {
-    //   ref.read(getAccessTokenNotifier.notifier);
-    //   return;
-    // }
+    if (err.response != null && err.response!.statusCode == 401) {
+      await _refreshToken(err, handler, dio, secureStorage, ref);
+      return;
+    }
     debugLog('[ERROR] ${err.requestOptions.uri}');
     debugLog('[ERROR] ${err.response}');
-    if (err.response?.statusCode == 401 ||
-        err.response?.statusCode == 403 &&
-            !_authRoutes.contains(err.requestOptions.path)) {
-      onTokenExpired();
-    }
     handler.next(err);
     return err;
   }
@@ -120,19 +114,20 @@ class HeaderInterCeptor extends Interceptor {
 //   DioException error,
 //   ErrorInterceptorHandler handler,
 //   Dio dio,
-//   // UserRepository userRepository,
+//   AppDataStorage secureStorage,
 //   Ref ref,
 // ) async {
-//  // final refreshToken = userRepository.getRefreshToken();
+//   final refreshToken = secureStorage.getUserRefreshToken();
 //   try {
 //     final r = await Dio().post<Response<Map<String, dynamic>?>>(
-//       '${AuthStrings.baseUrl}/auth/refresh-token',
+//       '${DevEnv().baseUrl}/auth/get-access-token',
 //       data: {
-//         'refreshToken': refreshToken,
+//         'token': refreshToken,
 //       },
 //     );
 //     if (r.statusCode == 200) {
-//       userRepository.saveToken(r.data['newAccessToken']);
+//     //  userRepository.saveToken(r.data['newAccessToken']);
+//       secureStorage.saveUserAccessToken(r.data);
 //     }
 //     return handleError(handler, error, dio);
 //   } on DioException catch (_) {
@@ -140,6 +135,27 @@ class HeaderInterCeptor extends Interceptor {
 //     return;
 //   }
 // }
+
+Future<void> _refreshToken(DioException error, ErrorInterceptorHandler handler,
+    Dio dio, AppDataStorage secureStorage, Ref ref) async {
+  final refreshToken = secureStorage.getUserRefreshToken();
+  try {
+    final r = await Dio().post(
+      '${DevEnv().baseUrl}/auth/get-access-token',
+      data: {"token": refreshToken},
+    );
+
+    if (r.statusCode == 200) {
+      secureStorage.saveUserAccessToken(r.data['accessToken']);
+      debugLog("Access Token gotten and saved");
+    }
+    return handleError(handler, error, dio);
+  } on DioException catch (e) {
+    debugLog('refresh error===>> $e');
+    ref.read(logOutNotifer.notifier).logout();
+    return;
+  }
+}
 
 Future<void> handleError(
   ErrorInterceptorHandler handler,

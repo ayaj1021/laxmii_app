@@ -215,7 +215,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         width: 1.5,
-                        color: AppColors.primary5E5E5E.withOpacity(0.5),
+                        color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
                       ),
                     ),
                     child: Text(

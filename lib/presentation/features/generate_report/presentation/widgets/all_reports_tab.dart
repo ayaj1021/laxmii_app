@@ -89,7 +89,8 @@ class _AllReportsTabState extends ConsumerState<AllReportsTab> {
                         const VerticalSpacing(10),
                         if (index < (count ?? 0) - 1)
                           Divider(
-                            color: AppColors.primary5E5E5E.withOpacity(0.5),
+                            color:
+                                AppColors.primary5E5E5E.withValues(alpha: 0.5),
                           ),
                         const VerticalSpacing(10),
                       ],

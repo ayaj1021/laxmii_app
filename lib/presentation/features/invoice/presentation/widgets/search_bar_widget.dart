@@ -17,7 +17,7 @@ class SearchBarWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: AppColors.primary5E5E5E.withOpacity(0.5),
+          color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
         ),
       ),
       child: TextField(
@@ -33,7 +33,7 @@ class SearchBarWidget extends StatelessWidget {
           // ),
           prefixIcon: Icon(
             Icons.search,
-            color: AppColors.primary5E5E5E.withOpacity(0.5),
+            color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
           ),
           fillColor: Colors.transparent,
           border: InputBorder.none,

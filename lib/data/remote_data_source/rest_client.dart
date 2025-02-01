@@ -227,6 +227,7 @@ ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(
     dio.interceptors.add(
       HeaderInterCeptor(
         dio: dio,
+        ref: ref,
         secureStorage: ref.read(localStorageProvider),
         onTokenExpired: () async {
           // await ref.read(localStorageProvider).logout(partialLogout: true);

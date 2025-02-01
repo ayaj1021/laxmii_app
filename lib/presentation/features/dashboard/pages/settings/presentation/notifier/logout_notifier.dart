@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/exception/message_exception.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/repository/logout_repository.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_state.dart';
@@ -37,10 +38,11 @@ class LogOutNotifer extends AutoDisposeNotifier<LogoutNotiferState> {
     state = state.copyWith(homeSessionState: HomeSessionState.logout);
   }
 
-  // Future<void> logout() async {
-  //   _userRepository.saveCurrentState(CurrentState.onboarded);
-  //   state = state.copyWith(homeSessionState: HomeSessionState.logout);
-  // }
+  Future<void> logout() async {
+    await AppDataStorage().saveCurrentState(CurrentState.onboarded);
+
+    state = state.copyWith(homeSessionState: HomeSessionState.logout);
+  }
 }
 
 final logOutNotifer =

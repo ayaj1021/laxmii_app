@@ -27,9 +27,11 @@ class ActivityView extends ConsumerWidget {
       body: const SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
-              children: [Cashflow()],
+              children: [
+                Cashflow(),
+              ],
             ),
           ),
         ),

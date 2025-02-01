@@ -83,8 +83,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
           );
       }
     });
-    final tasksList =
-        ref.watch(getAllTasksNotifierProvider.select((v) => v.getAllTasks));
+    final tasksList = ref
+        .watch(getAllTasksNotifierProvider
+            .select((v) => v.getAllTasks.data?.tasks?.reversed))
+        ?.toList();
     final isDeleteLoading = ref
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
     final isUpdateLoading = ref
@@ -223,11 +225,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       // height: MediaQuery.of(context).size.height,
                       child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: (tasksList.data?.tasks!.length ?? 0) < 2
-                              ? tasksList.data?.tasks?.length
+                          itemCount: (tasksList?.length ?? 0) < 2
+                              ? tasksList?.length
                               : 2,
                           itemBuilder: (_, index) {
-                            final data = tasksList.data?.tasks?[index];
+                            final data = tasksList?[index];
                             return Column(
                               children: [
                                 TodoListWidget(

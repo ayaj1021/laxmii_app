@@ -29,7 +29,7 @@ class TodoListWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary101010.withOpacity(0.6),
+        color: AppColors.primary101010.withValues(alpha: 0.6),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

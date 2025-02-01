@@ -91,7 +91,7 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColors.primary3B3522.withOpacity(0.4),
+                    color: AppColors.primary3B3522.withValues(alpha: 0.4),
                     border: Border.all(
                       width: 0.5,
                       color: AppColors.primaryA67C00,

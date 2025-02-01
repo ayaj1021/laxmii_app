@@ -9,13 +9,14 @@ class AddSalesTextField extends StatelessWidget {
       required this.controller,
       this.keyboardType,
       this.isMoney,
-      required this.hintText, this.onChanged});
+      required this.hintText,
+      this.onChanged});
   // final String title;
   final String hintText;
   final bool? isMoney;
   final TextEditingController controller;
   final TextInputType? keyboardType;
- final Function(String)? onChanged;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +25,19 @@ class AddSalesTextField extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-                width: 1.5, color: AppColors.primary5E5E5E.withOpacity(0.5))),
+                width: 1.5,
+                color: AppColors.primary5E5E5E.withValues(alpha: 0.5))),
         child: TextField(
           style: context.textTheme.s12w500.copyWith(
             color: AppColors.primaryC4C4C4,
           ),
-
           onChanged: onChanged,
           keyboardType: keyboardType,
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,
             helperStyle: context.textTheme.s12w300.copyWith(
-               color: AppColors.primary5E5E5E.withOpacity(0.5),
+              color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
             ),
             prefix: isMoney == true
                 ? Text(

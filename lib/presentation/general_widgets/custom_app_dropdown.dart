@@ -28,7 +28,7 @@ class CustomDropdown<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border.all(
           width: borderWidth,
-          color: AppColors.primary5E5E5E.withOpacity(0.5),
+          color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
         ),
       ),
       child: DropdownButton<T>(
@@ -38,7 +38,7 @@ class CustomDropdown<T> extends StatelessWidget {
         hint: Text(
           hintText,
           style: context.textTheme.s12w300.copyWith(
-            color: AppColors.primaryC4C4C4.withOpacity(0.4),
+            color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
           ),
         ),
         underline: const SizedBox.shrink(),

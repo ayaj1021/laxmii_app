@@ -100,7 +100,7 @@ class LoadingOverlayState extends State<LoadingOverlay>
           children: <Widget>[
             SizedBox.expand(
               child: ColoredBox(
-                color: widget.color ?? Colors.black.withOpacity(0.5),
+                color: widget.color ?? Colors.black.withValues(alpha: 0.5),
               ),
             ),
             Center(child: widget.progressIndicator),

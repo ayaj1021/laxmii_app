@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/exception/logger.dart';
 import 'package:laxmii_app/core/config/exception/message_exception.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_request.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/repository/sign_up_repository.dart';
 import 'package:laxmii_app/presentation/features/sign_up/notifier/sign_up_state.dart';
@@ -39,7 +40,10 @@ class RegisterNotifier extends AutoDisposeNotifier<SignUpNotifierState> {
       if (!value.status) throw value.message.toException;
 
       state = state.copyWith(signUpState: LoadState.idle);
-      onSuccess(value.data.message.toString());
+      await AppDataStorage().saveCurrentState(CurrentState.onboarded);
+      onSuccess(
+        value.data.message.toString(),
+      );
     } catch (e) {
       onError(e.toString());
       state = state.copyWith(signUpState: LoadState.idle);

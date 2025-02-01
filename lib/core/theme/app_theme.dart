@@ -1,15 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-
 
 class AppThemes {
   static ThemeData lightTheme() {
     final errorInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(16.r),
       borderSide: BorderSide(
-        color: AppColors.red.withOpacity(.4),
+        color: AppColors.red.withValues(alpha: .4),
       ),
     );
     final focusedBorder = OutlineInputBorder(
@@ -29,7 +27,7 @@ class AppThemes {
       colorScheme: ColorScheme.light(
         primary: AppColors.primaryColor,
         secondary: AppColors.secondaryColor,
-        onErrorContainer: AppColors.red.withOpacity(.3),
+        onErrorContainer: AppColors.red.withValues(alpha: .3),
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(
@@ -41,8 +39,7 @@ class AppThemes {
         filled: true,
         fillColor: AppColors.greyFill,
         focusedErrorBorder: errorInputBorder,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         border: focusedBorder,
         enabledBorder: disabledBorder,
         errorBorder: errorInputBorder,
@@ -60,13 +57,11 @@ class AppThemes {
     );
   }
 
-
-
-    static ThemeData darkTheme() {
+  static ThemeData darkTheme() {
     final errorInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(16.r),
       borderSide: BorderSide(
-        color: AppColors.red.withOpacity(.4),
+        color: AppColors.red.withValues(alpha: .4),
       ),
     );
     final focusedBorder = OutlineInputBorder(
@@ -83,15 +78,14 @@ class AppThemes {
       useMaterial3: true,
       fontFamily: 'Kanit',
       scaffoldBackgroundColor: AppColors.black,
-      
       colorScheme: ColorScheme.light(
         primary: AppColors.primaryColor,
         secondary: AppColors.secondaryColor,
-        onErrorContainer: AppColors.red.withOpacity(.3),
+        onErrorContainer: AppColors.red.withValues(alpha: .3),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle:  TextStyle(
-         color: AppColors.primaryC4C4C4.withOpacity(0.4),
+        hintStyle: TextStyle(
+          color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
@@ -102,7 +96,7 @@ class AppThemes {
         // contentPadding:
         //     const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         border: focusedBorder,
-        
+
         enabledBorder: disabledBorder,
         errorBorder: errorInputBorder,
         focusedBorder: focusedBorder,
@@ -118,5 +112,4 @@ class AppThemes {
       ),
     );
   }
-
 }

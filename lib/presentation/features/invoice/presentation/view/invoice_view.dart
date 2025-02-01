@@ -108,7 +108,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: AppColors.primary5E5E5E.withOpacity(0.5),
+                          color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
                         ),
                       ),
                       child: SvgPicture.asset('assets/icons/filter.svg'),
@@ -221,12 +221,12 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                                       invoiceStatusColor:
                                           data?.status == 'unpaid'
                                               ? AppColors.primary861919
-                                                  .withOpacity(0.7)
+                                                  .withValues(alpha: 0.7)
                                               : data?.status == 'overdue'
                                                   ? AppColors.primaryA67C00
-                                                      .withOpacity(0.7)
+                                                      .withValues(alpha: 0.7)
                                                   : AppColors.primary075427
-                                                      .withOpacity(0.7),
+                                                      .withValues(alpha: 0.7),
                                     ),
                                     const VerticalSpacing(10)
                                   ],

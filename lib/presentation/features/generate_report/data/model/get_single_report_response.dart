@@ -46,6 +46,10 @@ class ReportData {
   final DateTime? date;
   final String? expenseType;
   final String? supplier;
+  final String? inventory;
+  final String? customer;
+  final String? invoiceNumber;
+  final String? customerName;
   final int? amount;
 
   ReportData({
@@ -53,25 +57,44 @@ class ReportData {
     this.expenseType,
     this.supplier,
     this.amount,
+    this.inventory,
+    this.invoiceNumber,
+    this.customerName,
+    this.customer,
   });
 
   ReportData copyWith({
     DateTime? date,
     String? expenseType,
     String? supplier,
+    String? inventory,
+    String? invoiceNumber,
+    String? customerName,
+    String? customer,
     int? amount,
   }) =>
       ReportData(
         date: date ?? this.date,
         expenseType: expenseType ?? this.expenseType,
         supplier: supplier ?? this.supplier,
+        inventory: inventory ?? this.inventory,
+        customer: customer ?? this.customer,
+        invoiceNumber: invoiceNumber ?? this.invoiceNumber,
+        customerName: customerName ?? this.customerName,
         amount: amount ?? this.amount,
       );
+
+  // "InvoiceNumber": "12543",
+  //         "CustomerName": "Abby",
 
   factory ReportData.fromJson(Map<String, dynamic> json) => ReportData(
         date: json["Date"] == null ? null : DateTime.parse(json["Date"]),
         expenseType: json["Expense Type"],
         supplier: json["Supplier"],
+        inventory: json["Inventory"],
+        customer: json["Customer"],
+        invoiceNumber: json["InvoiceNumber"],
+        customerName: json["CustomerName"],
         amount: json["Amount"],
       );
 
@@ -80,6 +103,10 @@ class ReportData {
             "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
         "Expense Type": expenseType,
         "Supplier": supplier,
+        "Customer": customer,
+        "Inventory": inventory,
+        "InvoiceNumber": invoiceNumber,
+        "CustomerName": customerName,
         "Amount": amount,
       };
 }

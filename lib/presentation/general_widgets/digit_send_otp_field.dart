@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -96,7 +94,7 @@ class _AbakonSendOtpFieldState extends State<AbakonSendOtpField> {
             forceErrorState: widget.hasError,
             keyboardType: TextInputType.text,
             onCompleted: widget.onCompleted,
-          //  obscureText: widget.obscureText,
+            //  obscureText: widget.obscureText,
             onChanged: widget.onChanged,
             autofocus: widget.autoFocus,
             obscuringWidget: Container(
@@ -119,7 +117,7 @@ class _AbakonSendOtpFieldState extends State<AbakonSendOtpField> {
             submittedPinTheme: widget.submittedPinTheme ?? submittedPinTheme,
             closeKeyboardWhenCompleted: widget.closeKeyboardWhenCompleted,
             disabledPinTheme: widget.pinTheme ?? defaultPinTheme,
-           // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             validator: widget.validator ??
                 (text) {
                   if (text == null ||
@@ -158,7 +156,7 @@ class _AbakonSendOtpFieldState extends State<AbakonSendOtpField> {
 
   DSPinTheme get errorPinTheme => DSPinTheme(
         context: context,
-        color: AppColors.red.withOpacity(.1),
+        color: AppColors.red.withValues(alpha: .1),
         width: widget.boxWidth,
         height: widget.boxHeight,
       );

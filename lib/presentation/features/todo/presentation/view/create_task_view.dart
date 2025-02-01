@@ -4,11 +4,12 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/create_tasks_request.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/create_tasks_notifier.dart';
-import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
+import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/widgets/priority_dropdown_widget.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -238,9 +239,10 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
             context.showError(message: error);
           },
           onSuccess: (message) {
+            ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.popAndPushNamed(TodoView.routeName);
+            context.popUntil(ModalRoute.withName(Dashboard.routeName));
           },
         );
   }

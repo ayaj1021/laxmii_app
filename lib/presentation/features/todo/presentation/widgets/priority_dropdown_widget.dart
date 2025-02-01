@@ -35,7 +35,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               width: 1.5,
-              color: AppColors.primary5E5E5E.withOpacity(0.5),
+              color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
             ),
           ),
           child: DropdownButton(
@@ -45,7 +45,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
               hint: Text(
                 'None',
                 style: context.textTheme.s12w300.copyWith(
-                  color: AppColors.primaryC4C4C4.withOpacity(0.4),
+                  color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
                 ),
               ),
               underline: const SizedBox.shrink(),

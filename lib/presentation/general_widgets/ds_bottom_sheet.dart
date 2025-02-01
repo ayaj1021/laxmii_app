@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-
 
 /// [AbakonBottomSheet] is a bottomsheet widget built
 /// with flutter widgets.
@@ -46,7 +44,7 @@ class AbakonBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BackdropFilter(
       filter: ColorFilter.mode(
-        Colors.black.withOpacity(0.2),
+        Colors.black.withValues(alpha: 0.2),
         BlendMode.srcOver,
       ),
       child: Container(

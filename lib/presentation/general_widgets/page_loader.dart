@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/abakon_app_loader.dart';
@@ -12,13 +11,12 @@ class PageLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingOverlay(
-        color: AppColors.primaryColor.withOpacity(0.2),
+        color: AppColors.primaryColor.withValues(alpha: 0.2),
         progressIndicator: const _AppLoader(),
         isLoading: isLoading,
         child: PopScope(canPop: !isLoading, child: child));
   }
 }
-
 
 class _AppLoader extends StatelessWidget {
   const _AppLoader();
@@ -26,10 +24,10 @@ class _AppLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:  LoadingAnimationWidget.flickr(
+      child: LoadingAnimationWidget.flickr(
         leftDotColor: AppColors.primaryColor,
         rightDotColor: Colors.blue,
-         size: 50,
+        size: 50,
       ),
     );
   }

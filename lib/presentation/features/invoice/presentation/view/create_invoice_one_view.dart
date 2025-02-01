@@ -130,7 +130,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                     decoration: InputDecoration(
                       hintText: 'Customer (required)',
                       hintStyle: context.textTheme.s14w400.copyWith(
-                        color: AppColors.primary5E5E5E.withOpacity(0.5),
+                        color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
                       ),
                       border: InputBorder.none,
                       fillColor: Colors.transparent,
@@ -168,7 +168,8 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                               hintText: 'Enter or let us assign',
                               border: InputBorder.none,
                               hintStyle: context.textTheme.s14w400.copyWith(
-                                color: AppColors.primary5E5E5E.withOpacity(0.5),
+                                color: AppColors.primary5E5E5E
+                                    .withValues(alpha: 0.5),
                               ),
                               fillColor: Colors.transparent,
                               filled: false,

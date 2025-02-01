@@ -22,7 +22,7 @@ class TableSection extends StatelessWidget {
         children: [
           Table(
             border: TableBorder.all(
-              color: AppColors.primaryC4C4C4.withOpacity(0.6),
+              color: AppColors.primaryC4C4C4.withValues(alpha: 0.6),
               width: 1,
             ),
             children: [
@@ -45,14 +45,15 @@ class TableSection extends StatelessWidget {
                       final reportData = report[index];
                       final rowData = [
                         _formatDate(reportData.date),
-                        '${reportData.expenseType}',
-                        '${reportData.supplier}',
+                        '${reportData.expenseType ?? reportData.inventory ?? reportData.invoiceNumber}',
+                        '${reportData.supplier ?? reportData.customer ?? reportData.customerName}',
                         '${reportData.amount}'
                       ];
 
                       return Table(
                         border: TableBorder.all(
-                            color: AppColors.primaryC4C4C4.withOpacity(0.6),
+                            color:
+                                AppColors.primaryC4C4C4.withValues(alpha: 0.6),
                             width: 1),
                         children: [
                           if (rowData.isNotEmpty) buildRow(rowData, context),

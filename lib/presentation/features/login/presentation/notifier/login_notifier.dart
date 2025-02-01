@@ -35,7 +35,9 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
           .saveUserRefreshToken('${value.data?.refreshToken}');
       await AppDataStorage().saveUserAccountName('${value.data?.name}');
       await AppDataStorage().saveUserEmail('${value.data?.email}');
-      state = state.copyWith(loginState: LoadState.idle);
+
+      await AppDataStorage().saveCurrentState(CurrentState.loggedIn);
+      state = state.copyWith(loginState: LoadState.success);
       onSuccess(value.message.toString());
     } catch (e) {
       onError(e.toString());
