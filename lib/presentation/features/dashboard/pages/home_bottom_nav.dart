@@ -33,7 +33,7 @@ class HomeBottomNav extends StatelessWidget {
           HomeBottomNavSelectionsWidget(
             onTap: () => context.pushNamed(AddSalesView.routeName),
             icon: 'assets/icons/transactions.svg',
-            title: 'Sale/Inventory',
+            title: 'Sale/Invoice',
           ),
           const VerticalSpacing(16),
           HomeBottomNavSelectionsWidget(

@@ -69,6 +69,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     'Investment Insight',
   ];
 
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     final greetingMessage = getGreetingMessage();
@@ -151,16 +152,42 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         ]),
                     const VerticalSpacing(10),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.24,
                       child: PageView(
                         controller: _pageController,
                         children: List.generate(aiInsights.length, (index) {
                           final data = aiInsights[index];
 
                           return ExpensesTaxWidget(
+                            onBackPressed: () {
+                              if (_currentIndex > 0) {
+                                setState(() {
+                                  _currentIndex--;
+                                });
+                                _pageController.animateToPage(
+                                  _currentIndex,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              }
+                            },
+                            onForwardPressed: () {
+                              if (_currentIndex < aiInsights.length - 1) {
+                                setState(() {
+                                  _currentIndex++;
+                                });
+                                _pageController.animateToPage(
+                                  _currentIndex,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              }
+                            },
                             title: data,
                             subTitle:
                                 'Your utility bills were 30% higher this month due to increased energy use',
+                            controller: _pageController,
+                            length: aiInsights.length,
                           );
                         }),
                       ),
