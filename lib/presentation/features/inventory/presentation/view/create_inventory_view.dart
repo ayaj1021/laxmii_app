@@ -30,6 +30,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   late TextEditingController _sellingPriceController;
   late TextEditingController _costPriceController;
   late TextEditingController _quantityController;
+  late TextEditingController _supplierNameController;
 
   @override
   void initState() {
@@ -41,6 +42,8 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
       ..addListener(_validateInput);
     _costPriceController = TextEditingController()..addListener(_validateInput);
     _quantityController = TextEditingController()..addListener(_validateInput);
+    _supplierNameController = TextEditingController()
+      ..addListener(_validateInput);
     super.initState();
   }
 
@@ -51,6 +54,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     _sellingPriceController.dispose();
     _costPriceController.dispose();
     _quantityController.dispose();
+    _supplierNameController.dispose();
     super.dispose();
   }
 
@@ -59,6 +63,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
         _descriptionController.text.isNotEmpty &&
         _sellingPriceController.text.isNotEmpty &&
         _costPriceController.text.isNotEmpty &&
+        _supplierNameController.text.isNotEmpty &&
         _quantityController.text.isNotEmpty;
   }
 
@@ -91,6 +96,11 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                 UpdateProductsTextField(
                   product: _quantityController,
                   title: 'Quantity',
+                ),
+                const VerticalSpacing(15),
+                UpdateProductsTextField(
+                  product: _supplierNameController,
+                  title: 'Supplier name',
                 ),
                 const VerticalSpacing(15),
                 UpdateProductsTextField(

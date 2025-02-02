@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_invoice_number_notifier.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_details_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -23,31 +26,31 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
   final ValueNotifier<bool> _isAddSalesEnabled = ValueNotifier(false);
   late TextEditingController _amountController;
   late TextEditingController _customerNameController;
-  late TextEditingController _invoiceNumberController;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+      await ref
+          .read(getInvoiceNumberNotifierProvider.notifier)
+          .getAllInvoices();
     });
     _amountController = TextEditingController()..addListener(_validateInput);
-    _invoiceNumberController = TextEditingController()
-      ..addListener(_validateInput);
+
     _customerNameController = TextEditingController()
       ..addListener(_validateInput);
     super.initState();
   }
 
   void _validateInput() {
-    _isAddSalesEnabled.value = _invoiceNumberController.text.isNotEmpty &&
-        _customerNameController.text.isNotEmpty;
+    _isAddSalesEnabled.value = _customerNameController.text.isNotEmpty;
   }
 
   @override
   void dispose() {
     _amountController.dispose();
     _customerNameController.dispose();
-    _invoiceNumberController.dispose();
+
     super.dispose();
   }
 
@@ -99,6 +102,8 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
 
   @override
   Widget build(BuildContext context) {
+    final invoiceNumber = ref.watch(getInvoiceNumberNotifierProvider
+        .select((v) => v.getInvoiceNumber.data?.invoiceNumber ?? ''));
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'New invoice',
@@ -156,32 +161,13 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                             color: AppColors.primary5E5E5E,
                           ),
                         ),
-                        SizedBox(
-                          width: 200,
-                          child: TextField(
-                            style: context.textTheme.s14w400.copyWith(
-                              color: AppColors.white,
-                            ),
-                            keyboardType: TextInputType.number,
-                            controller: _invoiceNumberController,
-                            decoration: InputDecoration(
-                              hintText: 'Enter or let us assign',
-                              border: InputBorder.none,
-                              hintStyle: context.textTheme.s14w400.copyWith(
-                                color: AppColors.primary5E5E5E
-                                    .withValues(alpha: 0.5),
-                              ),
-                              fillColor: Colors.transparent,
-                              filled: false,
-                              focusColor: Colors.transparent,
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                            ),
+                        const HorizontalSpacing(12),
+                        Text(
+                          invoiceNumber,
+                          style: context.textTheme.s12w400.copyWith(
+                            color: AppColors.white,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -258,20 +244,25 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: AppColors.primary101010),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.add_circle,
-                    color: AppColors.primaryColor,
-                  ),
-                  const HorizontalSpacing(5),
-                  Text(
-                    'Add product or service',
-                    style: context.textTheme.s14w500.copyWith(
+              child: InkWell(
+                onTap: () {
+                  context.pushNamed(AddNewInvoiceView.routeName);
+                },
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.add_circle,
                       color: AppColors.primaryColor,
                     ),
-                  )
-                ],
+                    const HorizontalSpacing(5),
+                    Text(
+                      'Add product or service',
+                      style: context.textTheme.s14w500.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             const VerticalSpacing(24),
@@ -315,17 +306,14 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => InvoiceDetailsView(
-                                              customerName:
-                                                  _customerNameController.text
-                                                      .trim(),
-                                              issueDate:
-                                                  _formatDate(_selectedDate!),
-                                              dueDate: _formatDueDate(
-                                                  _selectedDueDate!),
-                                              invoiceNumber:
-                                                  _invoiceNumberController.text
-                                                      .trim(),
-                                            )));
+                                            customerName:
+                                                _customerNameController.text
+                                                    .trim(),
+                                            issueDate:
+                                                _formatDate(_selectedDate!),
+                                            dueDate: _formatDueDate(
+                                                _selectedDueDate!),
+                                            invoiceNumber: invoiceNumber)));
                               }
                             },
                             title: 'Continue');

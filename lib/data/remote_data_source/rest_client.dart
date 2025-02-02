@@ -28,6 +28,7 @@ import 'package:laxmii_app/presentation/features/inventory/data/model/update_inv
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_number_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_request.dart';
@@ -204,10 +205,8 @@ abstract class RestClient {
   @GET('/api/invoices')
   Future<GetAllInvoiceResponse> getAllInvoices();
 
-  //       @GET('/user')
-  // Future<GetAllUserDetailsResponse> getTransaction(
-  //     // @Queries() Map<String, dynamic> queries,
-  //     );
+  @GET('/api/get-invoice-no')
+  Future<GetInvoiceNumberResponse> getInvoiceNumber();
 }
 
 ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(

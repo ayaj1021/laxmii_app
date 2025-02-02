@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
-import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/todo_list_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -12,6 +10,7 @@ import 'package:laxmii_app/presentation/features/todo/presentation/notifier/dele
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/update_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
+import 'package:laxmii_app/presentation/general_widgets/empty_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class WeeklyPage extends ConsumerStatefulWidget {
@@ -44,17 +43,8 @@ class _WeeklyPageState extends ConsumerState<WeeklyPage> {
         tasksList == null
             ? const SizedBox.shrink()
             : tasksList.isEmpty
-                ? Column(
-                    children: [
-                      SvgPicture.asset('assets/icons/empty_data.svg'),
-                      const VerticalSpacing(10),
-                      Text(
-                        'No Tasks Yet',
-                        style: context.textTheme.s14w500.copyWith(
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ],
+                ? EmptyPage(
+                    emptyMessage: 'No Tasks Yet',
                   )
                 : Expanded(
                     child: ListView.builder(

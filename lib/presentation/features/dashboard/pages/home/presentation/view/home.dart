@@ -91,6 +91,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
     final isUpdateLoading = ref
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
+
     return PageLoader(
       isLoading: isUpdateLoading,
       child: PageLoader(
@@ -220,6 +221,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       ],
                     ),
                     const VerticalSpacing(5),
+                    if (tasksList == null) const SizedBox.shrink(),
                     SizedBox(
                       height: 400.h,
                       // height: MediaQuery.of(context).size.height,
@@ -262,7 +264,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 
-  void deleteTask({required String taskId}) async {
+  deleteTask({required String taskId}) async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(deleteTaskNotifier.notifier).deletetask(
           taskId: taskId,
@@ -277,7 +279,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         );
   }
 
-  void updateTask(
+  updateTask(
       {required String taskId,
       required String priority,
       required bool completed}) async {

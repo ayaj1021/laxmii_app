@@ -84,7 +84,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                           ),
                           const HorizontalSpacing(5),
                           Text(
-                            '# ${widget.invoiceNumber}',
+                            widget.invoiceNumber,
                             style: context.textTheme.s24w600.copyWith(
                               color: AppColors.black,
                             ),

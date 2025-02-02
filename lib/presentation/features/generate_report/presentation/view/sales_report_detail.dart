@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/theme/date_picker_theme.dart';
+
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_request.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/notifier/get_single_report_notifier.dart';
@@ -71,37 +72,21 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
       lastDate: DateTime(now.year, now.month, now.day),
       saveText: 'Done',
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            unselectedWidgetColor: Colors.white,
-            colorScheme: const ColorScheme.dark(
-              primary: AppColors.primaryColor,
-
-              surface: AppColors.white, // Background color
-              onSurface: Colors.white, // Text color
-              secondary: AppColors.primaryColor,
-            ),
-            dialogBackgroundColor: AppColors.white,
-            scaffoldBackgroundColor: AppColors.primary101010,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white, // Button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
+        return DateRangePickerTheme.datePickerTheme(
+            context: context, child: child!);
       },
     );
 
-    if (picked != null && picked != _selectedStartDate) {
-      setState(() {
-        _selectedStartDate = picked;
-      });
+    if (picked != null) {
+      if (_selectedStartDate == null ||
+          picked.start != _selectedStartDate!.start ||
+          picked.end != _selectedStartDate!.end) {
+        setState(() {
+          _selectedStartDate = picked;
+        });
+
+        _refetchData();
+      }
     }
   }
 
@@ -140,6 +125,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
                     },
                     onTap: () {
                       _selectStartDate();
+
                       _refetchData();
                     },
                     selectedStartDate: _selectedStartDate,
@@ -167,8 +153,8 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
 }
 
 List<String> reportOptions = [
+  'Daily',
   'Weekly',
-  'Monthly',
   'Yearly',
   'Custom',
 ];

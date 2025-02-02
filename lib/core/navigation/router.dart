@@ -4,6 +4,7 @@ import 'package:laxmii_app/presentation/features/forgot_password/presentation/vi
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_invoice_one_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
@@ -32,6 +33,7 @@ class AppRouter {
     TodoView.routeName: (context) => const TodoView(),
     CreateTaskView.routeName: (context) => const CreateTaskView(),
     GenerateReport.routeName: (context) => const GenerateReport(),
+    AddNewInvoiceView.routeName: (context) => const AddNewInvoiceView(),
     // ChangePassword.routeName: (context) => const ChangePassword(),
 
     // TransactionDetailsView.routeName: (context) =>

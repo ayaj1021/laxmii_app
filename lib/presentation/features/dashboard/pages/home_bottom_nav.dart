@@ -4,8 +4,8 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_invoice_one_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/create_task_view.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/view/add_sales_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/create_expense_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -31,9 +31,9 @@ class HomeBottomNav extends StatelessWidget {
           ),
           const VerticalSpacing(16),
           HomeBottomNavSelectionsWidget(
-            onTap: () => context.pushNamed(AddSalesView.routeName),
+            onTap: () => context.pushNamed(CreateInvoiceOneView.routeName),
             icon: 'assets/icons/transactions.svg',
-            title: 'Sale/Invoice',
+            title: 'Sales/Invoice',
           ),
           const VerticalSpacing(16),
           HomeBottomNavSelectionsWidget(

@@ -9,6 +9,7 @@ import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -131,31 +132,29 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     },
                     value: performanceInsights,
                   ),
-                  const VerticalSpacing(10),
+                  const VerticalSpacing(30),
+                  Text(
+                    'Currency',
+                    style: context.textTheme.s14w500.copyWith(
+                        color: AppColors.primaryC4C4C4,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  const VerticalSpacing(6),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const SettingsOptionsButton(
+                      title: 'US Dollar (\$)',
+                      icon: Icons.keyboard_arrow_down,
+                      textColor: AppColors.primary5E5E5E,
+                    ),
+                  ),
+                  const VerticalSpacing(48),
                   GestureDetector(
                     onTap: () => _logout(),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.primary101010),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Logout',
-                            style: context.textTheme.s14w500.copyWith(
-                              color: AppColors.primaryFF5733,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: AppColors.primaryFF5733,
-                            size: 18,
-                          )
-                        ],
-                      ),
+                    child: const SettingsOptionsButton(
+                      title: 'Logout',
+                      icon: Icons.arrow_forward_ios,
+                      textColor: AppColors.primaryFF5733,
                     ),
                   ),
                 ],

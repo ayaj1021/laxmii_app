@@ -143,10 +143,10 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                           : const SizedBox.shrink(),
                       const VerticalSpacing(19),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                              width: 150.w,
+                              width: MediaQuery.of(context).size.width * 0.8,
                               child: LaxmiiOutlineSendButton(
                                 backgroundColor: Colors.transparent,
                                 textColor: AppColors.primary212121,
@@ -158,17 +158,17 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                                 },
                                 title: 'Share',
                               )),
-                          SizedBox(
-                              width: 150.w,
-                              child: LaxmiiOutlineSendButton(
-                                backgroundColor: Colors.transparent,
-                                textColor: AppColors.primary212121,
-                                hasBorder: true,
-                                icon: 'assets/icons/edit.svg',
-                                borderColor: AppColors.primary212121,
-                                onTap: () {},
-                                title: 'Edit',
-                              ))
+                          // SizedBox(
+                          //     width: 150.w,
+                          //     child: LaxmiiOutlineSendButton(
+                          //       backgroundColor: Colors.transparent,
+                          //       textColor: AppColors.primary212121,
+                          //       hasBorder: true,
+                          //       icon: 'assets/icons/edit.svg',
+                          //       borderColor: AppColors.primary212121,
+                          //       onTap: () {},
+                          //       title: 'Edit',
+                          //     ))
                         ],
                       )
                     ],

@@ -9,6 +9,7 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/core/utils/select_date.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/create_expense_request.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/create_expenses_notifier.dart';
@@ -31,6 +32,7 @@ class CreateExpenseView extends ConsumerStatefulWidget {
 class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   final ValueNotifier<bool> _isAddSalesEnabled = ValueNotifier(false);
   late TextEditingController _amountController;
+  late TextEditingController _quantityController;
   late TextEditingController _supplierNameController;
 
   @override
@@ -42,6 +44,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
           .getAllInventory();
     });
     _amountController = TextEditingController()..addListener(_validateInput);
+    _quantityController = TextEditingController()..addListener(_validateInput);
     _supplierNameController = TextEditingController()
       ..addListener(_validateInput);
     super.initState();
@@ -147,32 +150,58 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                       setState(() {
                         _amountController.text = '';
                         _selectedValue = v;
+                        _quantityController.text = '';
                       });
                     }),
                 const VerticalSpacing(20),
                 _selectedValue == null
                     ? const SizedBox.shrink()
                     : _selectedValue == expenseType[0]
-                        ? CustomDropdown<Inventory>(
-                            value: _selectedExpense,
-                            hintText: 'Select Inventory',
-                            items: inventoryList?.map((item) {
-                              return DropdownMenuItem(
-                                value: item,
-                                child: Text(
-                                  item.productName ?? '',
-                                  style: context.textTheme.s12w400.copyWith(
-                                    color: AppColors.primary5E5E5E,
+                        ? Column(
+                            children: [
+                              CustomDropdown<Inventory>(
+                                  value: _selectedExpense,
+                                  hintText: 'Select Inventory',
+                                  items: inventoryList?.map((item) {
+                                    return DropdownMenuItem(
+                                      value: item,
+                                      child: Text(
+                                        item.productName ?? '',
+                                        style:
+                                            context.textTheme.s12w400.copyWith(
+                                          color: AppColors.primary5E5E5E,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (Inventory? v) {
+                                    setState(() {
+                                      _selectedExpense = v;
+                                      //  _amountController.text = "${v?.costPrice}";
+                                    });
+                                  }),
+                              if (_selectedValue == expenseType[0])
+                                GestureDetector(
+                                  onTap: () => context
+                                      .pushNamed(CreateInventory.routeName),
+                                  child: Column(
+                                    children: [
+                                      const VerticalSpacing(5),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          'Create new inventory',
+                                          style: context.textTheme.s12w400
+                                              .copyWith(
+                                            color: AppColors.primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (Inventory? v) {
-                              setState(() {
-                                _selectedExpense = v;
-                                _amountController.text = "${v?.costPrice}";
-                              });
-                            })
+                                )
+                            ],
+                          )
                         : CustomDropdown(
                             value: _selectedGeneralExpense,
                             hintText: 'Select Expense',
@@ -192,6 +221,13 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                 _selectedGeneralExpense = v;
                               });
                             }),
+                if (_selectedValue == expenseType[0]) const VerticalSpacing(20),
+                if (_selectedValue == expenseType[0])
+                  AddSalesTextField(
+                    hintText: 'Quantity',
+                    controller: _quantityController,
+                    keyboardType: TextInputType.number,
+                  ),
                 const VerticalSpacing(20),
                 AddSalesTextField(
                   hintText: 'Amount',
