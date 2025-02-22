@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
-import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/create_inventory_request.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/create_inventory_notifier.dart';
-import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -76,6 +75,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
       child: Scaffold(
         appBar: const LaxmiiAppBar(
           title: 'Create Product/Services',
+          centerTitle: true,
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -95,7 +95,21 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                 const VerticalSpacing(15),
                 UpdateProductsTextField(
                   product: _quantityController,
+                  keyboardType: TextInputType.number,
                   title: 'Quantity',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a value';
+                    }
+                    double? number = double.tryParse(value);
+                    if (number == null) {
+                      return 'Invalid number';
+                    }
+                    if (number < 0) {
+                      return 'Value cannot be less than 0';
+                    }
+                    return null;
+                  },
                 ),
                 const VerticalSpacing(15),
                 UpdateProductsTextField(
@@ -106,12 +120,14 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                 UpdateProductsTextField(
                   isMoney: true,
                   product: _sellingPriceController,
+                  keyboardType: TextInputType.number,
                   title: 'Selling Price',
                 ),
                 const VerticalSpacing(15),
                 UpdateProductsTextField(
                   isMoney: true,
                   product: _costPriceController,
+                  keyboardType: TextInputType.number,
                   title: 'Cost Price',
                 ),
                 const VerticalSpacing(98),
@@ -120,7 +136,10 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                     builder: (context, r, c) {
                       return LaxmiiOutlineSendButton(
                         isEnabled: r,
-                        onTap: () => _createInventory(),
+                        onTap: () {
+                          _validateInventoryInput();
+                          // _createInventory();
+                        },
                         title: 'Create Inventory',
                       );
                     }),
@@ -139,10 +158,11 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
             productName: _productNameController.text.trim(),
             description: _descriptionController.text.trim(),
             quantity: int.parse(_quantityController.text.trim()),
-            sellingPrice: int.parse(_sellingPriceController.text.trim()),
-            costPrice: int.parse(
+            sellingPrice: num.parse(_sellingPriceController.text.trim()),
+            costPrice: num.parse(
               _costPriceController.text.trim(),
             ),
+            supplierName: _supplierNameController.text.trim(),
           ),
           onError: (error) {
             context.showError(message: error);
@@ -150,68 +170,46 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.popAndPushNamed(InventoryView.routeName);
+            ref
+                .read(getAllInventoryNotifierProvider.notifier)
+                .getAllInventory();
+            // context.popUntil(ModalRoute.withName(InventoryView.routeName));
+            context.pop();
           },
         );
   }
-}
 
-class UpdateProductsTextField extends StatelessWidget {
-  const UpdateProductsTextField(
-      {super.key,
-      required this.title,
-      required this.product,
-      this.keyboardType,
-      this.isMoney});
-  final String title;
-  final bool? isMoney;
-  final TextEditingController product;
-  final TextInputType? keyboardType;
+  void _validateInventoryInput() {
+    String quantityText = _quantityController.text;
+    String sellingPriceText = _sellingPriceController.text;
+    String costPriceText = _costPriceController.text;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: context.textTheme.s12w400.copyWith(
-            color: AppColors.primary5E5E5E,
-          ),
-        ),
-        const VerticalSpacing(5),
-        Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                    width: 1.5,
-                    color: AppColors.primary5E5E5E.withValues(alpha: 0.5))),
-            child: TextField(
-              style: context.textTheme.s12w500.copyWith(
-                color: AppColors.primaryC4C4C4,
-              ),
-              keyboardType: keyboardType,
-              controller: product,
-              decoration: InputDecoration(
-                  prefix: isMoney == true
-                      ? Text(
-                          '\$',
-                          style: context.textTheme.s12w500.copyWith(
-                            color: AppColors.primaryC4C4C4,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  fillColor: Colors.transparent,
-                  border: InputBorder.none,
-                  filled: false,
-                  focusColor: Colors.transparent,
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  )),
-            ))
-      ],
-    );
+    try {
+      double quantityValue = double.parse(quantityText);
+      double sellingPriceValue = double.parse(sellingPriceText);
+      double costPriceValue = double.parse(costPriceText);
+
+      if (quantityValue < 1) {
+        context.showError(message: 'Quantity cannot be less than 1');
+
+        _quantityController.text = '1';
+      } else if (sellingPriceValue < 1) {
+        context.showError(message: 'Selling price cannot be less than 1');
+
+        _sellingPriceController.text = '1';
+      } else if (costPriceValue < 1) {
+        context.showError(message: 'Cost price cannot be less than 1');
+
+        _costPriceController.text = '1';
+      } else {
+        _createInventory();
+      }
+    } catch (e) {
+      context.showError(message: 'Please enter a valid number');
+
+      _quantityController.clear();
+      _sellingPriceController.clear();
+      _costPriceController.clear();
+    }
   }
 }

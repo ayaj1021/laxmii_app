@@ -24,7 +24,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
         const VerticalSpacing(15),
         Text(
           'Priority',
-          style: context.textTheme.s12w400.copyWith(
+          style: context.textTheme.s14w400.copyWith(
             color: AppColors.primary5E5E5E,
           ),
         ),
@@ -45,6 +45,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
               hint: Text(
                 'None',
                 style: context.textTheme.s12w300.copyWith(
+                  fontSize: 13,
                   color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
                 ),
               ),
@@ -56,7 +57,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
                   value: item,
                   child: Text(
                     '${item}ly',
-                    style: context.textTheme.s12w400.copyWith(
+                    style: context.textTheme.s14w400.copyWith(
                       color: AppColors.primary5E5E5E,
                     ),
                   ),

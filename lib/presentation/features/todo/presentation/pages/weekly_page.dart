@@ -43,7 +43,7 @@ class _WeeklyPageState extends ConsumerState<WeeklyPage> {
         tasksList == null
             ? const SizedBox.shrink()
             : tasksList.isEmpty
-                ? EmptyPage(
+                ? const EmptyPage(
                     emptyMessage: 'No Tasks Yet',
                   )
                 : Expanded(

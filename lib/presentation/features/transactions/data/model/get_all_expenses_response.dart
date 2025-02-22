@@ -37,7 +37,7 @@ class Expense {
   final String? id;
   final String? user;
   final String? expenseType;
-  final int? amount;
+  final num? amount;
   final String? supplierName;
   final DateTime? createdAt;
   final int? v;

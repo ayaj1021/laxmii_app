@@ -137,7 +137,15 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                     builder: (context, r, c) {
                       return LaxmiiSendButton(
                           isEnabled: r && _isChecked == true,
-                          onTap: () => _signUp(),
+                          onTap: () {
+                            if (_passwordController.text.length < 9) {
+                              context.showError(
+                                  message:
+                                      'Password must be at least 9 characters long');
+                            } else {
+                              _signUp();
+                            }
+                          },
                           title: 'Sign Up');
                     }),
                 const VerticalSpacing(20),

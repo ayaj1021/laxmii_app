@@ -53,18 +53,18 @@ class _TodoViewState extends ConsumerState<TodoView>
     final isUpdateLoading = ref
         .watch(updateTaskNotifier.select((v) => v.updateTaskState.isLoading));
 
-    return PageLoader(
-      isLoading: isUpdateLoading,
-      child: PageLoader(
-        isLoading: isDeleteLoading,
+    return Scaffold(
+      appBar: const LaxmiiAppBar(
+        centerTitle: true,
+        title: 'My Task',
+      ),
+      body: PageLoader(
+        isLoading: isUpdateLoading,
         child: PageLoader(
-          isLoading: isLoading,
-          child: Scaffold(
-            appBar: const LaxmiiAppBar(
-              centerTitle: true,
-              title: 'My Task',
-            ),
-            body: SafeArea(
+          isLoading: isDeleteLoading,
+          child: PageLoader(
+            isLoading: isLoading,
+            child: SafeArea(
                 child: Column(
               children: [
                 Text(

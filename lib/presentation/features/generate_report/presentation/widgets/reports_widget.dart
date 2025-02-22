@@ -27,13 +27,13 @@ class ReportsWidget extends ConsumerWidget {
               style: context.textTheme.s14w400.copyWith(
                   color: AppColors.white, fontWeight: FontWeight.w300),
             ),
-            GestureDetector(
-              onTap: onTap,
-              child: Icon(
-                Icons.star,
-                color: color,
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: onTap,
+            //   child: Icon(
+            //     Icons.star,
+            //     color: color,
+            //   ),
+            // ),
           ],
         )
       ],

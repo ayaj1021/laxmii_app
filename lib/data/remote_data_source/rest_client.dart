@@ -4,6 +4,15 @@ import 'package:laxmii_app/core/config/env/base_env.dart';
 import 'package:laxmii_app/core/config/env/prod_env.dart';
 import 'package:laxmii_app/core/config/interceptors/header_interceptor.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_request.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_response.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_request.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_response.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/start_new_chat_response.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_request.dart';
@@ -35,8 +44,20 @@ import 'package:laxmii_app/presentation/features/login/data/model/get_access_tok
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_response.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/delete_quote_response.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/get_all_quotes_response.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/get_quote_no_response.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/get_single_quote_response.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_request.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_response.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/calculate_tax_request.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/calculate_tax_response.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/get_total_profit_request.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/get_total_profit_response.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/optimize_tax_request.dart';
+import 'package:laxmii_app/presentation/features/tax/data/model/optimize_tax_response.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/create_task_response.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/create_tasks_request.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/delete_task_response.dart';
@@ -98,6 +119,14 @@ abstract class RestClient {
     @Body() CreateInventoryRequest createInventoryRequest,
   );
 
+  @GET('/api/chat/ai_response')
+  Future<ChatAiResponse> chatAi(
+    @Body() ChatAiRequest chatAiRequest,
+  );
+
+  @POST('/api/chat/startNewChat')
+  Future<StartNewChatResponse> startNewChat();
+
   @POST('/api/invoices/create')
   Future<CreateInvoiceResponse> createInvoice(
     @Body() CreateInvoiceRequest createInvoiceRequest,
@@ -116,6 +145,11 @@ abstract class RestClient {
   @POST('/api/tasks/create')
   Future<CreateTaskResponse> createTasks(
     @Body() CreateTaskRequest createTasksRequest,
+  );
+
+  @POST('/api/quote/create')
+  Future<CreateQuotesResponse> createQuotes(
+    @Body() CreateQuotesRequest createQuotesRequest,
   );
 
   @POST('/api/favourites/add/')
@@ -162,6 +196,11 @@ abstract class RestClient {
     @Path() required String inventoryId,
   });
 
+  @DELETE('/api/quote/{quoteId}')
+  Future<DeleteQuoteResponse> deleteQuote({
+    @Path() required String quoteId,
+  });
+
   @DELETE('/api/tasks/delete/{taskId}')
   Future<DeleteTaskResponse> deleteTask({
     @Path() required String taskId,
@@ -170,9 +209,12 @@ abstract class RestClient {
   @GET('/api/inventory/{inventoryId}')
   Future<GetSingleInventoryResponse> getSingleInventory({
     @Path() required String inventoryId,
-  }
-      // @Queries() Map<String, dynamic> queries,
-      );
+  });
+
+  @GET('/api/quote/{quoteId}')
+  Future<GetSingleQuoteResponse> getSingleQuote({
+    @Path() required String quoteId,
+  });
 
   @GET('/api/inventory')
   Future<GetInventoryResponse> getAllInventory(
@@ -182,9 +224,32 @@ abstract class RestClient {
   @GET('/api/sales')
   Future<GetAllSalesResponse> getAllSales();
 
+  @GET('/api/get-quote-no')
+  Future<GetQuoteNoResponse> getQuoteNo();
+
   @GET('/api/reports')
   Future<GetSingleReportResponse> getSingleReport(
     @Body() GetSingleReportRequest request,
+  );
+
+  @GET('/api/chat/getChatHistory')
+  Future<GetChatHistoryResponse> getChatHistory(
+    @Body() GetChatHistoryRequest request,
+  );
+
+  @GET('/api/tax/calculate')
+  Future<CalculateTaxResponse> calculateTax(
+    @Body() CalculateTaxRequest request,
+  );
+
+  @GET('/api/tax/get-totals')
+  Future<GetTotalProfitResponse> getTotalTaxProfit(
+    @Body() GetTotalProfitRequest request,
+  );
+
+  @GET('/api/tax/optimize')
+  Future<OptimizeTaxResponse> optimizeTax(
+    @Body() OptimizeTaxRequest request,
   );
 
   @GET('/api/reports/all')
@@ -195,6 +260,9 @@ abstract class RestClient {
 
   @GET('/api/tasks')
   Future<GetAllTasksResponse> getAllTasks();
+
+  @GET('/api/quote')
+  Future<GetAllQuotesReponse> getAllQuotes();
 
   @GET('/api/transactions')
   Future<GetAllTransactionsResponse> getAllTransactions();
@@ -207,13 +275,24 @@ abstract class RestClient {
 
   @GET('/api/get-invoice-no')
   Future<GetInvoiceNumberResponse> getInvoiceNumber();
+
+  @GET('/api/insights')
+  Future<AiInsightsResponse> getAiInsights(
+    @Body() AiInsightsRequest request,
+  );
+
+  @GET('/api/cashflow')
+  Future<GetCashFlowResponse> getCashFlow(
+    @Body() GetCashFlowRequest request,
+  );
 }
 
 ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(
   (ref, env) {
     final dio = Dio();
     // dio.options.baseUrl = 'http://10.0.2.2';
-    dio.options.baseUrl = 'http://localhost:3000';
+    dio.options.baseUrl = 'https://laxmii.onrender.com';
+    // dio.options.baseUrl = 'http://localhost:3000';
     // dio.options.baseUrl = 'https://abakon.onrender.com/api/users';
 
     dio.options.headers = {

@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:laxmii_app/core/utils/strings.dart';
-
 
 part 'base_response.g.dart';
 
@@ -31,7 +28,7 @@ class BaseResponse<T> {
     );
   }
   final T? data;
- // @JsonKey(name: 'status')
+  // @JsonKey(name: 'status')
   final bool status;
   final String? message;
 

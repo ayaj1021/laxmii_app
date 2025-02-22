@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/generate_report/data/model/add_report_to_favorite_request.dart';
 import 'package:laxmii_app/presentation/features/generate_report/data/model/delete_report_favorite_request.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/notifier/add_report_to_favorite_notifier.dart';
@@ -12,6 +11,7 @@ import 'package:laxmii_app/presentation/features/generate_report/presentation/no
 import 'package:laxmii_app/presentation/features/generate_report/presentation/notifier/get_favorite_reports_notifier.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/sales_report_detail.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/inventory_report_detail_report.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/reports_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
@@ -45,15 +45,13 @@ class _AllReportsTabState extends ConsumerState<AllReportsTab> {
     final favoriteReport = ref.watch(getFavoriteReportsNotifierProvider
         .select((v) => v.getAllFavoriteReports.data?.favServices ?? []));
 
-    final isAdded =
-        ref.watch(addReportsToFavoriteNotifier.select((v) => v.isAdded));
-
-    final isFavoriteLoading = ref.watch(addReportsToFavoriteNotifier
-        .select((v) => v.addReportToFavoriteState.isLoading));
+    final isLoading = ref.watch(
+        getAllReportsNotifierProvider.select((v) => v.getAllReports.isLoading));
 
     return PageLoader(
-      isLoading: isFavoriteLoading,
+      isLoading: isLoading,
       child: SizedBox(
+        height: MediaQuery.of(context).size.height,
         child: reportsList == null
             ? const SizedBox.shrink()
             : ListView.builder(
@@ -65,11 +63,15 @@ class _AllReportsTabState extends ConsumerState<AllReportsTab> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => SalesReportDetail(
-                            reportType: '$data',
-                          ),
-                        ),
+                        MaterialPageRoute(builder: (_) {
+                          return data == 'Inventory'
+                              ? InventoryReportDetailReport(
+                                  reportType: '$data',
+                                )
+                              : SalesReportDetail(
+                                  reportType: '$data',
+                                );
+                        }),
                       );
                     },
                     child: Column(
@@ -84,7 +86,7 @@ class _AllReportsTabState extends ConsumerState<AllReportsTab> {
                                 ? _removeFavorite(service: '$data')
                                 : _addToFavorite(service: '$data');
                           },
-                          isFavorite: index == index ? isAdded : false,
+                          isFavorite: false,
                         ),
                         const VerticalSpacing(10),
                         if (index < (count ?? 0) - 1)

@@ -7,6 +7,7 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/expense_tax_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/laxmi_ai_tab_widget.dart';
@@ -87,6 +88,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
         .watch(getAllTasksNotifierProvider
             .select((v) => v.getAllTasks.data?.tasks?.reversed))
         ?.toList();
+
+    final taskListLoading = ref.watch(
+        getAllTasksNotifierProvider.select((v) => v.loadState.isLoading));
     final isDeleteLoading = ref
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
     final isUpdateLoading = ref
@@ -146,10 +150,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               color: AppColors.primary5E5E5E,
                             ),
                           ),
-                          Text(
-                            'See all',
-                            style: context.textTheme.s12w500.copyWith(
-                              color: AppColors.primary3B3522,
+                          GestureDetector(
+                            onTap: () {
+                              context.pushNamed(AiInsightsView.routeName);
+                            },
+                            child: Text(
+                              'See all',
+                              style: context.textTheme.s12w500.copyWith(
+                                color: AppColors.primary3B3522,
+                              ),
                             ),
                           ),
                         ]),
@@ -225,34 +234,37 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     SizedBox(
                       height: 400.h,
                       // height: MediaQuery.of(context).size.height,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: (tasksList?.length ?? 0) < 2
-                              ? tasksList?.length
-                              : 2,
-                          itemBuilder: (_, index) {
-                            final data = tasksList?[index];
-                            return Column(
-                              children: [
-                                TodoListWidget(
-                                  time: '${data?.time}',
-                                  todoTask: '${data?.title}',
-                                  taskPriority: '${data?.priority} Priority',
-                                  taskPriorityColor: data?.priority == 'Low'
-                                      ? AppColors.primaryF94D4D
-                                      : AppColors.primary5E5E5E,
-                                  onDeleteTapped: () =>
-                                      deleteTask(taskId: '${data?.id}'),
-                                  isCompleted: data?.completed,
-                                  onMarkCompletedTapped: () => updateTask(
-                                      taskId: '${data?.id}',
-                                      priority: '${data?.priority}',
-                                      completed: data?.completed ?? false),
-                                ),
-                                const VerticalSpacing(3)
-                              ],
-                            );
-                          }),
+                      child: taskListLoading
+                          ? const SizedBox.shrink()
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: (tasksList?.length ?? 0) < 2
+                                  ? tasksList?.length
+                                  : 2,
+                              itemBuilder: (_, index) {
+                                final data = tasksList?[index];
+                                return Column(
+                                  children: [
+                                    TodoListWidget(
+                                      time: '${data?.time}',
+                                      todoTask: '${data?.title}',
+                                      taskPriority:
+                                          '${data?.priority} Priority',
+                                      taskPriorityColor: data?.priority == 'Low'
+                                          ? AppColors.primaryF94D4D
+                                          : AppColors.primary5E5E5E,
+                                      onDeleteTapped: () =>
+                                          deleteTask(taskId: '${data?.id}'),
+                                      isCompleted: data?.completed,
+                                      onMarkCompletedTapped: () => updateTask(
+                                          taskId: '${data?.id}',
+                                          priority: '${data?.priority}',
+                                          completed: data?.completed ?? false),
+                                    ),
+                                    const VerticalSpacing(3)
+                                  ],
+                                );
+                              }),
                     )
                   ],
                 ),

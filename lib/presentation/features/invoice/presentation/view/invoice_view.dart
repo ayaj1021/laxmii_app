@@ -62,6 +62,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Invoice',
+        centerTitle: true,
       ),
       body: SafeArea(
           child: Padding(

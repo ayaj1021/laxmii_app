@@ -48,6 +48,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
       child: Scaffold(
         appBar: const LaxmiiAppBar(
           title: 'Product/Services',
+          centerTitle: true,
         ),
         body: SafeArea(
             child: Padding(
@@ -91,21 +92,26 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                   children: [
                                     GestureDetector(
                                       onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) => UpdateInventory(
-                                                    productName:
-                                                        '${data?.productName}',
-                                                    productDescription:
-                                                        '${data?.description}',
-                                                    sellingPrice:
-                                                        '${data?.sellingPrice}',
-                                                    costPrice:
-                                                        '${data?.costPrice}',
-                                                    itemQuantity:
-                                                        '${data?.quantity}',
-                                                    itemId: '${data?.id}',
-                                                  ))),
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => UpdateInventory(
+                                            productName: '${data?.productName}',
+                                            productDescription:
+                                                '${data?.description}',
+                                            sellingPrice:
+                                                '${data?.sellingPrice}',
+                                            costPrice: '${data?.costPrice}',
+                                            itemQuantity: '${data?.quantity}',
+                                            itemId: '${data?.id}',
+                                          ),
+                                        ),
+                                      ).then((_) {
+                                        ref
+                                            .read(
+                                                getAllInventoryNotifierProvider
+                                                    .notifier)
+                                            .getAllInventory();
+                                      }),
                                       child: ProductServicesWidget(
                                         itemName: '${data?.productName}',
                                         itemType: '${data?.description}',
@@ -113,7 +119,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                         itemQuantity: '(${data?.quantity})',
                                       ),
                                     ),
-                                    const VerticalSpacing(5)
+                                    const VerticalSpacing(10)
                                   ],
                                 );
                               }),

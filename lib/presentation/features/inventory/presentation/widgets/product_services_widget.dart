@@ -30,13 +30,13 @@ class ProductServicesWidget extends StatelessWidget {
             children: [
               Text(
                 itemName,
-                style: context.textTheme.s14w500.copyWith(
+                style: context.textTheme.s18w500.copyWith(
                   color: AppColors.primaryC4C4C4,
                 ),
               ),
               Text(
                 itemType,
-                style: context.textTheme.s12w300.copyWith(
+                style: context.textTheme.s14w400.copyWith(
                   color: AppColors.primary5E5E5E,
                 ),
               )

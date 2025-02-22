@@ -5,12 +5,10 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/create_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/share_invoice_details.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -24,11 +22,15 @@ class InvoiceDetailsView extends ConsumerStatefulWidget {
       required this.issueDate,
       required this.dueDate,
       required this.invoiceNumber,
+      required this.totalAmount,
+      required this.items,
       super.key});
   final String customerName;
   final String issueDate;
   final String dueDate;
   final String invoiceNumber;
+  final double totalAmount;
+  final List<Item> items;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -42,8 +44,6 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
         createInvoiceNotifier.select((v) => v.createInvoiceState.isLoading));
-    final formattedDueDate = formatDateTimeFromString(widget.dueDate);
-    final formattedIssueDate = formatDateTimeFromString(widget.issueDate);
 
     return PageLoader(
       isLoading: isLoading,
@@ -102,7 +102,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                           ),
                           const HorizontalSpacing(3),
                           Text(
-                            formattedIssueDate,
+                            widget.issueDate,
                             style: context.textTheme.s12w500.copyWith(
                               color: AppColors.black,
                             ),
@@ -120,7 +120,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                           ),
                           const HorizontalSpacing(3),
                           Text(
-                            formattedDueDate,
+                            widget.dueDate,
                             style: context.textTheme.s12w500.copyWith(
                               color: AppColors.black,
                             ),
@@ -129,12 +129,14 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                       ),
                       const VerticalSpacing(450),
                       LaxmiiSendButton(
-                        onTap: () => shareInvoice(
-                            context: context,
-                            screenshotController: screenshotController,
-                            invoiceNumber: widget.invoiceNumber,
-                            dueDate: formattedDueDate,
-                            issueDate: formattedIssueDate),
+                        onTap: () => createInvoice(),
+
+                        // shareInvoice(
+                        //     context: context,
+                        //     screenshotController: screenshotController,
+                        //     invoiceNumber: widget.invoiceNumber,
+                        //     dueDate: widget.dueDate,
+                        //     issueDate: widget.issueDate),
                         title: 'Save',
                         textColor: AppColors.black,
                       )
@@ -157,7 +159,8 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
             issueDate: widget.issueDate.toString(),
             dueDate: widget.dueDate.toString(),
             invoiceNumber: widget.invoiceNumber,
-            items: [],
+            items: widget.items,
+            totalAmount: widget.totalAmount,
           ),
           onError: (error) {
             context.showError(message: error);

@@ -4,6 +4,7 @@ class CreateInvoiceRequest {
   final String issueDate;
   final String dueDate;
   final List<Item> items;
+  final double totalAmount;
 
   CreateInvoiceRequest({
     required this.customerName,
@@ -11,6 +12,7 @@ class CreateInvoiceRequest {
     required this.issueDate,
     required this.dueDate,
     required this.items,
+    required this.totalAmount,
   });
 
   CreateInvoiceRequest copyWith({
@@ -19,6 +21,7 @@ class CreateInvoiceRequest {
     String? issueDate,
     String? dueDate,
     List<Item>? items,
+    double? totalAmount,
   }) =>
       CreateInvoiceRequest(
         customerName: customerName ?? this.customerName,
@@ -26,6 +29,7 @@ class CreateInvoiceRequest {
         issueDate: issueDate ?? this.issueDate,
         dueDate: dueDate ?? this.dueDate,
         items: items ?? this.items,
+        totalAmount: totalAmount ?? this.totalAmount,
       );
 
   factory CreateInvoiceRequest.fromJson(Map<String, dynamic> json) =>
@@ -35,6 +39,7 @@ class CreateInvoiceRequest {
         issueDate: json["issueDate"],
         dueDate: json["dueDate"],
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+        totalAmount: json["totalAmount"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,13 +48,14 @@ class CreateInvoiceRequest {
         "issueDate": issueDate,
         "dueDate": dueDate,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "totalAmount": totalAmount,
       };
 }
 
 class Item {
   final String description;
   final int quantity;
-  final int price;
+  final double price;
 
   Item({
     required this.description,
@@ -60,7 +66,7 @@ class Item {
   Item copyWith({
     String? description,
     int? quantity,
-    int? price,
+    double? price,
   }) =>
       Item(
         description: description ?? this.description,

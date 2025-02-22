@@ -40,6 +40,7 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Cashflow',
+        centerTitle: true,
       ),
       body: SafeArea(
           child: Padding(

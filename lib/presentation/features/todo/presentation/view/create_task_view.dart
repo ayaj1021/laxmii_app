@@ -5,7 +5,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
-import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/create_tasks_request.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/create_tasks_notifier.dart';

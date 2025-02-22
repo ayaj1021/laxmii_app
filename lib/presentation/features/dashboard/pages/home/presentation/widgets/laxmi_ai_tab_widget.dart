@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/ai_assistant.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class LaxmiAiTabWidget extends StatelessWidget {
@@ -50,13 +50,20 @@ class LaxmiAiTabWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-              width: 92.w,
-              child: LaxmiiSendButton(
-                onTap: () {},
-                title: 'Start Chat',
-                textColor: AppColors.black,
-              ))
+          GestureDetector(
+            onTap: () => context.pushNamed(AiAssistant.routeName),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+              decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Text(
+                'Start chat',
+                style: context.textTheme.s12w400
+                    .copyWith(color: AppColors.primary212121),
+              ),
+            ),
+          )
         ],
       ),
     );

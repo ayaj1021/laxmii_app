@@ -105,6 +105,7 @@ class _AddSalesViewState extends ConsumerState<AddSalesView> {
       child: Scaffold(
         appBar: const LaxmiiAppBar(
           title: 'New Sale',
+          centerTitle: true,
         ),
         body: SafeArea(
             child: SingleChildScrollView(

@@ -14,14 +14,27 @@ import 'package:intl/intl.dart';
 //   }
 // }
 
-String formatDateTimeFromString(String? dateTimeString) {
-  if (dateTimeString == null || dateTimeString.isEmpty) {
+String formatDateTimeFromString(String dateTimeString) {
+  if (dateTimeString.isEmpty) {
     return 'No date';
   }
 
   try {
     final DateTime parsedDate = DateTime.parse(dateTimeString);
     return DateFormat('MMM dd').format(parsedDate);
+  } catch (e) {
+    return 'Invalid date';
+  }
+}
+
+String formatDateTimeYear(String dateTimeString) {
+  if (dateTimeString.isEmpty) {
+    return 'No date';
+  }
+
+  try {
+    final DateTime parsedDate = DateTime.parse(dateTimeString);
+    return DateFormat('MMM dd, yyyy').format(parsedDate);
   } catch (e) {
     return 'Invalid date';
   }

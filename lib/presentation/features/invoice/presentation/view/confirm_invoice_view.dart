@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
@@ -48,13 +47,14 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
       child: Scaffold(
         appBar: const LaxmiiAppBar(
           title: 'Details',
+          centerTitle: true,
         ),
         body: SafeArea(
             child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                height: 650.h,
+                height: MediaQuery.of(context).size.height * 0.98,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 21, vertical: 24),
                 decoration: const BoxDecoration(
@@ -146,7 +146,7 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.8,
+                              width: MediaQuery.of(context).size.width * 0.87,
                               child: LaxmiiOutlineSendButton(
                                 backgroundColor: Colors.transparent,
                                 textColor: AppColors.primary212121,
@@ -158,17 +158,6 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                                 },
                                 title: 'Share',
                               )),
-                          // SizedBox(
-                          //     width: 150.w,
-                          //     child: LaxmiiOutlineSendButton(
-                          //       backgroundColor: Colors.transparent,
-                          //       textColor: AppColors.primary212121,
-                          //       hasBorder: true,
-                          //       icon: 'assets/icons/edit.svg',
-                          //       borderColor: AppColors.primary212121,
-                          //       onTap: () {},
-                          //       title: 'Edit',
-                          //     ))
                         ],
                       )
                     ],

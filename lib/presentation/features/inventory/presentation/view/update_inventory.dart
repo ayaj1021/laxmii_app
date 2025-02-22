@@ -6,10 +6,11 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/update_inventory_request.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/delete_inventory_notifier.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_single_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/update_inventory_notifier.dart';
-import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -119,7 +120,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                     product: _costPriceController,
                     title: 'Cost Price',
                   ),
-                  const VerticalSpacing(98),
+                  const VerticalSpacing(88),
                   LaxmiiOutlineSendButton(
                       backgroundColor: Colors.transparent,
                       hasBorder: true,
@@ -132,11 +133,12 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       textColor: AppColors.red,
                       onTap: () => _deleteInventory(inventoryId: widget.itemId),
                       title: 'Delete'),
-                  LaxmiiOutlineSendButton(
-                      backgroundColor: Colors.transparent,
-                      textColor: AppColors.primary5E5E5E,
-                      onTap: () {},
-                      title: 'Cancel'),
+                  const VerticalSpacing(15),
+                  // LaxmiiOutlineSendButton(
+                  //     backgroundColor: Colors.transparent,
+                  //     textColor: AppColors.primary5E5E5E,
+                  //     onTap: () {},
+                  //     title: 'Cancel'),
                 ],
               ),
             ),
@@ -156,8 +158,10 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.popAndPushNamed(InventoryView.routeName);
-            // context.pushReplacementNamed(Inventory.routeName);
+            ref
+                .read(getAllInventoryNotifierProvider.notifier)
+                .getAllInventory();
+            context.popUntil(ModalRoute.withName(InventoryView.routeName));
           },
         );
   }
@@ -179,8 +183,10 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.popAndPushNamed(InventoryView.routeName);
-            // context.pushReplacementNamed(Inventory.routeName);
+            ref
+                .read(getAllInventoryNotifierProvider.notifier)
+                .getAllInventory();
+            context.popUntil(ModalRoute.withName(InventoryView.routeName));
           },
         );
   }

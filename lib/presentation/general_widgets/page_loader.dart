@@ -24,9 +24,10 @@ class _AppLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: LoadingAnimationWidget.flickr(
-        leftDotColor: AppColors.primaryColor,
-        rightDotColor: Colors.blue,
+      child: LoadingAnimationWidget.discreteCircle(
+        color: AppColors.primaryColor,
+        // leftDotColor: AppColors.primaryColor,
+        // rightDotColor: Colors.blue,
         size: 50,
       ),
     );

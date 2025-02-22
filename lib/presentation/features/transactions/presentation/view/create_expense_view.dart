@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
-import 'package:laxmii_app/core/utils/select_date.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
@@ -67,24 +65,24 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
     super.dispose();
   }
 
-  DateTime? _selectedDate;
+  // DateTime? _selectedDate;
 
-  String _formatDate(DateTime date) {
-    return DateFormat('MMM d, yyyy').format(date);
-  }
+  // String _formatDate(DateTime date) {
+  //   return DateFormat('MMM d, yyyy').format(date);
+  // }
 
-  void _pickDate() async {
-    final DateTime? picked = await selectDate(
-      context: context,
-      selectedDate: _selectedDate,
-    );
+  // void _pickDate() async {
+  //   final DateTime? picked = await selectDate(
+  //     context: context,
+  //     selectedDate: _selectedDate,
+  //   );
 
-    if (picked != null) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
+  //   if (picked != null) {
+  //     setState(() {
+  //       _selectedDate = picked;
+  //     });
+  //   }
+  // }
 
   final List<String> expensesTypeList = const {
     'Rent',
@@ -117,6 +115,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
       child: Scaffold(
         appBar: const LaxmiiAppBar(
           title: 'New Expense',
+          centerTitle: true,
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -240,30 +239,30 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   hintText: 'Supplier Name',
                   controller: _supplierNameController,
                 ),
-                const VerticalSpacing(20),
-                GestureDetector(
-                  onTap: () => _pickDate(),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        width: 1.5,
-                        color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
-                      ),
-                    ),
-                    child: Text(
-                      _selectedDate == null
-                          ? 'Select Date'
-                          : _formatDate(_selectedDate!),
-                      style: context.textTheme.s12w400.copyWith(
-                        color: AppColors.primary5E5E5E,
-                      ),
-                    ),
-                  ),
-                ),
+                // const VerticalSpacing(20),
+                // GestureDetector(
+                //   onTap: () => _pickDate(),
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width,
+                //     padding: const EdgeInsets.symmetric(
+                //         horizontal: 10, vertical: 15),
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(8),
+                //       border: Border.all(
+                //         width: 1.5,
+                //         color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
+                //       ),
+                //     ),
+                //     child: Text(
+                //       _selectedDate == null
+                //           ? 'Select Date'
+                //           : _formatDate(_selectedDate!),
+                //       style: context.textTheme.s12w400.copyWith(
+                //         color: AppColors.primary5E5E5E,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const VerticalSpacing(24),
                 ValueListenableBuilder(
                     valueListenable: _isAddSalesEnabled,
@@ -291,8 +290,14 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(createExpensesNotifier.notifier).createExpenses(
           data: CreateExpenseRequest(
+            expenseType: '${_selectedValue?.toLowerCase()}',
+            expense: _selectedValue == expenseType[0]
+                ? '${_selectedExpense?.productName}'
+                : '$_selectedGeneralExpense',
             supplierName: _supplierNameController.text.trim(),
-            expenseType: _selectedValue.toString(),
+            quantity: _selectedValue == expenseType[0]
+                ? int.parse(_quantityController.text.trim())
+                : 0,
             amount: _amountController.text.trim(),
           ),
           onError: (error) {
