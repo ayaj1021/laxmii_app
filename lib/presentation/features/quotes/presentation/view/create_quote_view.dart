@@ -180,8 +180,7 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                         ? context.showError(message: 'Items cannot be empty')
                         : generateQuotePdf(quotesNo: '$quotesNo');
 
-                    // createQuote(
-                    //     quotesNo: quotesNo ?? '', productItems: items);
+                    createQuote(quotesNo: quotesNo ?? '', productItems: items);
                   },
                   title: 'Save',
                 )

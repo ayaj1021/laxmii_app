@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/add_product_notifier.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_invoice_by_name_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -61,6 +64,8 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
         .watch(getAllInventoryNotifierProvider
             .select((v) => v.getAllInventory.data?.inventory ?? []))
         .toList();
+    final invoiceQuantity = ref.watch(getInvoiceByNameNotifierProvider
+        .select((v) => v.getInvoiceByName.data?.inventoryItem?.quantity));
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Add invoice',
@@ -108,6 +113,8 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                   onChanged: (Inventory? newValue) {
                     setState(() {
                       _selectedProduct = newValue;
+                      getInvoiceDetails(
+                          productName: '${newValue?.productName}');
                     });
                   },
                 ),
@@ -115,7 +122,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
               const VerticalSpacing(15),
               UpdateProductsTextField(
                 product: _quantityController,
-                title: 'Quantity',
+                title: 'Quantity  ${invoiceQuantity ?? ''}',
               ),
               const VerticalSpacing(15),
               UpdateProductsTextField(
@@ -130,15 +137,22 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                     return LaxmiiOutlineSendButton(
                       isEnabled: r,
                       onTap: () {
-                        final item = ProductItems(
-                          itemName: '${_selectedProduct?.productName}',
-                          itemPrice:
-                              double.parse(_sellingPriceController.text.trim()),
-                          itemQuantity:
-                              int.parse(_quantityController.text.trim()),
-                        );
+                        if (int.parse(_quantityController.text) >
+                            (invoiceQuantity?.toInt() ?? 0)) {
+                          context.showError(
+                              message:
+                                  'Quantity cannot be higher than existing quantity');
+                        } else {
+                          final item = ProductItems(
+                            itemName: '${_selectedProduct?.productName}',
+                            itemPrice: double.parse(
+                                _sellingPriceController.text.trim()),
+                            itemQuantity:
+                                int.parse(_quantityController.text.trim()),
+                          );
 
-                        Navigator.pop(context, item);
+                          Navigator.pop(context, item);
+                        }
                       },
                       title: 'Add Product',
                     );
@@ -148,5 +162,12 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
         ),
       )),
     );
+  }
+
+  void getInvoiceDetails({required String productName}) async {
+    await ref.read(getAccessTokenNotifier.notifier).accessToken();
+    ref.read(getInvoiceByNameNotifierProvider.notifier).getInvoiceByName(
+          request: GetInvoiceByNameRequest(productName: productName),
+        );
   }
 }

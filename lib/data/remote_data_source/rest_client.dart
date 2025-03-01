@@ -37,6 +37,8 @@ import 'package:laxmii_app/presentation/features/inventory/data/model/update_inv
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_request.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_number_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_response.dart';
@@ -284,6 +286,11 @@ abstract class RestClient {
   @GET('/api/cashflow')
   Future<GetCashFlowResponse> getCashFlow(
     @Body() GetCashFlowRequest request,
+  );
+
+  @GET('/api/inventory/product/detail')
+  Future<GetInvoiceByNameResponse> getInvoiceByName(
+    @Body() GetInvoiceByNameRequest request,
   );
 }
 
