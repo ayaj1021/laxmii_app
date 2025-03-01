@@ -36,6 +36,8 @@ dependencies:
   screenshot: ^3.0.0
   smooth_page_indicator: ^1.2.0+3
   fl_chart: ^0.70.2
+  pdf: ^3.11.3
+  cross_file: ^0.3.4+2
   # google_maps_flutter: ^2.10.0
 
 dev_dependencies:

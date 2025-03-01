@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/general_widgets/abakon_app_loader.dart';
+import 'package:laxmii_app/presentation/general_widgets/laxmii_app_loader.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PageLoader extends StatelessWidget {

@@ -30,18 +30,18 @@ class BottomSection extends StatelessWidget {
                     color: AppColors.primaryC4C4C4,
                   ),
                 ),
-                Text(
-                  totalAmount,
-                  style: context.textTheme.s11w600.copyWith(
-                    color: AppColors.primaryC4C4C4,
-                  ),
-                ),
-                Text(
-                  totalAmount,
-                  style: context.textTheme.s11w600.copyWith(
-                    color: AppColors.primaryC4C4C4,
-                  ),
-                ),
+                // Text(
+                //   totalAmount,
+                //   style: context.textTheme.s11w600.copyWith(
+                //     color: AppColors.primaryC4C4C4,
+                //   ),
+                // ),
+                // Text(
+                //   totalAmount,
+                //   style: context.textTheme.s11w600.copyWith(
+                //     color: AppColors.primaryC4C4C4,
+                //   ),
+                // ),
                 Text(
                   totalAmount,
                   style: context.textTheme.s11w600.copyWith(

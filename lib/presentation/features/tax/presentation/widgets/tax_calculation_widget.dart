@@ -26,12 +26,16 @@ class TaxCalculationWidget extends StatelessWidget {
                 color: AppColors.primary5E5E5E,
               ),
         ),
-        Text(
-          subTitle,
-          style: subTitleStyle ??
-              context.textTheme.s14w400.copyWith(
-                color: AppColors.primary5E5E5E,
-              ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: Text(
+            subTitle,
+            style: subTitleStyle ??
+                context.textTheme.s14w400.copyWith(
+                  color: AppColors.primary5E5E5E,
+                ),
+            overflow: TextOverflow.ellipsis,
+          ),
         )
       ],
     );

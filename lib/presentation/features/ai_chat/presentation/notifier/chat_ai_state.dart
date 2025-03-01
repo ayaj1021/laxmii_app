@@ -13,7 +13,7 @@ class ChatAiState {
 
   factory ChatAiState.initial() {
     return ChatAiState(
-      loadState: LoadState.loading,
+      loadState: LoadState.idle,
       chatAiResponse: AsyncResponse.loading(),
     );
   }

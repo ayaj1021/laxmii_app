@@ -11,7 +11,7 @@ class InventoryTableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           Table(
@@ -79,16 +79,14 @@ class InventoryTableSection extends StatelessWidget {
         children: cells
             .map((cell) => Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                  child: Center(
-                    child: Text(
-                      cell,
-                      style: context.textTheme.s12w400.copyWith(
-                        fontSize: 13,
-                        color: isHeader
-                            ? AppColors.primaryC4C4C4
-                            : AppColors.primary101010,
-                      ),
+                      const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+                  child: Text(
+                    cell,
+                    style: context.textTheme.s12w400.copyWith(
+                      fontSize: 13,
+                      color: isHeader
+                          ? AppColors.primaryC4C4C4
+                          : AppColors.primary101010,
                     ),
                   ),
                 ))

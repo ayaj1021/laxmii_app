@@ -57,7 +57,7 @@ class CreateQuotesRequest {
 class Item {
   final String description;
   final int quantity;
-  final int price;
+  final num price;
 
   Item({
     required this.description,
@@ -92,7 +92,7 @@ class Item {
 class ProductItem {
   final String itemName;
   final int itemQuantity;
-  final int itemPrice;
+  final num itemPrice;
 
   ProductItem({
     required this.itemName,

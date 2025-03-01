@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -11,12 +13,12 @@ class ExpensesTaxWidget extends StatelessWidget {
       required this.title,
       required this.subTitle,
       required this.controller,
-      required this.length,
+      this.length,
       this.onBackPressed,
       this.onForwardPressed});
   final String title;
   final String subTitle;
-  final int length;
+  final int? length;
   final Function()? onBackPressed;
   final Function()? onForwardPressed;
   final PageController controller;
@@ -80,20 +82,23 @@ class ExpensesTaxWidget extends StatelessWidget {
                   SvgPicture.asset('assets/icons/expense_icon.svg')
                 ],
               ),
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
+              GestureDetector(
+                onTap: () => context.pushNamed(AiInsightsView.routeName),
+                child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: AppColors.primary3B3522,
+                        )),
+                    child: Text(
+                      'View',
+                      style: context.textTheme.s12w500.copyWith(
                         color: AppColors.primary3B3522,
-                      )),
-                  child: Text(
-                    'View',
-                    style: context.textTheme.s12w500.copyWith(
-                      color: AppColors.primary3B3522,
-                    ),
-                  ))
+                      ),
+                    )),
+              )
             ],
           ),
           const VerticalSpacing(27),
@@ -110,7 +115,7 @@ class ExpensesTaxWidget extends StatelessWidget {
               ),
               SmoothPageIndicator(
                 controller: controller,
-                count: length,
+                count: length ?? 0,
                 effect: const WormEffect(
                     dotHeight: 10,
                     dotWidth: 10,

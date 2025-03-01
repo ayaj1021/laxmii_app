@@ -45,7 +45,7 @@ class AiMessageCard extends StatelessWidget {
                           bottomRight: Radius.circular(25))),
                   child: Text(
                     message,
-                    style: context.textTheme.s12w300.copyWith(
+                    style: context.textTheme.s14w400.copyWith(
                       color: AppColors.primaryC4C4C4,
                     ),
                   ),
@@ -54,6 +54,7 @@ class AiMessageCard extends StatelessWidget {
             ],
           ),
         ),
+        const VerticalSpacing(15),
       ],
     );
   }

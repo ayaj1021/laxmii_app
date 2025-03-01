@@ -48,13 +48,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
     _isAddSalesEnabled.value = _customerNameController.text.isNotEmpty;
   }
 
-  @override
-  void dispose() {
-    _amountController.dispose();
-    _customerNameController.dispose();
-
-    super.dispose();
-  }
+  List<ProductItems> items = [];
 
   DateTime? _selectedDate;
 
@@ -98,7 +92,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
     return DateFormat('MMM d, yyyy').format(date);
   }
 
-  List<ProductItems> items = []; // List of items
+  // List of items
   double totalAmount = 0.0; // Total amount
   double taxAmount = 0.0; // Total amount
   double balanceAmount = 0.0; // Total amount
@@ -115,9 +109,34 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
     });
   }
 
-  void calculateTotalAmount() {
-    totalAmount = items.fold(
+  void removeItem(ProductItems item) {
+    setState(() {
+      items.remove(item); // Add the new item
+      totalAmount = 0;
+      // item.itemQuantity - item.itemPrice; // Update the total amount
+    });
+  }
+
+  double calculateTotalAmount() {
+    return totalAmount = items.fold(
         0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
+  }
+
+  double balanceDue() {
+    return balanceAmount =
+        items.fold(0, (sum, item) => sum + (totalAmount + taxAmount));
+  }
+
+  double taxAmounts() {
+    return taxAmount = items.fold(0, (sum, item) => sum + (totalAmount * 0.08));
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _customerNameController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -280,15 +299,20 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                                   final price =
                                       item.itemQuantity * item.itemPrice;
                                   return InkWell(
-                                    onLongPress: () {
-                                      items.remove(item);
-                                    },
+                                    onLongPress: () {},
                                     child: Column(
                                       children: [
                                         InvoiceNewProductWidget(
                                           itemName: item.itemName,
                                           itemQuantity: item.itemQuantity,
-                                          itemPrice: price,
+                                          itemPrice: item.itemPrice,
+                                          totalItemPrice: price,
+                                          onItemDelete: () {
+                                            setState(() {
+                                              items.remove(item);
+                                            });
+                                            removeItem(item);
+                                          },
                                         ),
                                         const VerticalSpacing(5),
                                         if (index < items.length - 1)
@@ -342,17 +366,20 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                   children: [
                     InvoiceWidget(
                       title: 'Subtotal',
-                      subTitle: '\$${totalAmount.toStringAsFixed(2)}',
+                      subTitle: '\$${calculateTotalAmount()}',
+                      //'\$${totalAmount.toStringAsFixed(2)}',
                     ),
                     const VerticalSpacing(14),
                     InvoiceWidget(
                       title: 'Tax 8%',
-                      subTitle: '\$${taxAmount.toStringAsFixed(2)}',
+                      subTitle: '\$${taxAmounts()}',
+                      //'\$${taxAmount.toStringAsFixed(2)}',
                     ),
                     const VerticalSpacing(14),
                     InvoiceWidget(
                       title: 'Balance due',
-                      subTitle: '\$${balanceAmount.toStringAsFixed(2)}',
+                      subTitle: '\$${balanceDue()}',
+                      //'\$${balanceAmount.toStringAsFixed(2)}',
                     ),
                     const VerticalSpacing(19),
                     ValueListenableBuilder(

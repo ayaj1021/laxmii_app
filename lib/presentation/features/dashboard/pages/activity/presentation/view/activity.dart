@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_request.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/invoice_activity.dart';
 
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
 
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/pop_up_menu_button_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class ActivityView extends ConsumerStatefulWidget {
   const ActivityView({super.key});
@@ -18,13 +18,10 @@ class ActivityView extends ConsumerStatefulWidget {
 }
 
 class _ActivityViewState extends ConsumerState<ActivityView> {
-  final request = GetCashFlowRequest(queryBy: 'year');
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref
-          .read(getCashFlowNotifierProvider.notifier)
-          .getCashFlow(request: request);
+      await ref.read(getCashFlowNotifierProvider.notifier).getCashFlow();
 
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
@@ -47,14 +44,6 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: PopUpMenuButtonWidget(),
-          )
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,6 +54,8 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
                 CashFlowActivity(
                   cashFlow: cashFlowList,
                 ),
+                const VerticalSpacing(24),
+                const InvoiceActivity()
               ],
             ),
           ),

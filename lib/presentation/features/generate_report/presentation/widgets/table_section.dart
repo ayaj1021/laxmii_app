@@ -17,7 +17,7 @@ class TableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           Table(
@@ -81,15 +81,13 @@ class TableSection extends StatelessWidget {
         children: cells
             .map((cell) => Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                  child: Center(
-                    child: Text(
-                      cell,
-                      style: context.textTheme.s11w600.copyWith(
-                        color: isHeader
-                            ? AppColors.primaryC4C4C4
-                            : AppColors.primary101010,
-                      ),
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                  child: Text(
+                    cell,
+                    style: context.textTheme.s11w600.copyWith(
+                      color: isHeader
+                          ? AppColors.primaryC4C4C4
+                          : AppColors.primary101010,
                     ),
                   ),
                 ))

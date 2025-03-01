@@ -13,11 +13,11 @@ class AiInsightsHistory extends ConsumerStatefulWidget {
 class _AiInsightsHistoryState extends ConsumerState<AiInsightsHistory> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         children: [
           Center(
-            child: const EmptyPage(
+            child: EmptyPage(
               emptyMessage: 'No History Yet',
             ),
           )

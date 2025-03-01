@@ -11,6 +11,7 @@ class EmptyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset('assets/icons/empty_data.svg'),
         const VerticalSpacing(10),

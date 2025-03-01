@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/bottom_section.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/inventory_table_section.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -28,26 +29,43 @@ class _InventoryReportDetailReportState
     super.initState();
   }
 
+  final initialValue = 0.0;
   @override
   Widget build(BuildContext context) {
     final reports = ref.watch(getAllInventoryNotifierProvider
         .select((v) => v.getAllInventory.data?.inventory ?? []));
+
+    final totalAmount = reports.fold<double>(
+        initialValue,
+        (previousValue, element) =>
+            previousValue + element.sellingPrice!.toDouble());
     return Scaffold(
       appBar: LaxmiiAppBar(
         centerTitle: true,
         title: '${widget.reportType} Report',
       ),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
+        child: Stack(
           children: [
-            InventoryTableSection(
-              report: reports,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  InventoryTableSection(
+                    report: reports,
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: BottomSection(
+                totalAmount: '$totalAmount ',
+              ),
             )
           ],
         ),
-      )),
+      ),
     );
   }
 }

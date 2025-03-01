@@ -35,6 +35,7 @@ class _TaxViewState extends ConsumerState<TaxView> {
   String? _selectedValue;
 
   DateTime? _fromDate;
+  DateTime? _toDate;
 
   Future<void> _fromDateSelect(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -42,36 +43,87 @@ class _TaxViewState extends ConsumerState<TaxView> {
       initialDate: _fromDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
-      // lastDate: DateTime(2100),
     );
 
     if (picked != null && picked != _fromDate) {
       setState(() {
         _fromDate = picked;
+        _updateToDate(); // Update the end date when start date changes
       });
     }
   }
 
-  DateTime? _toDate;
+  // Future<void> _toDateSelect(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: _toDate ?? DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime.now(),
+  //   );
+
+  //   if (picked != null && picked != _toDate) {
+  //     setState(() {
+  //       _toDate = picked;
+  //     });
+  //   }
+  // }
 
   Future<void> _toDateSelect(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _toDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      //  lastDate: DateTime(2100),
-    );
+    final DateTime now = DateTime.now();
+    final DateTime lastDate = now; // Set lastDate to the current date
+    DateTime initialDate = _toDate ?? now;
 
-    if (picked != null && picked != _toDate) {
+    // Ensure initialDate is not after lastDate
+    if (initialDate.isAfter(lastDate)) {
+      initialDate = lastDate;
+    }
+
+    try {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(2000),
+        lastDate: lastDate,
+      );
+
+      if (picked != null && picked != _toDate) {
+        setState(() {
+          _toDate = picked;
+        });
+      }
+    } catch (e) {
+      // Handle the exception and show a user-friendly message
+
+      if (mounted) {
+        // ignore: use_build_context_synchronously
+        context.showError(
+            message:
+                'Invalid date range. Please ensure the end date is on or before $lastDate.');
+      }
+    }
+  }
+
+  void _updateToDate() {
+    if (_fromDate != null && _selectedValue != null) {
       setState(() {
-        _toDate = picked;
+        if (_selectedValue == '1 year') {
+          _toDate =
+              DateTime(_fromDate!.year + 1, _fromDate!.month, _fromDate!.day);
+        } else if (_selectedValue == '6 months') {
+          _toDate =
+              DateTime(_fromDate!.year, _fromDate!.month + 6, _fromDate!.day);
+        }
       });
     }
   }
 
-  String _formatDate(DateTime date) {
-    return DateFormat('MMM d, yyyy').format(date);
+  // String? _formatDate(DateTime date) {
+  //   return DateFormat('MMM d, yyyy').format(date);
+  // }
+  String? _formatDate(DateTime? date) {
+    return date != null
+        ? DateFormat('MMM d, yyyy').format(date)
+        : 'Select Date';
   }
 
   @override
@@ -120,8 +172,8 @@ class _TaxViewState extends ConsumerState<TaxView> {
                   ),
                   const VerticalSpacing(8),
                   TaxDateSelectSection(
-                    fromDate: _formatDate(_fromDate ?? DateTime.now()),
-                    toDate: _formatDate(_toDate ?? DateTime.now()),
+                    fromDate: _formatDate(_fromDate) ?? 'Start date',
+                    toDate: _formatDate(_toDate) ?? 'End date',
                     fromDateTap: () {
                       _fromDateSelect(context);
                     },
@@ -192,7 +244,7 @@ class _TaxViewState extends ConsumerState<TaxView> {
     );
   }
 
-  void _calculateTax(int profit) async {
+  void _calculateTax(num profit) async {
     final data = CalculateTaxRequest(period: '$_selectedValue', profit: profit);
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     await ref.read(calculateTaxNotifier.notifier).calculateTax(

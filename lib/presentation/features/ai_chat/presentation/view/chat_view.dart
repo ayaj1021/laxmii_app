@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_request.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_request.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_response.dart';
@@ -26,8 +25,18 @@ class ChatView extends ConsumerStatefulWidget {
 }
 
 class _ChatViewState extends ConsumerState<ChatView> {
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
+    super.initState();
+    _initializeChat();
+  }
+
+  Future<void> _initializeChat() async {
+    // Initialize chat session without showing loading
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(startChatNotifier.notifier).startNewChat(
         onError: (error) {
@@ -35,18 +44,24 @@ class _ChatViewState extends ConsumerState<ChatView> {
         },
       );
 
-      getChatHistory();
+      // Get chat history
+      await _getChatHistory();
 
+      // Get access token
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
-    super.initState();
   }
 
-  void getChatHistory() async {
-    final sessionId = ref.watch(startChatNotifier
-        .select((v) => v.startNewChatResponse.data?.sessionId));
-    final data = GetChatHistoryRequest(sessionId: '$sessionId');
+  Future<void> _getChatHistory() async {
+    final sessionId = ref.read(
+      startChatNotifier.select(
+        (v) => v.startNewChatResponse.data?.sessionId,
+      ),
+    );
 
+    if (sessionId == null) return;
+
+    final data = GetChatHistoryRequest(sessionId: sessionId);
     await ref.read(getChatHistoryNotifier.notifier).getChatHistory(
           onError: (error) {
             context.showError(message: error);
@@ -54,8 +69,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
           data: data,
         );
   }
-
-  final ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -69,32 +82,32 @@ class _ChatViewState extends ConsumerState<ChatView> {
     });
   }
 
-  final _controller = TextEditingController();
-
-  void _sendMessage(
-      {required String sessionId,
-      required String userInput,
-      required List<AiChatMessages> messages}) {
-    final data = ChatAiRequest(sessionId: sessionId, userInput: userInput);
+  Future<void> _sendMessage({
+    required String sessionId,
+    required String userInput,
+    required List<AiChatMessages> messages,
+  }) async {
     if (userInput.trim().isEmpty) return;
 
-    ref.read(chatAiNotifier.notifier).chatAi(
-        data: data,
-        onError: (error) {
-          context.showError(message: error);
-        },
-        onSuccess: () {
-          getChatHistory();
-        });
+    final data = ChatAiRequest(sessionId: sessionId, userInput: userInput);
 
-    _controller.clear();
-
+    // Optimistically update UI
     setState(() {
-      messages.add(AiChatMessages(message: userInput, id: 'user'));
-      // messages.add(ChatModel(message: "", type: false, isLoading: true));
+      messages.add(AiChatMessages(message: userInput, sender: 'user'));
     });
-
+    _controller.clear();
     _scrollToBottom();
+
+    // Send message
+    await ref.read(chatAiNotifier.notifier).chatAi(
+          data: data,
+          onError: (error) {
+            context.showError(message: error);
+          },
+          onSuccess: () async {
+            await _getChatHistory();
+          },
+        );
   }
 
   @override
@@ -104,7 +117,13 @@ class _ChatViewState extends ConsumerState<ChatView> {
 
     final messageHistory = ref.watch(getChatHistoryNotifier
         .select((v) => v.getChatHistoryResponse.data?.messages ?? []));
+
+    final isSendingMessage = ref.watch(
+      chatAiNotifier.select((v) => v.loadState.isLoading),
+    );
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const LaxmiiAppBar(
         title: 'AI Assistant',
         centerTitle: true,
@@ -121,39 +140,59 @@ class _ChatViewState extends ConsumerState<ChatView> {
                       ),
                     )
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      controller: _scrollController,
+                      reverse: true,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 20,
+                        left: 10,
+                        right: 10,
+                      ),
                       itemCount: messageHistory.length,
                       itemBuilder: (_, index) {
-                        final message = messageHistory[index];
+                        final message =
+                            messageHistory[messageHistory.length - 1 - index];
                         if (message.sender == 'user') {
                           return UserChatCard(
                             message: message.message ?? '',
                             type: message.sender.toString(),
                           );
-                        } else {
+                        } else if ((message.sender ?? '').contains('ai')) {
                           return AiMessageCard(
                             type: message.sender.toString(),
                             message: message.message ?? '',
                           );
                         }
+                        return const SizedBox.shrink();
                       },
                     ),
             ),
-            const Divider(
-              color: AppColors.primary101010,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                left: 15,
+                right: 15,
+                top: 16,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.08,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
+                constraints: const BoxConstraints(maxHeight: 120),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                   color: AppColors.primary101010,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: TextField(
@@ -164,34 +203,39 @@ class _ChatViewState extends ConsumerState<ChatView> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         minLines: 1,
-                        onChanged: (value) {},
+                        textCapitalization: TextCapitalization.sentences,
                         decoration: const InputDecoration(
-                            filled: false,
-                            hintText: 'Write your question',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none),
+                          filled: false,
+                          hintText: 'Write your question',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          // final userMessage = AiChatMessages(
-                          //   sender: 'user',
-                          //   message: _controller.text.trim(),
-                          // );
-                          // setState(() {
-                          //   messageHistory.add(userMessage);
-                          // });
-                          _sendMessage(
-                              sessionId: '$sessionId',
-                              userInput: _controller.text.trim(),
-                              messages: messageHistory);
-
-                          getChatHistory();
-                        },
-                        child: SvgPicture.asset('assets/icons/send.svg'))
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: GestureDetector(
+                        onTap: sessionId != null &&
+                                _controller.text.trim().isNotEmpty
+                            ? () => _sendMessage(
+                                  sessionId: sessionId,
+                                  userInput: _controller.text.trim(),
+                                  messages: messageHistory,
+                                )
+                            : null,
+                        child: isSendingMessage
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : SvgPicture.asset('assets/icons/send.svg'),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -202,95 +246,3 @@ class _ChatViewState extends ConsumerState<ChatView> {
     );
   }
 }
-    // Scaffold(
-    //   appBar: const LaxmiiAppBar(
-    //     title: 'AI Assistant',
-    //     centerTitle: true,
-    //   ),
-    //   body: SafeArea(
-    //     child: SingleChildScrollView(
-    //       child: Column(
-    //         children: [
-    //           const Divider(
-    //             color: AppColors.primary101010,
-    //           ),
-    //           const VerticalSpacing(25),
-    //           messageHistory.isEmpty
-    //               ? const Text(
-    //                   'No chat yet',
-    //                   style: TextStyle(color: Colors.white),
-    //                 )
-    //               : SizedBox(
-    //                   height: MediaQuery.of(context).size.height,
-    //                   child: ListView.builder(
-    //                     itemCount: messageHistory.length,
-    //                     itemBuilder: (_, index) {
-    //                       final message = messageHistory[index];
-    //                       if (message.sender == 'user') {
-    //                         return UserChatCard(
-    //                           message: message.message ?? '',
-    //                           type: message.sender.toString(),
-    //                         );
-    //                       } else {
-    //                         return AiMessageCard(
-    //                           type: message.sender.toString(),
-    //                           message: message.message ?? '',
-    //                         );
-    //                       }
-    //                     },
-    //                   ),
-    //                 ),
-    //           Padding(
-    //             padding:
-    //                 const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-    //             child: Container(
-    //               height: MediaQuery.of(context).size.height * 0.08,
-    //               padding: const EdgeInsets.symmetric(
-    //                 horizontal: 15,
-    //               ),
-    //               decoration: BoxDecoration(
-    //                 color: AppColors.primary101010,
-    //                 borderRadius: BorderRadius.circular(30),
-    //               ),
-    //               child: Row(
-    //                 children: [
-    //                   Expanded(
-    //                     child: TextField(
-    //                       controller: _controller,
-    //                       style: context.textTheme.s12w400.copyWith(
-    //                         color: AppColors.primaryC4C4C4,
-    //                       ),
-    //                       keyboardType: TextInputType.multiline,
-    //                       maxLines: 5,
-    //                       minLines: 1,
-    //                       onChanged: (value) {},
-    //                       decoration: const InputDecoration(
-    //                           filled: false,
-    //                           hintText: 'Write your question',
-    //                           hintStyle: TextStyle(
-    //                             color: Colors.grey,
-    //                           ),
-    //                           border: InputBorder.none,
-    //                           focusedBorder: InputBorder.none),
-    //                     ),
-    //                   ),
-    //                   GestureDetector(
-    //                       onTap: () {
-    //                         _sendMessage(
-    //                             sessionId: sessionId ?? '',
-    //                             userInput: _controller.text.trim(),
-    //                             messages: messageHistory);
-
-    //                         getChatHistory();
-    //                       },
-    //                       child: SvgPicture.asset('assets/icons/send.svg'))
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-

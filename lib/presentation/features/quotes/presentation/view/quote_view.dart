@@ -9,6 +9,7 @@ import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/ge
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/create_quote_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/quote_details_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/get_quotes_widget.dart';
+import 'package:laxmii_app/presentation/general_widgets/empty_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -38,51 +39,55 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
         .select((v) => v.getAllQuotes.data?.quote ?? []));
     final isLoading = ref.watch(
         getAllQuotesNotifierProvider.select((v) => v.loadState.isLoading));
-    return PageLoader(
-      isLoading: isLoading,
-      child: Scaffold(
-        appBar: LaxmiiAppBar(
-          centerTitle: true,
-          title: 'Quote',
-          actions: [
-            GestureDetector(
-              onTap: () => context.pushNamed(CreateQuoteView.routeName),
-              child: const Icon(
-                Icons.add_circle,
-                color: AppColors.primaryColor,
-              ),
-            )
-          ],
-        ),
-        body: SafeArea(
+    return Scaffold(
+      appBar: LaxmiiAppBar(
+        centerTitle: true,
+        title: 'Quote',
+        actions: [
+          GestureDetector(
+            onTap: () => context.pushNamed(CreateQuoteView.routeName),
+            child: const Icon(
+              Icons.add_circle,
+              color: AppColors.primaryColor,
+            ),
+          )
+        ],
+      ),
+      body: PageLoader(
+        isLoading: isLoading,
+        child: SafeArea(
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: ListView.builder(
-                    itemCount: quotesList.length,
-                    itemBuilder: (_, index) {
-                      final data = quotesList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => QuoteDetailsView(
-                                        quoteId: '${data.id}',
-                                      )));
-                        },
-                        child: Column(
-                          children: [
-                            GetQuotesWidget(
-                              quoteTitle: '${data.customerName}',
-                              quoteAmount: '\$${data.totalAmount}',
-                              quoteDate:
-                                  formatDateTimeFromString('${data.issueDate}'),
+                child: quotesList.isEmpty
+                    ? const Center(
+                        child:
+                            EmptyPage(emptyMessage: 'You have no quotes yet.'))
+                    : ListView.builder(
+                        itemCount: quotesList.length,
+                        itemBuilder: (_, index) {
+                          final data = quotesList[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => QuoteDetailsView(
+                                            quoteId: '${data.id}',
+                                          )));
+                            },
+                            child: Column(
+                              children: [
+                                GetQuotesWidget(
+                                  quoteTitle: '${data.customerName}',
+                                  quoteAmount: '\$${data.totalAmount}',
+                                  quoteDate: formatDateTimeFromString(
+                                      '${data.issueDate}'),
+                                ),
+                                const VerticalSpacing(10),
+                              ],
                             ),
-                            const VerticalSpacing(10),
-                          ],
-                        ),
-                      );
-                    }))),
+                          );
+                        }))),
       ),
     );
   }

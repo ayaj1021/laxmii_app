@@ -208,9 +208,11 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                         itemBuilder: (_, index) {
                           final data = quoteDetails?.items?[index];
                           return InvoiceNewProductWidget(
-                              itemName: data?.description ?? '',
-                              itemQuantity: data?.quantity ?? 0,
-                              itemPrice: data?.price?.toDouble() ?? 0);
+                            itemName: data?.description ?? '',
+                            itemQuantity: data?.quantity ?? 0,
+                            itemPrice: data?.price?.toDouble() ?? 0,
+                            totalItemPrice: data?.price?.toDouble() ?? 0,
+                          );
                         }),
                   ),
                 ),

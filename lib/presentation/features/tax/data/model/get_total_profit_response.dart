@@ -1,8 +1,8 @@
 class GetTotalProfitResponse {
   final bool? status;
-  final int? salesTotal;
-  final int? expenseTotal;
-  final int? profit;
+  final num? salesTotal;
+  final num? expenseTotal;
+  final num? profit;
 
   GetTotalProfitResponse({
     this.status,
@@ -13,9 +13,9 @@ class GetTotalProfitResponse {
 
   GetTotalProfitResponse copyWith({
     bool? status,
-    int? salesTotal,
-    int? expenseTotal,
-    int? profit,
+    num? salesTotal,
+    num? expenseTotal,
+    num? profit,
   }) =>
       GetTotalProfitResponse(
         status: status ?? this.status,
@@ -28,7 +28,7 @@ class GetTotalProfitResponse {
       GetTotalProfitResponse(
         status: json["status"],
         salesTotal: json["salesTotal"],
-        expenseTotal: json["expenseTotal"],
+        expenseTotal: json["expenseTotal"] as num,
         profit: json["profit"],
       );
 

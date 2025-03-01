@@ -90,6 +90,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
     }
   }
 
+  final initialValue = 0.0;
   @override
   Widget build(BuildContext context) {
     final headers = ref.watch(getSingleReportNotifier
@@ -100,7 +101,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
 
     final isLoading = ref.watch(getSingleReportNotifier
         .select((v) => v.getSingleReportState.isLoading));
-    const initialValue = 0.0;
+
     final totalAmount = reports.fold<double>(initialValue,
         (previousValue, element) => previousValue + element.amount!.toDouble());
     return PageLoader(
@@ -111,42 +112,43 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
           title: '${widget.reportType} Report',
         ),
         body: SafeArea(
-            child: Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ReportDropDownWidget(
-                    onChanged: (String? value) {
-                      selectedPeriod = value.toString();
-                      setState(() {});
-                      _refetchData();
-                    },
-                    onTap: () {
-                      _selectStartDate();
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ReportDropDownWidget(
+                      onChanged: (String? value) {
+                        selectedPeriod = value.toString();
+                        setState(() {});
+                        _refetchData();
+                      },
+                      onTap: () {
+                        _selectStartDate();
 
-                      _refetchData();
-                    },
-                    selectedStartDate: _selectedStartDate,
-                    selectedPeriod: selectedPeriod,
+                        _refetchData();
+                      },
+                      selectedStartDate: _selectedStartDate,
+                      selectedPeriod: selectedPeriod,
+                    ),
                   ),
-                ),
-                const VerticalSpacing(20),
-                TableSection(
-                  headers: headers,
-                  report: reports,
-                )
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              child: BottomSection(
-                totalAmount: '$totalAmount ',
+                  const VerticalSpacing(20),
+                  TableSection(
+                    headers: headers,
+                    report: reports,
+                  )
+                ],
               ),
-            )
-          ],
-        )),
+              Positioned(
+                bottom: 0,
+                child: BottomSection(
+                  totalAmount: '$totalAmount ',
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

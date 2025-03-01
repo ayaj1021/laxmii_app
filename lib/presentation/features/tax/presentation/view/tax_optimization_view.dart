@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/optimize_tax_response.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/notifier/optimize_tax_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -44,9 +46,22 @@ class _TaxOptimizationViewState extends ConsumerState<TaxOptimizationView> {
 
     Map<String, dynamic> optimizedData = optimizedTax!.toJson();
     return Scaffold(
-      appBar: const LaxmiiAppBar(
+      appBar: LaxmiiAppBar(
         title: 'Tax Optimization',
         centerTitle: true,
+        actions: [
+          TextButton(
+            child: Text(
+              'Close',
+              style: context.textTheme.s14w500.copyWith(
+                color: AppColors.primaryColor,
+              ),
+            ),
+            onPressed: () {
+              context.pushReplacementNamed(Dashboard.routeName);
+            },
+          )
+        ],
       ),
       body: SafeArea(
         child: Padding(

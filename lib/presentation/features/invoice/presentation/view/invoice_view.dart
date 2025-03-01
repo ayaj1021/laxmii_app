@@ -50,7 +50,8 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
   Widget build(BuildContext context) {
     final allInvoiceList = ref.watch(getAllInvoiceNotifierProvider
         .select((v) => v.getAllInvoice.data?.invoices));
-    List<Invoice>? filteredInvoices = allInvoiceList?.where((invoice) {
+    List<GetAllInvoiceData>? filteredInvoices =
+        allInvoiceList?.where((invoice) {
       final matchesStatus = _selectedOption == 'All' ||
           invoice.status?.toLowerCase() == _selectedOption.toLowerCase();
       final matchesSearch = _searchQuery.isEmpty ||

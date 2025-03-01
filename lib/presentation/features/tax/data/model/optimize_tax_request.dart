@@ -1,7 +1,7 @@
 class OptimizeTaxRequest {
-  final int totalIncome;
-  final int personalAllowance;
-  final int taxableIncome;
+  final num totalIncome;
+  final num personalAllowance;
+  final num taxableIncome;
   final String incomeTaxDue;
   final String niDue;
   final String totalTax;
@@ -20,9 +20,9 @@ class OptimizeTaxRequest {
   });
 
   OptimizeTaxRequest copyWith({
-    int? totalIncome,
-    int? personalAllowance,
-    int? taxableIncome,
+    num? totalIncome,
+    num? personalAllowance,
+    num? taxableIncome,
     String? incomeTaxDue,
     String? niDue,
     String? totalTax,

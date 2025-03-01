@@ -200,17 +200,43 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                 const VerticalSpacing(28),
                 LaxmiiSendButton(
                     onTap: () {
+                      final totalIncome = calculatedTax?.totalIncome != null &&
+                              calculatedTax?.totalIncome != 0
+                          ? num.tryParse(
+                                  (calculatedTax?.totalIncome).toString()) ??
+                              0
+                          : 0;
+
+                      final personalAllowance =
+                          calculatedTax?.personalAllowance != null &&
+                                  calculatedTax?.personalAllowance != 0
+                              ? num.tryParse((calculatedTax?.personalAllowance)
+                                      .toString()) ??
+                                  0
+                              : 0;
+
+                      final taxableIncome = calculatedTax?.taxableIncome !=
+                                  null &&
+                              calculatedTax?.taxableIncome != 0
+                          ? num.tryParse(
+                                  (calculatedTax?.taxableIncome).toString()) ??
+                              0
+                          : 0;
+
                       _optimizeTax(
                         OptimizeTaxRequest(
-                          totalIncome: int.parse(
-                            '${calculatedTax?.totalIncome ?? ''}',
-                          ),
-                          personalAllowance: int.parse(
-                            '${calculatedTax?.personalAllowance ?? ''}',
-                          ),
-                          taxableIncome: int.parse(
-                            '${calculatedTax?.taxableIncome ?? ''}',
-                          ),
+                          totalIncome: totalIncome,
+                          personalAllowance: personalAllowance,
+                          taxableIncome: taxableIncome,
+                          // totalIncome: num.parse(
+                          //   '${calculatedTax?.totalIncome ?? ''}',
+                          // ),
+                          // personalAllowance: num.parse(
+                          //   '${calculatedTax?.personalAllowance ?? ''}',
+                          // ),
+                          // taxableIncome: num.parse(
+                          //   '${calculatedTax?.taxableIncome ?? ''}',
+                          // ),
                           incomeTaxDue: calculatedTax?.incomeTaxDue ?? '',
                           niDue: calculatedTax?.niDue ?? '',
                           totalTax: calculatedTax?.totalTax ?? '',

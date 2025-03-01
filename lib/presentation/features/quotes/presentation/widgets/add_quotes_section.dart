@@ -43,7 +43,11 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
                                   InvoiceNewProductWidget(
                                     itemName: item.itemName,
                                     itemQuantity: item.itemQuantity,
-                                    itemPrice: price.toDouble(),
+                                    itemPrice: item.itemPrice.toDouble(),
+                                    totalItemPrice: price.toDouble(),
+                                    onItemDelete: () {
+                                      items.remove(item);
+                                    },
                                   ),
                                   const VerticalSpacing(5),
                                   if (index < items.length - 1)

@@ -21,12 +21,12 @@ class AddItemSection extends ConsumerStatefulWidget {
 
 class _AddItemSectionState extends ConsumerState<AddItemSection> {
   final ValueNotifier<bool> isAddProductEnabled = ValueNotifier(false);
-  final ValueNotifier<int> _calculateProduct = ValueNotifier<int>(0);
+  final ValueNotifier<double> _calculateProduct = ValueNotifier<double>(0);
 
   late TextEditingController _quantityController;
   late TextEditingController _sellingPriceController;
   Inventory? _selectedProduct;
-  Inventory? _selectedProductPrice;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -46,13 +46,13 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
     isAddProductEnabled.value = _selectedProduct != null &&
         _quantityController.text.isNotEmpty &&
         _sellingPriceController.text.isNotEmpty;
-    _calculateProduct.value = calculateTotal();
+    _calculateProduct.value = calculateTotal().toDouble();
   }
 
-  int calculateTotal() {
+  num calculateTotal() {
     try {
       int quantity = int.parse(_quantityController.text);
-      int sellingPrice = int.parse(_sellingPriceController.text);
+      double sellingPrice = double.parse(_sellingPriceController.text);
       return quantity * sellingPrice;
     } catch (e) {
       return 0; // Return 0 if input is invalid
@@ -156,17 +156,17 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                   Text(
                     'Amount',
                     style: context.textTheme.s12w300.copyWith(
-                      color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
+                      color: AppColors.primaryC4C4C4,
                       fontSize: 14,
                     ),
                   ),
-                  ValueListenableBuilder<int>(
+                  ValueListenableBuilder<double>(
                     valueListenable: _calculateProduct,
                     builder: (context, totalAmount, child) {
                       return Text(
                         '\$$totalAmount',
                         style: context.textTheme.s12w300.copyWith(
-                          color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
+                          color: AppColors.primaryC4C4C4,
                           fontSize: 14,
                         ),
                       );
@@ -189,7 +189,8 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                 } else {
                   final item = ProductItem(
                     itemName: '${_selectedProduct?.productName}',
-                    itemPrice: int.parse(_sellingPriceController.text.trim()),
+                    itemPrice:
+                        double.parse(_sellingPriceController.text.trim()),
                     itemQuantity: int.parse(_quantityController.text.trim()),
                   );
 

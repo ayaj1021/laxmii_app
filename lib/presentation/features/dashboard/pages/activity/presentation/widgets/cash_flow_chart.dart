@@ -145,22 +145,54 @@ class CashFlowChartState extends State<CashFlowChart> {
     );
   }
 
+  // Widget leftTitles(double value, TitleMeta meta) {
+  //   String text;
+  //   if (value == 0) {
+  //     text = '\$0K';
+  //   } else if (value == maxY / 6) {
+  //     text = '\$${(maxY / 6).toStringAsFixed(0)}K';
+  //   } else if (value == maxY / 3) {
+  //     text = '\$${(maxY / 3).toStringAsFixed(0)}K';
+  //   } else if (value == maxY / 2) {
+  //     text = '\$${(maxY / 2).toStringAsFixed(0)}K';
+  //   } else if (value == (maxY * 2 / 3)) {
+  //     text = '\$${(maxY * 2 / 3).toStringAsFixed(0)}K';
+  //   } else if (value == (maxY * 5 / 6)) {
+  //     text = '\$${(maxY * 5 / 6).toStringAsFixed(0)}K';
+  //   } else if (value == maxY) {
+  //     text = '\$${maxY.toStringAsFixed(0)}K';
+  //   } else {
+  //     return Container();
+  //   }
+  //   return SideTitleWidget(
+  //     meta: meta,
+  //     space: 0,
+  //     child: Text(
+  //       text,
+  //       style: context.textTheme.s10w400.copyWith(
+  //         fontSize: 10, // Reduced font size for Y-axis labels
+  //         color: AppColors.primary5E5E5E,
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget leftTitles(double value, TitleMeta meta) {
     String text;
     if (value == 0) {
       text = '\$0K';
     } else if (value == maxY / 6) {
-      text = '\$${(maxY / 6).toStringAsFixed(0)}K';
+      text = '\$${(maxY / 6000).toStringAsFixed(0)}K';
     } else if (value == maxY / 3) {
-      text = '\$${(maxY / 3).toStringAsFixed(0)}K';
+      text = '\$${(maxY / 3000).toStringAsFixed(0)}K';
     } else if (value == maxY / 2) {
-      text = '\$${(maxY / 2).toStringAsFixed(0)}K';
+      text = '\$${(maxY / 2000).toStringAsFixed(0)}K';
     } else if (value == (maxY * 2 / 3)) {
-      text = '\$${(maxY * 2 / 3).toStringAsFixed(0)}K';
+      text = '\$${(maxY * 2 / 3000).toStringAsFixed(0)}K';
     } else if (value == (maxY * 5 / 6)) {
-      text = '\$${(maxY * 5 / 6).toStringAsFixed(0)}K';
+      text = '\$${(maxY * 5 / 6000).toStringAsFixed(0)}K';
     } else if (value == maxY) {
-      text = '\$${maxY.toStringAsFixed(0)}K';
+      text = '\$${(maxY / 1000).toStringAsFixed(0)}K';
     } else {
       return Container();
     }
@@ -169,9 +201,9 @@ class CashFlowChartState extends State<CashFlowChart> {
       space: 0,
       child: Text(
         text,
-        style: context.textTheme.s10w400.copyWith(
-          fontSize: 10, // Reduced font size for Y-axis labels
-          color: AppColors.primary5E5E5E,
+        style: context.textTheme.s12w400.copyWith(
+          // Reduced font size for Y-axis labels
+          color: AppColors.primaryC4C4C4,
         ),
       ),
     );
@@ -197,7 +229,7 @@ class CashFlowChartState extends State<CashFlowChart> {
       months[value.toInt()],
       style: context.textTheme.s12w400.copyWith(
         fontSize: 10, // Reduced font size for X-axis labels
-        color: AppColors.primary5E5E5E,
+        color: AppColors.primaryC4C4C4,
       ),
     );
 

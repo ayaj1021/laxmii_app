@@ -1,6 +1,6 @@
 class CalculateTaxRequest {
   final String period;
-  final int profit;
+  final num profit;
 
   CalculateTaxRequest({
     required this.period,
@@ -9,7 +9,7 @@ class CalculateTaxRequest {
 
   CalculateTaxRequest copyWith({
     String? period,
-    int? profit,
+    num? profit,
   }) =>
       CalculateTaxRequest(
         period: period ?? this.period,

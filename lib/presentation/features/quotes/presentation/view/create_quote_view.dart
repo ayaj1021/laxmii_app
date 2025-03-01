@@ -6,12 +6,12 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_picker.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/create_quotes_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/get_quote_no_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_quotes_section.dart';
+import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/generate_quote_pdf.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/quotes_info_input_section.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -65,9 +65,9 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
 
   Future<void> _quoteExpirySelectDate(BuildContext context) async {
     final DateTime? picked = await selectDate(
-      context: context,
-      selectedDate: _quoteExpiryDate,
-    );
+        context: context,
+        selectedDate: _quoteExpiryDate,
+        lastDate: DateTime.now());
 
     if (picked != null && picked != _quoteExpiryDate) {
       setState(() {
@@ -149,37 +149,39 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                   addItem: addItem,
                 ),
                 const VerticalSpacing(58),
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppColors.primary101010),
-                  child: Column(
-                    children: [
-                      InvoiceWidget(
-                        title: 'Subtotal',
-                        subTitle: '\$${totalAmount.toStringAsFixed(2)}',
-                      ),
-                      const VerticalSpacing(14),
-                      InvoiceWidget(
-                        title: 'Tax 8%',
-                        subTitle: '\$${taxAmount.toStringAsFixed(2)}',
-                      ),
-                      const VerticalSpacing(14),
-                      InvoiceWidget(
-                        title: 'Balance due',
-                        subTitle: '\$${balanceAmount.toStringAsFixed(2)}',
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.all(18),
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(16),
+                //       color: AppColors.primary101010),
+                //   child: Column(
+                //     children: [
+                //       InvoiceWidget(
+                //         title: 'Subtotal',
+                //         subTitle: '\$${totalAmount.toStringAsFixed(2)}',
+                //       ),
+                //       const VerticalSpacing(14),
+                //       InvoiceWidget(
+                //         title: 'Tax 8%',
+                //         subTitle: '\$${taxAmount.toStringAsFixed(2)}',
+                //       ),
+                //       const VerticalSpacing(14),
+                //       InvoiceWidget(
+                //         title: 'Balance due',
+                //         subTitle: '\$${balanceAmount.toStringAsFixed(2)}',
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const VerticalSpacing(50),
                 LaxmiiSendButton(
                   onTap: () {
                     items.isEmpty
                         ? context.showError(message: 'Items cannot be empty')
-                        : createQuote(
-                            quotesNo: quotesNo ?? '', productItems: items);
+                        : generateQuotePdf(quotesNo: '$quotesNo');
+
+                    // createQuote(
+                    //     quotesNo: quotesNo ?? '', productItems: items);
                   },
                   title: 'Save',
                 )
@@ -189,6 +191,20 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
         ),
       ),
     );
+  }
+
+  void generateQuotePdf({required String quotesNo}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => QuotePage(
+                  clientName: nameController.text.trim(),
+                  quoteNo: quotesNo,
+                  issueDate: _formatQuoteSelectDate(_quoteStartDate!),
+                  dueDate: _formatQuoteExpiryDate(_quoteExpiryDate!),
+                  items: items,
+                )));
+    // QuoteGenerator().generateAndSharePDF();
   }
 
   void createQuote(

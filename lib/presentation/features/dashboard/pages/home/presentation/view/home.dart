@@ -105,7 +105,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             child: SingleChildScrollView(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Column(
                   children: [
                     Row(
@@ -157,6 +157,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             child: Text(
                               'See all',
                               style: context.textTheme.s12w500.copyWith(
+                                fontSize: 14,
                                 color: AppColors.primary3B3522,
                               ),
                             ),
@@ -223,6 +224,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           child: Text(
                             'See all',
                             style: context.textTheme.s12w500.copyWith(
+                              fontSize: 14,
                               color: AppColors.primary3B3522,
                             ),
                           ),
