@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/bottom_section.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_inventory_report_image.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_inventory_report_pdf.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/inventory_table_section.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -61,6 +63,32 @@ class _InventoryReportDetailReportState
               bottom: 0,
               child: BottomSection(
                 totalAmount: '$totalAmount ',
+                onGeneratePdf: () {
+                  InventoryReportPdfGenerator().generateAndSharePDF(
+                      isHeader: true,
+                      cells: [
+                        'Inventory',
+                        'Quantity',
+                        'Cost price',
+                        'Selling price'
+                      ],
+                      report: reports,
+                      title: '${widget.reportType} Report');
+                },
+                onGenerateImage: () async {
+                  final reportGenerator = InventoryReportImageGenerator();
+                  await reportGenerator.generateAndShareImage(
+                    context: context, // You need to pass BuildContext now
+                    cells: [
+                      'Inventory',
+                      'Quantity',
+                      'Cost price',
+                      'Selling price'
+                    ],
+                    title: '${widget.reportType} Report',
+                    report: reports,
+                  );
+                },
               ),
             )
           ],

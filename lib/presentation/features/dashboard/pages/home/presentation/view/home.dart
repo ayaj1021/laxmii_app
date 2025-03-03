@@ -78,7 +78,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       if (next.homeSessionState == HomeSessionState.logout) {
         context
           ..replaceNamed(LoginView.routeName)
-          ..showSuccess(
+          ..showError(
             title: 'Session ended',
             message: 'Kindly login to continue',
           );

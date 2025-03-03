@@ -33,29 +33,25 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
                           itemBuilder: (_, index) {
                             final item = items[index];
                             final price = item.itemQuantity * item.itemPrice;
-                            return InkWell(
-                              onLongPress: () {
-                                items.remove(item);
-                                widget.addItem(item);
-                              },
-                              child: Column(
-                                children: [
-                                  InvoiceNewProductWidget(
-                                    itemName: item.itemName,
-                                    itemQuantity: item.itemQuantity,
-                                    itemPrice: item.itemPrice.toDouble(),
-                                    totalItemPrice: price.toDouble(),
-                                    onItemDelete: () {
+                            return Column(
+                              children: [
+                                InvoiceNewProductWidget(
+                                  itemName: item.itemName,
+                                  itemQuantity: item.itemQuantity,
+                                  itemPrice: item.itemPrice.toDouble(),
+                                  totalItemPrice: price.toDouble(),
+                                  onItemDelete: () {
+                                    setState(() {
                                       items.remove(item);
-                                    },
-                                  ),
-                                  const VerticalSpacing(5),
-                                  if (index < items.length - 1)
-                                    const Divider(
-                                      color: AppColors.primary3B3522,
-                                    )
-                                ],
-                              ),
+                                    });
+                                  },
+                                ),
+                                const VerticalSpacing(5),
+                                if (index < items.length - 1)
+                                  const Divider(
+                                    color: AppColors.primary3B3522,
+                                  )
+                              ],
                             );
                           }),
                     );

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/theme/date_picker_theme.dart';
-
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_request.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/notifier/get_single_report_notifier.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/bottom_section.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_report_pdf.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_report_image.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/report_dropdown_widget.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/table_section.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -104,14 +105,14 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
 
     final totalAmount = reports.fold<double>(initialValue,
         (previousValue, element) => previousValue + element.amount!.toDouble());
-    return PageLoader(
-      isLoading: isLoading,
-      child: Scaffold(
-        appBar: LaxmiiAppBar(
-          centerTitle: true,
-          title: '${widget.reportType} Report',
-        ),
-        body: SafeArea(
+    return Scaffold(
+      appBar: LaxmiiAppBar(
+        centerTitle: true,
+        title: '${widget.reportType} Report',
+      ),
+      body: PageLoader(
+        isLoading: isLoading,
+        child: SafeArea(
           child: Stack(
             children: [
               Column(
@@ -140,12 +141,29 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
                   )
                 ],
               ),
-              Positioned(
-                bottom: 0,
-                child: BottomSection(
-                  totalAmount: '$totalAmount ',
-                ),
-              )
+              if (reports.isNotEmpty)
+                Positioned(
+                  bottom: 0,
+                  child: BottomSection(
+                    totalAmount: '$totalAmount ',
+                    onGeneratePdf: () {
+                      ReportPdfGenerator().generateAndSharePDF(
+                          isHeader: true,
+                          cells: headers,
+                          report: reports,
+                          title: '${widget.reportType} Report');
+                    },
+                    onGenerateImage: () async {
+                      final reportGenerator = ReportImageGenerator();
+                      await reportGenerator.generateAndShareImage(
+                        context: context, // You need to pass BuildContext now
+                        cells: headers,
+                        title: '${widget.reportType} Report',
+                        report: reports,
+                      );
+                    },
+                  ),
+                )
             ],
           ),
         ),

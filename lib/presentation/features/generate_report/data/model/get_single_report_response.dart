@@ -50,7 +50,7 @@ class ReportData {
   final String? customer;
   final String? invoiceNumber;
   final String? customerName;
-  final int? amount;
+  final num? amount;
 
   ReportData({
     this.date,
@@ -71,7 +71,7 @@ class ReportData {
     String? invoiceNumber,
     String? customerName,
     String? customer,
-    int? amount,
+    num? amount,
   }) =>
       ReportData(
         date: date ?? this.date,

@@ -35,10 +35,11 @@ class TableSection extends StatelessWidget {
             child: report.isEmpty
                 ? Center(
                     child: Text(
-                    'No reports available',
-                    style: context.textTheme.s11w600
-                        .copyWith(color: AppColors.primaryC4C4C4),
-                  ))
+                      'No reports available',
+                      style: context.textTheme.s11w600
+                          .copyWith(color: AppColors.primaryC4C4C4),
+                    ),
+                  )
                 : ListView.builder(
                     itemCount: report.length,
                     itemBuilder: (_, index) {
@@ -57,12 +58,6 @@ class TableSection extends StatelessWidget {
                             width: 1),
                         children: [
                           if (rowData.isNotEmpty) buildRow(rowData, context),
-                          // buildRow([
-                          //   _formatDate(reportData.date),
-                          //   '${reportData.expenseType}',
-                          //   '${reportData.supplier}',
-                          //   '${reportData.amount}'
-                          // ], context),
                         ],
                       );
                     }),
