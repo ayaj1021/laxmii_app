@@ -138,7 +138,6 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                         isEnabled: r,
                         onTap: () {
                           _validateInventoryInput();
-                          // _createInventory();
                         },
                         title: 'Create Inventory',
                       );
