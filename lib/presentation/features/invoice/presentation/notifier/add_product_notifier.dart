@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 
 class ProductItems {
@@ -13,16 +12,14 @@ class ProductItems {
   });
 }
 
-ValueNotifier<List<ProductItems>> itemsNotifier =
-    ValueNotifier<List<ProductItems>>([]);
-
 extension ProductItemsConverter on ProductItems {
-  Item toItem() {
-    return Item(
+  CreateInvoiceItem toItem() {
+    return CreateInvoiceItem(
         description: itemName, quantity: itemQuantity, price: itemPrice);
   }
 }
 
-List<Item> convertProductItemsToItems(List<ProductItems> productItems) {
+List<CreateInvoiceItem> convertProductItemsToItems(
+    List<ProductItems> productItems) {
   return productItems.map((product) => product.toItem()).toList();
 }

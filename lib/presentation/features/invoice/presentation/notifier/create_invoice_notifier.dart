@@ -22,7 +22,7 @@ class CreateInvoiceNotifier
   Future<void> createInvoice({
     required CreateInvoiceRequest data,
     required void Function(String error) onError,
-    required void Function(String message) onSuccess,
+    required void Function(String message, String id, String status) onSuccess,
   }) async {
     state = state.copyWith(createInvoiceState: LoadState.loading);
 
@@ -34,7 +34,8 @@ class CreateInvoiceNotifier
       state = state.copyWith(
           createInvoiceState: LoadState.idle,
           createInvoiceResponse: value.data);
-      onSuccess(value.data!.message.toString());
+      onSuccess(value.data!.message.toString(), '${value.data?.invoice?.id}',
+          '${value.data?.invoice?.status}');
     } catch (e) {
       onError(e.toString());
       state = state.copyWith(createInvoiceState: LoadState.idle);

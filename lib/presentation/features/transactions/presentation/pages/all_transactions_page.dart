@@ -60,38 +60,40 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
                     )
                   : Expanded(
                       child: ListView.builder(
-                          itemCount: transactionsList.length,
-                          itemBuilder: (_, index) {
-                            final data = transactionsList[index];
-                            String inputDate = "${data.createdAt}";
-                            DateTime parsedDate = DateTime.parse(inputDate);
-                            final expense =
-                                data.transactionType?.replaceAll('_', ' ');
-                            final supplierName = data.type == 'expense'
-                                ? data.supplierName
-                                : data.customerName;
-                            final expenseName = data.type == 'expense'
-                                ? data.expenseType
-                                : data.inventory;
+                        itemCount: transactionsList.length,
+                        itemBuilder: (_, index) {
+                          final data = transactionsList[index];
+                          String inputDate = "${data.createdAt}";
+                          DateTime parsedDate = DateTime.parse(inputDate);
+                          final expense =
+                              data.transactionType?.replaceAll('_', ' ');
+                          final supplierName = data.type == 'expense'
+                              ? data.supplierName
+                              : data.customerName;
+                          final expenseName = data.type == 'expense'
+                              ? data.expenseType
+                              : data.inventory;
 
-                            String formattedDate =
-                                DateFormat("MMM d yyyy").format(parsedDate);
-                            return Column(
-                              children: [
-                                TransactionsWidget(
-                                  expenseName: '$expenseName',
-                                  expenseType:
-                                      '${expense?.toUpperCase()} | $supplierName',
-                                  expenseAmount: '\$${data.amount}',
-                                  expenseDate: formattedDate,
-                                  amountColor: data.type == 'expense'
-                                      ? AppColors.primaryF94D4D
-                                      : AppColors.primary198624,
-                                ),
-                                const VerticalSpacing(10)
-                              ],
-                            );
-                          }))
+                          String formattedDate =
+                              DateFormat("MMM d yyyy").format(parsedDate);
+                          return Column(
+                            children: [
+                              TransactionsWidget(
+                                expenseName: '$expenseName',
+                                expenseType:
+                                    '${expense?.toUpperCase()} | $supplierName',
+                                expenseAmount: '\$${data.amount}',
+                                expenseDate: formattedDate,
+                                amountColor: data.type == 'expense'
+                                    ? AppColors.primaryF94D4D
+                                    : AppColors.primary198624,
+                              ),
+                              const VerticalSpacing(10)
+                            ],
+                          );
+                        },
+                      ),
+                    )
         ],
       ),
     );

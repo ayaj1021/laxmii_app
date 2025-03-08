@@ -51,7 +51,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
 
   num calculateTotal() {
     try {
-      int quantity = int.parse(_quantityController.text);
+      double quantity = double.parse(_quantityController.text);
       double sellingPrice = double.parse(_sellingPriceController.text);
       return quantity * sellingPrice;
     } catch (e) {
@@ -191,7 +191,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                     itemName: '${_selectedProduct?.productName}',
                     itemPrice:
                         double.parse(_sellingPriceController.text.trim()),
-                    itemQuantity: int.parse(_quantityController.text.trim()),
+                    itemQuantity: num.parse(_quantityController.text.trim()),
                   );
 
                   Navigator.pop(context, item);

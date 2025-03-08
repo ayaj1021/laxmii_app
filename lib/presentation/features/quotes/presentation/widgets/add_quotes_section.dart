@@ -16,6 +16,15 @@ class AddQuotesSection extends StatefulWidget {
 }
 
 class _AddQuotesSectionState extends State<AddQuotesSection> {
+  ValueNotifier<List<ProductItem>> quoteItemsNotifier =
+      ValueNotifier<List<ProductItem>>([]);
+
+  @override
+  void dispose() {
+    quoteItemsNotifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(

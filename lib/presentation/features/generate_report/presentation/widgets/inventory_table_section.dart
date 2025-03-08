@@ -55,12 +55,6 @@ class InventoryTableSection extends StatelessWidget {
                             width: 1),
                         children: [
                           if (rowData.isNotEmpty) buildRow(rowData, context),
-                          // buildRow([
-                          //   _formatDate(reportData.date),
-                          //   '${reportData.expenseType}',
-                          //   '${reportData.supplier}',
-                          //   '${reportData.amount}'
-                          // ], context),
                         ],
                       );
                     }),

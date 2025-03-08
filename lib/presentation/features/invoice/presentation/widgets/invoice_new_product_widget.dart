@@ -12,7 +12,7 @@ class InvoiceNewProductWidget extends StatelessWidget {
       this.onItemDelete,
       required this.totalItemPrice});
   final String itemName;
-  final int itemQuantity;
+  final num itemQuantity;
   final double itemPrice;
   final double totalItemPrice;
   final Function()? onItemDelete;

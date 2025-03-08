@@ -43,7 +43,7 @@ class Invoice {
   final DateTime? issueDate;
   final DateTime? dueDate;
   final List<Item>? items;
-  final int? totalAmount;
+  final num? totalAmount;
   final String? status;
   final DateTime? createdAt;
   final int? v;
@@ -70,7 +70,7 @@ class Invoice {
     DateTime? issueDate,
     DateTime? dueDate,
     List<Item>? items,
-    int? totalAmount,
+    num? totalAmount,
     String? status,
     DateTime? createdAt,
     int? v,

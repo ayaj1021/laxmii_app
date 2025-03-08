@@ -36,7 +36,7 @@ class QoutesInfoInputSection extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/icons/user.svg'),
               QuoteTextField(
-                width: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.73,
                 controller: nameController,
                 hintText: 'Who is it for?',
               )
@@ -60,7 +60,7 @@ class QoutesInfoInputSection extends StatelessWidget {
                     ),
                     const VerticalSpacing(10),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.7,
                       decoration: const BoxDecoration(
                           border: Border(
                         bottom: BorderSide(
@@ -90,7 +90,7 @@ class QoutesInfoInputSection extends StatelessWidget {
                     ),
                     const VerticalSpacing(10),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.75,
+                      width: MediaQuery.of(context).size.width * 0.73,
                       decoration: const BoxDecoration(
                           border: Border(
                         bottom: BorderSide(

@@ -3,8 +3,8 @@ class CreateInvoiceRequest {
   final String invoiceNumber;
   final String issueDate;
   final String dueDate;
-  final List<Item> items;
-  final double totalAmount;
+  final List<CreateInvoiceItem> items;
+  final num totalAmount;
 
   CreateInvoiceRequest({
     required this.customerName,
@@ -20,7 +20,7 @@ class CreateInvoiceRequest {
     String? invoiceNumber,
     String? issueDate,
     String? dueDate,
-    List<Item>? items,
+    List<CreateInvoiceItem>? items,
     double? totalAmount,
   }) =>
       CreateInvoiceRequest(
@@ -38,7 +38,8 @@ class CreateInvoiceRequest {
         invoiceNumber: json["invoiceNumber"],
         issueDate: json["issueDate"],
         dueDate: json["dueDate"],
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+        items: List<CreateInvoiceItem>.from(
+            json["items"].map((x) => CreateInvoiceItem.fromJson(x))),
         totalAmount: json["totalAmount"],
       );
 
@@ -52,29 +53,30 @@ class CreateInvoiceRequest {
       };
 }
 
-class Item {
+class CreateInvoiceItem {
   final String description;
-  final int quantity;
-  final double price;
+  final num quantity;
+  final num price;
 
-  Item({
+  CreateInvoiceItem({
     required this.description,
     required this.quantity,
     required this.price,
   });
 
-  Item copyWith({
+  CreateInvoiceItem copyWith({
     String? description,
     int? quantity,
     double? price,
   }) =>
-      Item(
+      CreateInvoiceItem(
         description: description ?? this.description,
         quantity: quantity ?? this.quantity,
         price: price ?? this.price,
       );
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory CreateInvoiceItem.fromJson(Map<String, dynamic> json) =>
+      CreateInvoiceItem(
         description: json["description"],
         quantity: json["quantity"],
         price: json["price"],

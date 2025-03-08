@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-
 class CreateQuotesRequest {
   final String customerName;
   final String quoteNumber;
   final String issueDate;
   final String expiryDate;
   final List<Item> items;
-  final int totalAmount;
+  final num totalAmount;
 
   CreateQuotesRequest({
     required this.customerName,
@@ -23,7 +21,7 @@ class CreateQuotesRequest {
     String? issueDate,
     String? expiryDate,
     List<Item>? items,
-    int? totalAmount,
+    num? totalAmount,
   }) =>
       CreateQuotesRequest(
         customerName: customerName ?? this.customerName,
@@ -56,7 +54,7 @@ class CreateQuotesRequest {
 
 class Item {
   final String description;
-  final int quantity;
+  final num quantity;
   final num price;
 
   Item({
@@ -91,7 +89,7 @@ class Item {
 
 class ProductItem {
   final String itemName;
-  final int itemQuantity;
+  final num itemQuantity;
   final num itemPrice;
 
   ProductItem({
@@ -100,9 +98,6 @@ class ProductItem {
     required this.itemQuantity,
   });
 }
-
-ValueNotifier<List<ProductItem>> quoteItemsNotifier =
-    ValueNotifier<List<ProductItem>>([]);
 
 extension ProductItemsConverter on ProductItem {
   Item toItem() {

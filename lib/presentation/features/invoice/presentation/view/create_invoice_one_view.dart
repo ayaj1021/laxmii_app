@@ -28,6 +28,8 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
   final ValueNotifier<bool> _isAddSalesEnabled = ValueNotifier(false);
   late TextEditingController _amountController;
   late TextEditingController _customerNameController;
+  ValueNotifier<List<ProductItems>> itemsNotifier =
+      ValueNotifier<List<ProductItems>>([]);
 
   @override
   void initState() {
@@ -135,6 +137,8 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
   void dispose() {
     _amountController.dispose();
     _customerNameController.dispose();
+    //  itemsNotifier.dispose();
+    itemsNotifier.dispose();
 
     super.dispose();
   }

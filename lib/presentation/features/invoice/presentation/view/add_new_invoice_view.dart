@@ -123,12 +123,14 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
               UpdateProductsTextField(
                 product: _quantityController,
                 title: 'Quantity  ${invoiceQuantity ?? ''}',
+                keyboardType: TextInputType.number,
               ),
               const VerticalSpacing(15),
               UpdateProductsTextField(
                 isMoney: true,
                 product: _sellingPriceController,
                 title: 'Selling Price',
+                keyboardType: TextInputType.number,
               ),
               const VerticalSpacing(150),
               ValueListenableBuilder(

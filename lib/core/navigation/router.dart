@@ -20,7 +20,6 @@ import 'package:laxmii_app/presentation/features/tax/presentation/view/tax_optim
 import 'package:laxmii_app/presentation/features/tax/presentation/view/tax_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/create_task_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/view/add_sales_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/create_expense_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/splash_screen.dart';
@@ -35,7 +34,6 @@ class AppRouter {
     InventoryView.routeName: (context) => const InventoryView(),
     CreateInventory.routeName: (context) => const CreateInventory(),
     TransactionsView.routeName: (context) => const TransactionsView(),
-    AddSalesView.routeName: (context) => const AddSalesView(),
     CreateExpenseView.routeName: (context) => const CreateExpenseView(),
     InvoiceView.routeName: (context) => const InvoiceView(),
     CreateInvoiceOneView.routeName: (context) => const CreateInvoiceOneView(),
