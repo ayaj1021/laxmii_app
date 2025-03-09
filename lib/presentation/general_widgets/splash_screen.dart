@@ -9,7 +9,7 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
-import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
+import 'package:laxmii_app/presentation/features/onboarding/presentation/view/welcome_screen.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -27,9 +27,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void initState() {
     _init();
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-    // });
   }
 
   void _init() {
@@ -38,7 +35,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       return switch (data) {
         CurrentState.onboarded => context.replaceNamed(LoginView.routeName),
         CurrentState.loggedIn => context.replaceNamed(Dashboard.routeName),
-        _ => context.replaceNamed(SignUpView.routeName)
+        _ => context.replaceNamed(WelcomeScreen.routeName)
+        //  _ => context.replaceNamed(SignUpView.routeName)
       };
     });
   }

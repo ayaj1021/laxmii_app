@@ -41,7 +41,7 @@ class Quote {
   final DateTime? issueDate;
   final DateTime? expiryDate;
   final List<Item>? items;
-  final int? totalAmount;
+  final num? totalAmount;
   final String? status;
   final String? id;
   final DateTime? createdAt;
@@ -68,7 +68,7 @@ class Quote {
     DateTime? issueDate,
     DateTime? expiryDate,
     List<Item>? items,
-    int? totalAmount,
+    num? totalAmount,
     String? status,
     String? id,
     DateTime? createdAt,
@@ -129,8 +129,8 @@ class Quote {
 
 class Item {
   final String? description;
-  final int? quantity;
-  final int? price;
+  final num? quantity;
+  final num? price;
   final String? id;
 
   Item({
@@ -142,8 +142,8 @@ class Item {
 
   Item copyWith({
     String? description,
-    int? quantity,
-    int? price,
+    num? quantity,
+    num? price,
     String? id,
   }) =>
       Item(

@@ -44,11 +44,14 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
         centerTitle: true,
         title: 'Quote',
         actions: [
-          GestureDetector(
-            onTap: () => context.pushNamed(CreateQuoteView.routeName),
-            child: const Icon(
-              Icons.add_circle,
-              color: AppColors.primaryColor,
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: () => context.pushNamed(CreateQuoteView.routeName),
+              child: const Icon(
+                Icons.add_circle,
+                color: AppColors.primaryColor,
+              ),
             ),
           )
         ],

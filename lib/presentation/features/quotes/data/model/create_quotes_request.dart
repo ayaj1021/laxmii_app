@@ -65,8 +65,8 @@ class Item {
 
   Item copyWith({
     String? description,
-    int? quantity,
-    int? price,
+    num? quantity,
+    num? price,
   }) =>
       Item(
         description: description ?? this.description,
