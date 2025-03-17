@@ -101,6 +101,7 @@ class _LaxmiiEmailFieldState extends State<LaxmiiEmailField> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       // height: 50.h,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -109,62 +110,73 @@ class _LaxmiiEmailFieldState extends State<LaxmiiEmailField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextFormField(
-            key: widget.key,
-            textCapitalization: widget.textCapitalization,
-            onTap: widget.onTap,
-            readOnly: widget.readOnly,
-            initialValue: widget.initialValue,
-            textAlign: TextAlign.left,
-            inputFormatters: widget.inputFormatters,
-            autofocus: widget.autofocus ?? false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            enabled: widget.enabled,
-            validator: widget.validateFunction,
-            onSaved: (val) {
-              error = widget.validateFunction!(val);
-              setState(() {});
-              widget.onSaved?.call(val!);
-            },
-            onChanged: (val) {
-              widget.validateFunction != null
-                  ? error = widget.validateFunction!(val)
-                  : error = null;
-              setState(() {});
-              if (widget.onChange != null) widget.onChange!.call(val);
-            },
-            style: widget.textStyle ??
-                TextStyle(
-                  color: AppColors.white,
-                  fontSize: 14.sp,
+          Row(
+            children: [
+              SvgPicture.asset(
+                'assets/icons/email.svg',
+                fit: BoxFit.scaleDown,
+              ),
+              const HorizontalSpacing(5),
+              Expanded(
+                child: TextFormField(
+                  key: widget.key,
+                  textCapitalization: widget.textCapitalization,
+                  onTap: widget.onTap,
+                  readOnly: widget.readOnly,
+                  initialValue: widget.initialValue,
+                  textAlign: TextAlign.left,
+                  inputFormatters: widget.inputFormatters,
+                  autofocus: widget.autofocus ?? false,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  enabled: widget.enabled,
+                  validator: widget.validateFunction,
+                  onSaved: (val) {
+                    error = widget.validateFunction!(val);
+                    setState(() {});
+                    widget.onSaved?.call(val!);
+                  },
+                  onChanged: (val) {
+                    widget.validateFunction != null
+                        ? error = widget.validateFunction!(val)
+                        : error = null;
+                    setState(() {});
+                    if (widget.onChange != null) widget.onChange!.call(val);
+                  },
+                  style: widget.textStyle ??
+                      TextStyle(
+                        color: AppColors.white,
+                        fontSize: 14.sp,
+                      ),
+                  cursorColor: AppColors.primaryColor,
+                  maxLines: widget.maxLines,
+                  controller: widget.controller,
+                  obscureText: widget.obscureText!,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: widget.textInputAction,
+                  focusNode: widget.focusNode,
+                  onFieldSubmitted: widget.onFieldSubmitted,
+                  decoration: widget.decoration ??
+                      InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: widget.backgroundColor,
+                        // prefixIcon: SvgPicture.asset(
+                        //   'assets/icons/email.svg',
+                        //   fit: BoxFit.scaleDown,
+                        // ),
+                        prefix: widget.prefix,
+                        suffixIcon: widget.suffixIcon,
+                        enabled: false,
+                        hintText: widget.hintText,
+                        hintStyle: widget.hintStyle,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
                 ),
-            cursorColor: AppColors.primaryColor,
-            maxLines: widget.maxLines,
-            controller: widget.controller,
-            obscureText: widget.obscureText!,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: widget.textInputAction,
-            focusNode: widget.focusNode,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            decoration: widget.decoration ??
-                InputDecoration(
-                  border: InputBorder.none,
-                  filled: true,
-                  fillColor: widget.backgroundColor,
-                  prefixIcon: SvgPicture.asset(
-                    'assets/icons/email.svg',
-                    fit: BoxFit.scaleDown,
-                  ),
-                  prefix: widget.prefix,
-                  suffixIcon: widget.suffixIcon,
-                  enabled: false,
-                  hintText: widget.hintText,
-                  hintStyle: widget.hintStyle,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
+              ),
+            ],
           ),
           Stack(
             children: [

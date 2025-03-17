@@ -95,7 +95,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
   }
 
   // List of items
-  double totalAmount = 0.0; // Total amount
+  double totalAmount = 0; // Total amount
   double taxAmount = 0.0; // Total amount
   double balanceAmount = 0.0; // Total amount
 
@@ -130,7 +130,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
   }
 
   double taxAmounts() {
-    return taxAmount = items.fold(0, (sum, item) => sum + (totalAmount * 0.08));
+    return taxAmount = items.fold(0, (sum, item) => sum + (totalAmount * 0));
   }
 
   @override
@@ -174,23 +174,27 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                     color: AppColors.primary101010),
                 child: Column(
                   children: [
-                    TextField(
-                      style: context.textTheme.s14w400.copyWith(
-                        color: AppColors.white,
-                      ),
-                      controller: _customerNameController,
-                      decoration: InputDecoration(
-                        hintText: 'Customer (required)',
-                        hintStyle: context.textTheme.s14w400.copyWith(
-                          color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 11.5),
+                      child: TextField(
+                        style: context.textTheme.s14w400.copyWith(
+                          color: AppColors.white,
                         ),
-                        border: InputBorder.none,
-                        fillColor: Colors.transparent,
-                        filled: false,
-                        focusColor: Colors.transparent,
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
+                        controller: _customerNameController,
+                        decoration: InputDecoration(
+                          hintText: 'Customer (required)',
+                          hintStyle: context.textTheme.s14w400.copyWith(
+                            color:
+                                AppColors.primary5E5E5E.withValues(alpha: 0.5),
+                          ),
+                          border: InputBorder.none,
+                          fillColor: Colors.transparent,
+                          filled: false,
+                          focusColor: Colors.transparent,
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                            ),
                           ),
                         ),
                       ),
@@ -232,7 +236,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                               color: AppColors.primary5E5E5E,
                             ),
                           ),
-                          const HorizontalSpacing(50),
+                          const HorizontalSpacing(45),
                           GestureDetector(
                             onTap: () => _selectDate(context),
                             child: Text(
@@ -310,7 +314,8 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                                           itemName: item.itemName,
                                           itemQuantity: item.itemQuantity,
                                           itemPrice: item.itemPrice,
-                                          totalItemPrice: price,
+                                          totalItemPrice: double.parse(
+                                              price.toStringAsFixed(2)),
                                           onItemDelete: () {
                                             setState(() {
                                               items.remove(item);
@@ -369,23 +374,23 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
                 child: Column(
                   children: [
                     InvoiceWidget(
-                      title: 'Subtotal',
+                      title: 'Total',
                       subTitle: '\$${calculateTotalAmount()}',
                       //'\$${totalAmount.toStringAsFixed(2)}',
                     ),
-                    const VerticalSpacing(14),
-                    InvoiceWidget(
-                      title: 'Tax 8%',
-                      subTitle: '\$${taxAmounts()}',
-                      //'\$${taxAmount.toStringAsFixed(2)}',
-                    ),
-                    const VerticalSpacing(14),
-                    InvoiceWidget(
-                      title: 'Balance due',
-                      subTitle: '\$${balanceDue()}',
-                      //'\$${balanceAmount.toStringAsFixed(2)}',
-                    ),
-                    const VerticalSpacing(19),
+                    //  const VerticalSpacing(14),
+                    // InvoiceWidget(
+                    //   title: 'Tax 8%',
+                    //   subTitle: '\$${taxAmounts()}',
+                    //   //'\$${taxAmount.toStringAsFixed(2)}',
+                    // ),
+                    // const VerticalSpacing(14),
+                    // InvoiceWidget(
+                    //   title: 'Balance due',
+                    //   subTitle: '\$${balanceDue()}',
+                    //   //'\$${balanceAmount.toStringAsFixed(2)}',
+                    // ),
+                    const VerticalSpacing(40),
                     ValueListenableBuilder(
                         valueListenable: _isAddSalesEnabled,
                         builder: (context, r, c) {

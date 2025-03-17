@@ -77,7 +77,6 @@ import 'package:laxmii_app/presentation/features/verify_email/data/model/resend_
 import 'package:laxmii_app/presentation/features/verify_email/data/model/resend_otp_response.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/verify_email_otp_request.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/verify_email_otp_response.dart';
-
 import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
@@ -272,7 +271,7 @@ abstract class RestClient {
   @GET('/api/expenses')
   Future<GetAllExpensesResponse> getAllExpenses();
 
-  @GET('/api/invoices')
+  @GET('/api/invoices/')
   Future<GetAllInvoiceResponse> getAllInvoices();
 
   @GET('/api/get-invoice-no')
@@ -283,7 +282,7 @@ abstract class RestClient {
     @Body() AiInsightsRequest request,
   );
 
-  @GET('/api/cashflow')
+  @GET('/api/cashflow/')
   Future<GetCashFlowResponse> getCashFlow(
     @Body() GetCashFlowRequest request,
   );

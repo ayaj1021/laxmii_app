@@ -46,17 +46,19 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
           transactionsList == null
               ? const SizedBox.shrink()
               : transactionsList.isEmpty
-                  ? Column(
-                      children: [
-                        SvgPicture.asset('assets/icons/empty_data.svg'),
-                        const VerticalSpacing(10),
-                        Text(
-                          'No Sales Available',
-                          style: context.textTheme.s14w500.copyWith(
-                            color: AppColors.white,
+                  ? Center(
+                      child: Column(
+                        children: [
+                          SvgPicture.asset('assets/icons/empty_data.svg'),
+                          const VerticalSpacing(10),
+                          Text(
+                            'No Sales Available',
+                            style: context.textTheme.s14w500.copyWith(
+                              color: AppColors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   : Expanded(
                       child: ListView.builder(

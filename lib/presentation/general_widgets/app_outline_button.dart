@@ -9,17 +9,17 @@ class LaxmiiOutlineSendButton extends StatefulWidget {
     required this.title,
     super.key,
     this.isEnabled = true,
-    this.backgroundColor = AppColors.primaryColor,
+    this.backgroundColor,
     this.textColor = Colors.white,
     this.hasBorder = false,
     this.isLoading = false,
     this.width = double.infinity,
-    this.borderColor = AppColors.primary1D1446,
+    this.borderColor = AppColors.primaryColor,
     this.icon,
   });
 
   final bool isEnabled;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color textColor;
   final Color borderColor;
   final bool hasBorder;
@@ -48,11 +48,8 @@ class _LaxmiiOutlineSendButtonState extends State<LaxmiiOutlineSendButton> {
                   ? widget.backgroundColor
                   : AppColors.secondaryColor,
               borderRadius: BorderRadius.circular(16),
-              border: Border.fromBorderSide(
-                widget.hasBorder
-                    ? BorderSide(color: widget.borderColor)
-                    : BorderSide.none,
-              )),
+              border:
+                  Border.fromBorderSide(BorderSide(color: widget.borderColor))),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(

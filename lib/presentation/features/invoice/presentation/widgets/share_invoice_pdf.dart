@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:laxmii_app/core/utils/utils.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
@@ -11,10 +13,12 @@ class InvoicePdfGenerator {
     bool isHeader = false,
     String? title,
     required double total,
+    required double filteredInvoiceTotal,
     required String customerName,
     required String dueDate,
     required String invoiceNumber,
     required List<CreateInvoiceItem> invoiceItems,
+    required List<Item> filteredInvoices,
   }) async {
     final pdf = pw.Document();
 
@@ -72,7 +76,7 @@ class InvoicePdfGenerator {
                           ),
                           pw.SizedBox(width: 3),
                           pw.Text(
-                            dueDate,
+                            AppUtils.formatAppDate(dueDate),
                             style: pw.TextStyle(
                               fontSize: 15, // Match font size
                               fontWeight:
@@ -113,63 +117,104 @@ class InvoicePdfGenerator {
                   ),
                 ],
               ),
-              pw.Column(
-                children: List.generate(invoiceItems.length, (index) {
-                  final reportData = invoiceItems[index];
-                  final rowData = [
-                    (reportData.description),
-                    '${reportData.quantity}',
-                    '${reportData.price}',
-                    '${(reportData.quantity) * (reportData.price)}',
-                  ];
+              invoiceItems.isEmpty
+                  ? pw.Column(
+                      children: List.generate(filteredInvoices.length, (index) {
+                        final reportData = filteredInvoices[index];
+                        final rowData = [
+                          (reportData.description ?? ''),
+                          '${reportData.quantity}',
+                          '${reportData.price}',
+                          '${(reportData.quantity) * (reportData.price)}',
+                        ];
 
-                  return pw.Table(
-                    border: pw.TableBorder.all(),
-                    columnWidths: {
-                      0: const pw.FlexColumnWidth(
-                          1), // Adjust column widths as needed
-                      1: const pw.FlexColumnWidth(2),
-                      2: const pw.FlexColumnWidth(2),
-                      3: const pw.FlexColumnWidth(1),
-                    },
-                    children: [
-                      pw.TableRow(
-                        children: rowData.map((data) {
-                          return pw.Padding(
-                            padding: const pw.EdgeInsets.all(8),
-                            child: pw.Text(
-                              data,
-                              style: pw.TextStyle(
-                                fontSize: 12,
-                                fontWeight: pw.FontWeight.bold,
-                              ),
+                        return pw.Table(
+                          border: pw.TableBorder.all(),
+                          columnWidths: {
+                            0: const pw.FlexColumnWidth(
+                                1), // Adjust column widths as needed
+                            1: const pw.FlexColumnWidth(2),
+                            2: const pw.FlexColumnWidth(2),
+                            3: const pw.FlexColumnWidth(1),
+                          },
+                          children: [
+                            pw.TableRow(
+                              children: rowData.map((data) {
+                                return pw.Padding(
+                                  padding: const pw.EdgeInsets.all(8),
+                                  child: pw.Text(
+                                    data,
+                                    style: pw.TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: pw.FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-              pw.SizedBox(height: 50),
-              pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 16),
-                child: pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text(
-                      'Total(\$)',
-                      style: pw.TextStyle(
-                          fontSize: 16, fontWeight: pw.FontWeight.bold),
-                    ),
-                    pw.Text(
-                      '\$$total',
-                      style: pw.TextStyle(
-                          fontSize: 16, fontWeight: pw.FontWeight.bold),
+                          ],
+                        );
+                      }),
                     )
-                  ],
-                ),
-              ),
+                  : pw.Column(
+                      children: List.generate(invoiceItems.length, (index) {
+                        final reportData = invoiceItems[index];
+                        final rowData = [
+                          (reportData.description),
+                          '${reportData.quantity}',
+                          '${reportData.price}',
+                          '${(reportData.quantity) * (reportData.price)}',
+                        ];
+
+                        return pw.Table(
+                          border: pw.TableBorder.all(),
+                          columnWidths: {
+                            0: const pw.FlexColumnWidth(
+                                1), // Adjust column widths as needed
+                            1: const pw.FlexColumnWidth(2),
+                            2: const pw.FlexColumnWidth(2),
+                            3: const pw.FlexColumnWidth(1),
+                          },
+                          children: [
+                            pw.TableRow(
+                              children: rowData.map((data) {
+                                return pw.Padding(
+                                  padding: const pw.EdgeInsets.all(8),
+                                  child: pw.Text(
+                                    data,
+                                    style: pw.TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: pw.FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+              pw.SizedBox(height: 50),
+              // pw.Padding(
+              //   padding: const pw.EdgeInsets.symmetric(horizontal: 16),
+              //   child: pw.Row(
+              //     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       pw.Text(
+              //         'Total(\$)',
+              //         style: pw.TextStyle(
+              //             fontSize: 16, fontWeight: pw.FontWeight.bold),
+              //       ),
+              //       pw.Text(
+              //         invoiceItems.isEmpty
+              //             ? '\$$total'
+              //             : '\$$filteredInvoiceTotal',
+              //         style: pw.TextStyle(
+              //             fontSize: 16, fontWeight: pw.FontWeight.bold),
+              //       )
+              //     ],
+              //   ),
+              // ),
             ],
           );
         },

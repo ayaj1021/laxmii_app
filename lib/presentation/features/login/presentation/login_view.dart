@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +15,9 @@ import 'package:laxmii_app/presentation/features/login/data/model/login_request.
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/remember_me_provider.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/widgets/login_header_section.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
+import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_checkbox.dart';
@@ -103,7 +107,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                               onChecked: (value) async {
                                 if (value != null) {
                                   ref.read(rememberMeProvider.notifier).state =
-                                      rememberMe;
+                                      !rememberMe;
                                   await AppDataStorage().saveRememberMe(
                                       'remember_me', rememberMe);
                                 }
@@ -215,10 +219,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
           onError: (error) {
             context.showError(message: error);
           },
-          onSuccess: (message) {
+          onSuccess: (message, isVerified, isAccountSetup) {
             context.hideOverLay();
             context.showSuccess(message: 'Login Successful');
-            context.pushReplacementNamed(Dashboard.routeName);
+            log('This is verified $isVerified');
+
+            isVerified == false
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => VerifyEmail(
+                              email: _emailController.text.trim(),
+                              isForgotPassword: false,
+                            )))
+                : isAccountSetup
+                    ? context.pushReplacementNamed(Dashboard.routeName)
+                    //   : context.pushReplacementNamed(Dashboard.routeName);
+                    : context.pushReplacementNamed(ProfileSetupView.routeName);
           },
         );
   }

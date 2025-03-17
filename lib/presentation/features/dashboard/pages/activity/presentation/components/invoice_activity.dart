@@ -30,7 +30,7 @@ class _InvoiceWidgetState extends ConsumerState<InvoiceActivity> {
     final allInvoiceList = ref.watch(getAllInvoiceNotifierProvider
         .select((v) => v.getAllInvoice.data?.invoices ?? []));
     return Container(
-      height: MediaQuery.of(context).size.height * 0.34,
+      height: MediaQuery.of(context).size.height * 0.4,
       padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
       width: double.infinity,
       decoration: BoxDecoration(

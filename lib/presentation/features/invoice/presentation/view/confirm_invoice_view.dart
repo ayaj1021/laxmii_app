@@ -212,27 +212,27 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                             ),
                           ),
                     const VerticalSpacing(8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total(\$)',
-                            style: context.textTheme.s16w500.copyWith(
-                              color: AppColors.black,
-                            ),
-                          ),
-                          Text(
-                            // ignore: unrelated_type_equality_checks
-                            '\$${(widget.items?.isEmpty ?? widget.items == 0) ? calculateTotalAmount() : calculateFilteredTotalAmount()}',
-                            style: context.textTheme.s16w500.copyWith(
-                              color: AppColors.black,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text(
+                    //         'Total(\$)',
+                    //         style: context.textTheme.s16w500.copyWith(
+                    //           color: AppColors.black,
+                    //         ),
+                    //       ),
+                    //       Text(
+                    //         // ignore: unrelated_type_equality_checks
+                    //         '\$${(widget.items?.isEmpty ?? widget.items == 0) ? calculateTotalAmount() : calculateFilteredTotalAmount()}',
+                    //         style: context.textTheme.s16w500.copyWith(
+                    //           color: AppColors.black,
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                     const VerticalSpacing(150),
                     widget.invoiceStatus == 'unpaid'
                         ? LaxmiiSendButton(
@@ -260,7 +260,11 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                                     dueDate: widget.dueDate,
                                     invoiceNumber: widget.invoiceNumber,
                                     total: calculateTotalAmount(),
+                                    filteredInvoiceTotal:
+                                        calculateFilteredTotalAmount(),
                                     invoiceItems: widget.items ?? [],
+                                    filteredInvoices:
+                                        widget.filteredInvoices ?? [],
                                     cells: [
                                       'Product',
                                       'Quantity',

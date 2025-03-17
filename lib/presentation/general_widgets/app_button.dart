@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class LaxmiiSendButton extends StatefulWidget {
   const LaxmiiSendButton({
@@ -12,6 +13,7 @@ class LaxmiiSendButton extends StatefulWidget {
     this.hasBorder = false,
     this.width = double.infinity,
     this.borderColor = AppColors.primary1D1446,
+    this.icon,
   });
 
   final bool isEnabled;
@@ -20,6 +22,7 @@ class LaxmiiSendButton extends StatefulWidget {
   final Color borderColor;
   final bool hasBorder;
   final String title;
+  final Widget? icon;
   final void Function() onTap;
 
   final double width;
@@ -49,13 +52,20 @@ class _LaxmiiSendButtonState extends State<LaxmiiSendButton> {
               )),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(
-              widget.title,
-              style: TextStyle(
-                color: widget.textColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    color: widget.textColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (widget.icon != null) const HorizontalSpacing(8),
+                widget.icon ?? const SizedBox.shrink()
+              ],
             ),
           ),
         ),

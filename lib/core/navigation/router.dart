@@ -13,6 +13,7 @@ import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoi
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/onboarding_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/welcome_screen.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/create_quote_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/quote_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_item_section.dart';
@@ -54,6 +55,7 @@ class AppRouter {
     AiInsightsView.routeName: (context) => const AiInsightsView(),
     OnboardingView.routeName: (context) => const OnboardingView(),
     WelcomeScreen.routeName: (context) => const WelcomeScreen(),
+    ProfileSetupView.routeName: (context) => const ProfileSetupView(),
   };
   static Map<String, Widget Function(BuildContext)> get routes => _routes;
 }

@@ -74,42 +74,46 @@ class _TodoViewState extends ConsumerState<TodoView>
                   ),
                 ),
                 const VerticalSpacing(12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TabBar(
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          indicatorWeight: 0,
-                          labelPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TabBar(
+                            isScrollable: true,
+                            tabAlignment: TabAlignment.start,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorWeight: 0,
+                            labelPadding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.primaryColor,
+                            ),
+                            labelStyle: context.textTheme.s12w400
+                                .copyWith(color: AppColors.white),
+                            unselectedLabelStyle: context.textTheme.s12w400
+                                .copyWith(color: AppColors.primary3B3522),
+                            controller: _tabController,
+                            tabs: const [
+                              Text('Weekly'),
+                              Text('Monthly'),
+                              Text('Yearly'),
+                            ]),
+                      ),
+                      GestureDetector(
+                        onTap: () =>
+                            context.pushNamed(CreateTaskView.routeName),
+                        child: const Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(
+                            Icons.add_circle,
                             color: AppColors.primaryColor,
                           ),
-                          labelStyle: context.textTheme.s12w400
-                              .copyWith(color: AppColors.white),
-                          unselectedLabelStyle: context.textTheme.s12w400
-                              .copyWith(color: AppColors.primary3B3522),
-                          controller: _tabController,
-                          tabs: const [
-                            Text('Weekly'),
-                            Text('Monthly'),
-                            Text('Yearly'),
-                          ]),
-                    ),
-                    GestureDetector(
-                      onTap: () => context.pushNamed(CreateTaskView.routeName),
-                      child: const Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.add_circle,
-                          color: AppColors.primaryColor,
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const VerticalSpacing(19),
                 Expanded(

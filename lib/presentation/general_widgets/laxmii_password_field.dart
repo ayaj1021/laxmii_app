@@ -12,7 +12,6 @@ class LaxmiiPasswordField extends StatefulWidget {
     this.width,
     this.labelSpace = 3,
     this.textCapitalization = TextCapitalization.sentences,
-   
     this.onTap,
     this.decoration,
     this.hintStyle,
@@ -106,6 +105,7 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
   Widget build(BuildContext context) {
     return Container(
       // height: 50.h,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: AppColors.primary212121)),
@@ -113,69 +113,83 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextFormField(
-            key: widget.key,
-            textCapitalization: widget.textCapitalization,
-            onTap: widget.onTap,
-            readOnly: widget.readOnly,
-            initialValue: widget.initialValue,
-            textAlign: TextAlign.left,
-            inputFormatters: widget.inputFormatters,
-            autofocus: widget.autofocus ?? false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            enabled: widget.enabled,
-            validator: widget.validateFunction,
-            obscureText: obscure,
-            onSaved: (val) {
-              error = widget.validateFunction!(val);
-              setState(() {});
-              widget.onSaved?.call(val!);
-            },
-            onChanged: (val) {
-              widget.validateFunction != null
-                  ? error = widget.validateFunction!(val)
-                  : error = null;
-              setState(() {});
-              if (widget.onChange != null) widget.onChange!.call(val);
-            },
-            style: widget.textStyle ??
-                TextStyle(
-                  color: AppColors.white,
-                  fontSize: 14.sp,
-                ),
-            cursorColor: AppColors.primaryColor,
-            maxLines: widget.maxLines,
-            controller: widget.controller,
-            textInputAction: widget.textInputAction,
-            focusNode: widget.focusNode,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            decoration: widget.decoration ??
-                InputDecoration(
-                  fillColor: widget.backgroundColor,
-                  prefixIcon: SvgPicture.asset(
-                    'assets/icons/password_icon.svg',
-                    fit: BoxFit.scaleDown,
+          Row(
+            children: [
+              SvgPicture.asset(
+                'assets/icons/password_icon.svg',
+                // fit: BoxFit.scaleDown,
+              ),
+              const HorizontalSpacing(5),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextFormField(
+                    key: widget.key,
+                    textCapitalization: widget.textCapitalization,
+                    onTap: widget.onTap,
+                    readOnly: widget.readOnly,
+                    initialValue: widget.initialValue,
+                    textAlign: TextAlign.left,
+                    inputFormatters: widget.inputFormatters,
+                    autofocus: widget.autofocus ?? false,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    enabled: widget.enabled,
+                    validator: widget.validateFunction,
+                    obscureText: obscure,
+                    onSaved: (val) {
+                      error = widget.validateFunction!(val);
+                      setState(() {});
+                      widget.onSaved?.call(val!);
+                    },
+                    onChanged: (val) {
+                      widget.validateFunction != null
+                          ? error = widget.validateFunction!(val)
+                          : error = null;
+                      setState(() {});
+                      if (widget.onChange != null) widget.onChange!.call(val);
+                    },
+                    style: widget.textStyle ??
+                        TextStyle(
+                          color: AppColors.white,
+                          fontSize: 14.sp,
+                        ),
+                    cursorColor: AppColors.primaryColor,
+                    maxLines: widget.maxLines,
+                    controller: widget.controller,
+                    textInputAction: widget.textInputAction,
+                    focusNode: widget.focusNode,
+                    onFieldSubmitted: widget.onFieldSubmitted,
+                    decoration: widget.decoration ??
+                        InputDecoration(
+                          fillColor: widget.backgroundColor,
+                          // prefixIcon: SvgPicture.asset(
+                          //   'assets/icons/password_icon.svg',
+                          //   fit: BoxFit.scaleDown,
+                          // ),
+                          prefix: widget.prefix,
+                          suffixIcon: GestureDetector(
+                            onTap: () => setState(
+                              () {
+                                obscure = !obscure;
+                              },
+                            ),
+                            child: SvgPicture.asset(
+                              "assets/icons/${!obscure ? "eye-slash" : "eye"}.svg",
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                          enabled: false,
+                          hintText: widget.hintText,
+                          hintStyle: widget.hintStyle,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
                   ),
-                  prefix: widget.prefix,
-                  suffixIcon: GestureDetector(
-                    onTap: () => setState(
-                      () {
-                        obscure = !obscure;
-                      },
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/icons/${!obscure ? "eye-slash" : "eye"}.svg",
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                  enabled: false,
-                  hintText: widget.hintText,
-                  hintStyle: widget.hintStyle,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
                 ),
+              ),
+            ],
           ),
           if (widget.showError) ...[
             Stack(
@@ -193,7 +207,6 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
               ],
             ),
           ],
-         
         ],
       ),
     );

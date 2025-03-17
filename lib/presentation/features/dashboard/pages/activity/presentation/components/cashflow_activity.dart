@@ -6,7 +6,6 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/m
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_chart.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
-
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class CashFlowActivity extends ConsumerStatefulWidget {

@@ -105,96 +105,111 @@ class _LaxmiiFormfieldState extends State<LaxmiiFormfield> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //height: 50.h,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.primary212121)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (widget.label != null)
-            Text(
-              widget.label!,
-              style: context.textTheme.s12w700
-                  .copyWith(color: AppColors.primary1D1446),
-            ),
-          if (widget.label != null) SizedBox(height: widget.labelSpace),
-          TextFormField(
-            key: widget.key,
-            textCapitalization: widget.textCapitalization,
-            onTap: widget.onTap,
-            readOnly: widget.readOnly,
-            initialValue: widget.initialValue,
-            textAlign: TextAlign.left,
-            inputFormatters: widget.inputFormatters,
-            autofocus: widget.autofocus ?? false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            //enabled: widget.enabled,
-            maxLength: widget.maxLength,
-            validator: widget.validateFunction,
-            onSaved: (val) {
-              error = widget.validateFunction!(val);
-              setState(() {});
-              widget.onSaved?.call(val!);
-            },
-            onChanged: (val) {
-              widget.validateFunction != null
-                  ? error = widget.validateFunction!(val)
-                  : error = null;
-              setState(() {});
-              if (widget.onChange != null) widget.onChange!.call(val);
-            },
-            style: widget.textStyle ??
-                TextStyle(
-                  color: AppColors.white,
-                  fontSize: 14.sp,
-                ),
-            //cursorColor: AppColors.primarysWatch,
-            maxLines: widget.maxLines,
-            controller: widget.controller,
-            obscureText: widget.obscureText!,
-            keyboardType: widget.keyboardType,
-            textInputAction: widget.textInputAction,
-            focusNode: widget.focusNode,
-            onFieldSubmitted: widget.onFieldSubmitted,
-            decoration: widget.decoration ??
-                InputDecoration(
-                  fillColor: widget.backgroundColor,
-                  counterText: '',
-                  border: InputBorder.none,
-                  prefixIcon:  SvgPicture.asset(
-                      'assets/icons/user.svg',
-                      fit: BoxFit.scaleDown,
-                    ),
-                  prefix: widget.prefix,
-                  suffixIcon: widget.suffixIcon,
-                  // enabled: true,
-                  hintText: widget.hintText,
-                  hintStyle: widget.hintStyle,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null)
+          Text(
+            widget.label!,
+            style: context.textTheme.s14w400
+                .copyWith(color: AppColors.primaryC4C4C4),
           ),
-          Stack(
+        if (widget.label != null) SizedBox(height: widget.labelSpace),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          //height: 50.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.primary212121)),
+          child: Column(
             children: [
-              if (error != null || widget.errorMessage != null) ...[
-                const VerticalSpacing(5),
-                Text(
-                  widget.errorMessage ?? error!,
-                  style: const TextStyle(
-                    color: AppColors.red,
-                    fontSize: 12,
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/user.svg',
+                    fit: BoxFit.scaleDown,
                   ),
-                ),
-              ],
+                  const HorizontalSpacing(5),
+                  Expanded(
+                    child: TextFormField(
+                      key: widget.key,
+                      textCapitalization: widget.textCapitalization,
+                      onTap: widget.onTap,
+                      readOnly: widget.readOnly,
+                      initialValue: widget.initialValue,
+                      textAlign: TextAlign.left,
+                      inputFormatters: widget.inputFormatters,
+                      autofocus: widget.autofocus ?? false,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //enabled: widget.enabled,
+                      maxLength: widget.maxLength,
+                      validator: widget.validateFunction,
+                      onSaved: (val) {
+                        error = widget.validateFunction!(val);
+                        setState(() {});
+                        widget.onSaved?.call(val!);
+                      },
+                      onChanged: (val) {
+                        widget.validateFunction != null
+                            ? error = widget.validateFunction!(val)
+                            : error = null;
+                        setState(() {});
+                        if (widget.onChange != null) widget.onChange!.call(val);
+                      },
+                      style: widget.textStyle ??
+                          TextStyle(
+                            color: AppColors.white,
+                            fontSize: 14.sp,
+                          ),
+                      //cursorColor: AppColors.primarysWatch,
+                      maxLines: widget.maxLines,
+                      controller: widget.controller,
+                      obscureText: widget.obscureText!,
+                      keyboardType: widget.keyboardType,
+                      textInputAction: widget.textInputAction,
+                      focusNode: widget.focusNode,
+                      onFieldSubmitted: widget.onFieldSubmitted,
+                      decoration: widget.decoration ??
+                          InputDecoration(
+                            fillColor: widget.backgroundColor,
+                            counterText: '',
+                            border: InputBorder.none,
+                            // prefixIcon: SvgPicture.asset(
+                            //   'assets/icons/user.svg',
+                            //   fit: BoxFit.scaleDown,
+                            // ),
+                            prefix: widget.prefix,
+                            suffixIcon: widget.suffixIcon,
+                            // enabled: true,
+                            hintText: widget.hintText,
+                            hintStyle: widget.hintStyle,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              Stack(
+                children: [
+                  if (error != null || widget.errorMessage != null) ...[
+                    const VerticalSpacing(5),
+                    Text(
+                      widget.errorMessage ?? error!,
+                      style: const TextStyle(
+                        color: AppColors.red,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

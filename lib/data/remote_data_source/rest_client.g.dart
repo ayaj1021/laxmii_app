@@ -1406,7 +1406,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '/api/invoices',
+          '/api/invoices/',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -1507,7 +1507,7 @@ class _RestClient implements RestClient {
     )
         .compose(
           _dio.options,
-          '/api/cashflow',
+          '/api/cashflow/',
           queryParameters: queryParameters,
           data: _data,
         )

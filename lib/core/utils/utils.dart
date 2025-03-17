@@ -41,3 +41,20 @@
 //       });
 //     }
 //   }
+
+import 'package:intl/intl.dart';
+
+class AppUtils {
+  // static String formatDate(date) {
+  //   return DateFormat('d MMM, yy').format(date);
+  // }
+
+  static formatAppDate(String date) {
+    DateTime parsedDate = DateTime.parse(date);
+
+    String formattedDate = DateFormat('d MMM, yy').format(parsedDate);
+    DateFormat("MMM d yyyy").format(parsedDate);
+
+    return formattedDate;
+  }
+}

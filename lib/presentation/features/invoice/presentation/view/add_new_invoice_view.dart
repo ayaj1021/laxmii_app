@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
@@ -11,7 +12,9 @@ import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/a
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_invoice_by_name_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/empty_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
+import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class AddNewInvoiceView extends ConsumerStatefulWidget {
@@ -66,103 +69,121 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
         .toList();
     final invoiceQuantity = ref.watch(getInvoiceByNameNotifierProvider
         .select((v) => v.getInvoiceByName.data?.inventoryItem?.quantity));
+
+    final isLoading = ref.watch(
+        getAllInventoryNotifierProvider.select((v) => v.loadState.isLoading));
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Add invoice',
         centerTitle: true,
       ),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    width: 1.5,
-                    color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: DropdownButton<Inventory>(
-                  dropdownColor: AppColors.primary101010,
-                  value: _selectedProduct,
-                  padding: EdgeInsets.zero,
-                  hint: Text(
-                    'Select Product',
-                    style: context.textTheme.s12w300.copyWith(
-                      color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
-                    ),
-                  ),
-                  underline: const SizedBox.shrink(),
-                  icon: const Icon(Icons.keyboard_arrow_down),
-                  isExpanded: true,
-                  items: inventoryList.map((Inventory item) {
-                    return DropdownMenuItem<Inventory>(
-                      value: item,
-                      child: Text(
-                        '${item.productName}',
-                        style: context.textTheme.s12w400.copyWith(
-                          color: AppColors.primary5E5E5E,
+      body: PageLoader(
+        isLoading: isLoading,
+        child: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+          child: SingleChildScrollView(
+            child: isLoading
+                ? const SizedBox.shrink()
+                : inventoryList.isEmpty
+                    ? const Center(
+                        child: EmptyPage(
+                          emptyMessage: 'No item kindly add to your inventory',
                         ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (Inventory? newValue) {
-                    setState(() {
-                      _selectedProduct = newValue;
-                      getInvoiceDetails(
-                          productName: '${newValue?.productName}');
-                    });
-                  },
-                ),
-              ),
-              const VerticalSpacing(15),
-              UpdateProductsTextField(
-                product: _quantityController,
-                title: 'Quantity  ${invoiceQuantity ?? ''}',
-                keyboardType: TextInputType.number,
-              ),
-              const VerticalSpacing(15),
-              UpdateProductsTextField(
-                isMoney: true,
-                product: _sellingPriceController,
-                title: 'Selling Price',
-                keyboardType: TextInputType.number,
-              ),
-              const VerticalSpacing(150),
-              ValueListenableBuilder(
-                  valueListenable: isAddProductEnabled,
-                  builder: (context, r, c) {
-                    return LaxmiiOutlineSendButton(
-                      isEnabled: r,
-                      onTap: () {
-                        if (int.parse(_quantityController.text) >
-                            (invoiceQuantity?.toInt() ?? 0)) {
-                          context.showError(
-                              message:
-                                  'Quantity cannot be higher than existing quantity');
-                        } else {
-                          final item = ProductItems(
-                            itemName: '${_selectedProduct?.productName}',
-                            itemPrice: double.parse(
-                                _sellingPriceController.text.trim()),
-                            itemQuantity:
-                                int.parse(_quantityController.text.trim()),
-                          );
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                width: 1.5,
+                                color: AppColors.primary5E5E5E
+                                    .withValues(alpha: 0.5),
+                              ),
+                            ),
+                            child: DropdownButton<Inventory>(
+                              dropdownColor: AppColors.primary101010,
+                              value: _selectedProduct,
+                              padding: EdgeInsets.zero,
+                              hint: Text(
+                                'Select Product',
+                                style: context.textTheme.s12w300.copyWith(
+                                  color: AppColors.primaryC4C4C4
+                                      .withValues(alpha: 0.4),
+                                ),
+                              ),
+                              underline: const SizedBox.shrink(),
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              isExpanded: true,
+                              items: inventoryList.map((Inventory item) {
+                                return DropdownMenuItem<Inventory>(
+                                  value: item,
+                                  child: Text(
+                                    '${item.productName}',
+                                    style: context.textTheme.s16w400.copyWith(
+                                      color: AppColors.primary5E5E5E,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (Inventory? newValue) {
+                                setState(() {
+                                  _selectedProduct = newValue;
+                                  getInvoiceDetails(
+                                      productName: '${newValue?.productName}');
+                                });
+                              },
+                            ),
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _quantityController,
+                            title: 'Quantity  ${invoiceQuantity ?? ''}',
+                            keyboardType: TextInputType.number,
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            isMoney: true,
+                            product: _sellingPriceController,
+                            title: 'Selling Price',
+                            keyboardType: TextInputType.number,
+                          ),
+                          const VerticalSpacing(150),
+                          ValueListenableBuilder(
+                              valueListenable: isAddProductEnabled,
+                              builder: (context, r, c) {
+                                return LaxmiiOutlineSendButton(
+                                  isEnabled: r,
+                                  onTap: () {
+                                    if (int.parse(_quantityController.text) >
+                                        (invoiceQuantity?.toInt() ?? 0)) {
+                                      context.showError(
+                                          message:
+                                              'Quantity cannot be higher than existing quantity');
+                                    } else {
+                                      final item = ProductItems(
+                                        itemName:
+                                            '${_selectedProduct?.productName}',
+                                        itemPrice: double.parse(
+                                            _sellingPriceController.text
+                                                .trim()),
+                                        itemQuantity: int.parse(
+                                            _quantityController.text.trim()),
+                                      );
 
-                          Navigator.pop(context, item);
-                        }
-                      },
-                      title: 'Add Product',
-                    );
-                  }),
-            ],
+                                      Navigator.pop(context, item);
+                                    }
+                                  },
+                                  title: 'Add Product',
+                                );
+                              }),
+                        ],
+                      ),
           ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 

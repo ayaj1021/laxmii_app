@@ -36,7 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         CurrentState.onboarded => context.replaceNamed(LoginView.routeName),
         CurrentState.loggedIn => context.replaceNamed(Dashboard.routeName),
         _ => context.replaceNamed(WelcomeScreen.routeName)
-        //  _ => context.replaceNamed(SignUpView.routeName)
+        // _ => context.replaceNamed(SignUpView.routeName),
       };
     });
   }

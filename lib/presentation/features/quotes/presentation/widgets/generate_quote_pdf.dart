@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/quote_generator_class.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -301,6 +303,20 @@ class _QuotePageState extends State<QuotePage> {
                 ),
               ],
             ),
+
+            const VerticalSpacing(50),
+            GestureDetector(
+              onTap: () => context.pushReplacementNamed(Dashboard.routeName),
+              child: const Center(
+                child: Text(
+                  'Go back home',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor),
+                ),
+              ),
+            )
           ],
         ),
       ),

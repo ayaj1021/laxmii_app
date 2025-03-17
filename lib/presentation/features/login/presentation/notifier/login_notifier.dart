@@ -22,7 +22,8 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
   Future<void> login({
     required LoginRequest data,
     required void Function(String error) onError,
-    required void Function(String message) onSuccess,
+    required void Function(String message, bool isVerified, bool isAccountSetup)
+        onSuccess,
   }) async {
     state = state.copyWith(loginState: LoadState.loading);
 
@@ -30,6 +31,7 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
       final value = await _loginRepository.login(data);
       debugLog(data);
       if (!value.status) throw value.message.toException;
+
       await AppDataStorage().saveUserAccessToken('${value.data?.accessToken}');
       await AppDataStorage()
           .saveUserRefreshToken('${value.data?.refreshToken}');
@@ -38,7 +40,8 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
 
       await AppDataStorage().saveCurrentState(CurrentState.loggedIn);
       state = state.copyWith(loginState: LoadState.success);
-      onSuccess(value.message.toString());
+      onSuccess(value.message.toString(), (value.data?.isVerified ?? false),
+          value.data?.profileSetup ?? false);
     } catch (e) {
       onError(e.toString());
       state = state.copyWith(loginState: LoadState.idle);

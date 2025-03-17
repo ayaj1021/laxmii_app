@@ -32,9 +32,10 @@ class QoutesInfoInputSection extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SvgPicture.asset('assets/icons/user.svg'),
+              const HorizontalSpacing(22),
               QuoteTextField(
                 width: MediaQuery.of(context).size.width * 0.73,
                 controller: nameController,
@@ -48,26 +49,29 @@ class QoutesInfoInputSection extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/calendar.svg'),
-                const HorizontalSpacing(22),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      quoteStartDate,
-                      style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.white.withValues(alpha: 0.8),
-                          fontWeight: FontWeight.w300),
-                    ),
-                    const VerticalSpacing(10),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        bottom: BorderSide(
-                            color: AppColors.primary3B3522, width: 1),
-                      )),
-                    )
-                  ],
+                const HorizontalSpacing(10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        quoteStartDate,
+                        style: context.textTheme.s14w400.copyWith(
+                            color: AppColors.white.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w300),
+                      ),
+                      const VerticalSpacing(10),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(
+                              color: AppColors.primary3B3522, width: 1),
+                        )),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -78,27 +82,30 @@ class QoutesInfoInputSection extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/timer.svg'),
-                const HorizontalSpacing(22),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      quoteExpiryDate,
-                      style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.white.withValues(alpha: 0.8),
-                          fontWeight: FontWeight.w300),
-                    ),
-                    const VerticalSpacing(10),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.73,
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        bottom: BorderSide(
-                            color: AppColors.primary3B3522, width: 1),
-                      )),
-                    ),
-                    const VerticalSpacing(15),
-                  ],
+                const HorizontalSpacing(10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        quoteExpiryDate,
+                        style: context.textTheme.s14w400.copyWith(
+                            color: AppColors.white.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w300),
+                      ),
+                      const VerticalSpacing(10),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.73,
+                        decoration: const BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(
+                              color: AppColors.primary3B3522, width: 1),
+                        )),
+                      ),
+                      const VerticalSpacing(15),
+                    ],
+                  ),
                 )
               ],
             ),

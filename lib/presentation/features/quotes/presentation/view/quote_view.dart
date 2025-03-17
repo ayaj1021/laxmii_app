@@ -59,38 +59,40 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
       body: PageLoader(
         isLoading: isLoading,
         child: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: quotesList.isEmpty
-                    ? const Center(
-                        child:
-                            EmptyPage(emptyMessage: 'You have no quotes yet.'))
-                    : ListView.builder(
-                        itemCount: quotesList.length,
-                        itemBuilder: (_, index) {
-                          final data = quotesList[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => QuoteDetailsView(
-                                            quoteId: '${data.id}',
-                                          )));
-                            },
-                            child: Column(
-                              children: [
-                                GetQuotesWidget(
-                                  quoteTitle: '${data.customerName}',
-                                  quoteAmount: '\$${data.totalAmount}',
-                                  quoteDate: formatDateTimeFromString(
-                                      '${data.issueDate}'),
-                                ),
-                                const VerticalSpacing(10),
-                              ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: quotesList.isEmpty
+                ? const Center(
+                    child: EmptyPage(emptyMessage: 'You have no quotes yet.'))
+                : ListView.builder(
+                    itemCount: quotesList.length,
+                    itemBuilder: (_, index) {
+                      final data = quotesList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => QuoteDetailsView(
+                                        quoteId: '${data.id}',
+                                      )));
+                        },
+                        child: Column(
+                          children: [
+                            GetQuotesWidget(
+                              quoteTitle: '${data.customerName}',
+                              quoteAmount: '\$${data.totalAmount}',
+                              quoteDate:
+                                  formatDateTimeFromString('${data.issueDate}'),
                             ),
-                          );
-                        }))),
+                            const VerticalSpacing(10),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ),
       ),
     );
   }

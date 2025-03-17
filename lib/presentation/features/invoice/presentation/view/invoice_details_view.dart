@@ -148,11 +148,13 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                               children:
                                   List.generate(widget.items.length, (index) {
                                 final reportData = widget.items[index];
+                                final total =
+                                    '${reportData.quantity * reportData.price}';
                                 final rowData = [
                                   (reportData.description),
                                   '${reportData.quantity}',
                                   '${reportData.price}',
-                                  '${reportData.quantity * reportData.price}',
+                                  ' ${num.parse(total).toStringAsFixed(2)}',
                                 ];
 
                                 return Table(
@@ -185,10 +187,13 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                                 color: AppColors.black,
                               ),
                             ),
-                            Text(
-                              '\$${calculateTotalAmount()}',
-                              style: context.textTheme.s16w500.copyWith(
-                                color: AppColors.black,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 40),
+                              child: Text(
+                                '\$${calculateTotalAmount()}',
+                                style: context.textTheme.s16w500.copyWith(
+                                  color: AppColors.black,
+                                ),
                               ),
                             )
                           ],

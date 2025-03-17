@@ -4,9 +4,7 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/invoice_activity.dart';
-
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
-
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
