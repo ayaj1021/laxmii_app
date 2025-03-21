@@ -52,7 +52,7 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
                 CashFlowActivity(
                   cashFlow: cashFlowList,
                 ),
-                const VerticalSpacing(24),
+                const VerticalSpacing(20),
                 const InvoiceActivity()
               ],
             ),

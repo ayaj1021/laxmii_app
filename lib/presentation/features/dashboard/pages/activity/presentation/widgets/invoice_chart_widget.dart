@@ -78,7 +78,7 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
             )
           ],
         ),
-        const VerticalSpacing(18),
+        const VerticalSpacing(15),
         Padding(
           padding: const EdgeInsets.only(left: 30),
           child: Row(

@@ -12,27 +12,23 @@ class LaxmiiCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          onChecked.call(isChecked);
-        },
-        child: Container(
-          height: 20,
-          width: 20,
-          padding: const EdgeInsets.all(4), // Optional padding for spacing
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: isChecked
-                  ? Colors.transparent
-                  : AppColors.primaryColor, // Border color
-              width: 2.0,
-            ),
-            borderRadius: BorderRadius.circular(2), // Rounded corners
-          ),
-          child: Checkbox(
-              checkColor: AppColors.primary212121,
-              value: isChecked,
-              onChanged: onChecked),
-        ));
+    return Container(
+      height: 20,
+      width: 20,
+      padding: const EdgeInsets.all(4), // Optional padding for spacing
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isChecked
+              ? Colors.transparent
+              : AppColors.primaryColor, // Border color
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.circular(2), // Rounded corners
+      ),
+      child: Checkbox(
+          checkColor: AppColors.primary212121,
+          value: isChecked,
+          onChanged: onChecked),
+    );
   }
 }

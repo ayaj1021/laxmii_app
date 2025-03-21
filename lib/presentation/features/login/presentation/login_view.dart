@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -222,7 +220,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
           onSuccess: (message, isVerified, isAccountSetup) {
             context.hideOverLay();
             context.showSuccess(message: 'Login Successful');
-            log('This is verified $isVerified');
 
             isVerified == false
                 ? Navigator.push(

@@ -46,6 +46,8 @@ import 'package:laxmii_app/presentation/features/login/data/model/get_access_tok
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/data/model/set_up_profile_response.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_response.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/delete_quote_response.dart';
@@ -88,6 +90,11 @@ abstract class RestClient {
   @POST('/auth/signup/')
   Future<SignUpResponse> signUp(
     @Body() SignUpRequest signUpRequest,
+  );
+
+  @POST('/auth/set-profile/')
+  Future<SetupUpProfileResponse> setupProfile(
+    @Body() SetupUpProfileRequest setupProfileRequest,
   );
 
   @POST('/auth/verify-otp/')

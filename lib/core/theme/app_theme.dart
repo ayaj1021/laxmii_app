@@ -21,7 +21,7 @@ class AppThemes {
       borderSide: BorderSide.none,
     );
     return ThemeData(
-      useMaterial3: true,
+      // useMaterial3: true,
       fontFamily: 'Kanit',
       scaffoldBackgroundColor: AppColors.white,
       colorScheme: ColorScheme.light(
@@ -75,9 +75,9 @@ class AppThemes {
       borderSide: BorderSide.none,
     );
     return ThemeData(
-      useMaterial3: true,
+      //   useMaterial3: true,
       fontFamily: 'Kanit',
-      scaffoldBackgroundColor: AppColors.black,
+      scaffoldBackgroundColor: Colors.black,
       colorScheme: ColorScheme.light(
         primary: AppColors.primaryColor,
         secondary: AppColors.secondaryColor,

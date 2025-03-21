@@ -14,6 +14,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentati
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/delete_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
@@ -101,40 +102,44 @@ class _HomeViewState extends ConsumerState<HomeView> {
             child: SingleChildScrollView(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 42.h,
-                          width: 42.w,
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.white)),
-                          child: Image.asset('assets/images/user_image.png'),
-                        ),
-                        const HorizontalSpacing(10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              greetingMessage,
-                              style: context.textTheme.s12w400.copyWith(
-                                color: AppColors.primary5E5E5E,
+                    InkWell(
+                      onTap: () =>
+                          context.pushNamed(ManageAccountView.routeName),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 42.h,
+                            width: 42.w,
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.white)),
+                            child: Image.asset('assets/images/user_image.png'),
+                          ),
+                          const HorizontalSpacing(10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                greetingMessage,
+                                style: context.textTheme.s12w400.copyWith(
+                                  color: AppColors.primary5E5E5E,
+                                ),
                               ),
-                            ),
-                            //const VerticalSpacing(3),
-                            Text(
-                              userName,
-                              style: context.textTheme.s14w500.copyWith(
-                                color: AppColors.primaryC4C4C4,
+                              //const VerticalSpacing(3),
+                              Text(
+                                userName,
+                                style: context.textTheme.s14w500.copyWith(
+                                  color: AppColors.primaryC4C4C4,
+                                ),
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                     const VerticalSpacing(24),
                     Row(

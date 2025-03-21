@@ -11,7 +11,7 @@ import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 class ProfileSetupPage extends ConsumerStatefulWidget {
   const ProfileSetupPage({
     super.key,
-    required this.emailController,
+    required this.nameController,
     required this.selectedCountry,
     required this.selectedCurrency,
     required this.selectedIncomeType,
@@ -20,13 +20,11 @@ class ProfileSetupPage extends ConsumerStatefulWidget {
     required this.onIncomeTypeChanged,
   });
 
-  final TextEditingController emailController;
+  final TextEditingController nameController;
   final String selectedCountry;
   final String selectedCurrency;
   final String selectedIncomeType;
-  // final Function(String?)? onCountryChanged;
-  // final Function(String?)? onCurrencyChanged;
-  // final Function(String?)? onIncomeTypeChanged;
+
   final ValueChanged<String> onCountryChanged;
   final ValueChanged<String> onCurrencyChanged;
   final ValueChanged<String> onIncomeTypeChanged;
@@ -65,7 +63,7 @@ class _ProfileSetupPageState extends ConsumerState<ProfileSetupPage> {
         ),
         const VerticalSpacing(42),
         LaxmiiFormfield(
-          controller: widget.emailController,
+          controller: widget.nameController,
           label: 'Full Name',
           labelSpace: 8,
           backgroundColor: Colors.transparent,
@@ -319,4 +317,7 @@ final List<String> countriesList = [
 ];
 
 final List<String> countriesCurrency = ['£', '\$', '€'];
-final List<String> incomeType = ['Individual', 'Organization'];
+final List<String> incomeType = [
+  'Individual',
+  'Limited Company',
+];

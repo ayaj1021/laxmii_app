@@ -8,9 +8,11 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/connect_spotify_button_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
+import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -52,33 +54,36 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Profile Information',
+                    'Profile Informations',
                     style: context.textTheme.s14w500.copyWith(
                         color: AppColors.primaryC4C4C4,
                         fontWeight: FontWeight.w300),
                   ),
                   const VerticalSpacing(6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.primary101010),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Manage Account',
-                          style: context.textTheme.s14w500.copyWith(
-                            color: AppColors.primary5E5E5E,
+                  GestureDetector(
+                    onTap: () => context.pushNamed(ManageAccountView.routeName),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.primary101010),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Manage Account',
+                            style: context.textTheme.s14w500.copyWith(
+                              color: AppColors.primary5E5E5E,
+                            ),
                           ),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.primaryC4C4C4,
-                          size: 18,
-                        )
-                      ],
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.primaryC4C4C4,
+                            size: 18,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const VerticalSpacing(24),
@@ -131,6 +136,16 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                       });
                     },
                     value: performanceInsights,
+                  ),
+                  const VerticalSpacing(24),
+                  const Divider(
+                    color: AppColors.primary5E5E5E,
+                  ),
+                  const VerticalSpacing(20),
+                  const ConnectSpotifyButtonWidget(),
+                  const VerticalSpacing(20),
+                  const Divider(
+                    color: AppColors.primary5E5E5E,
                   ),
                   const VerticalSpacing(30),
                   Text(

@@ -56,6 +56,41 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<SetupUpProfileResponse> setupProfile(
+      SetupUpProfileRequest setupProfileRequest) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(setupProfileRequest.toJson());
+    final _options = _setStreamType<SetupUpProfileResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/auth/set-profile/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SetupUpProfileResponse _value;
+    try {
+      _value = SetupUpProfileResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
       VerifyEmailOtpRequest verifyEmailOtpRequest) async {
     final _extra = <String, dynamic>{};

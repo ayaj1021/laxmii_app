@@ -9,7 +9,7 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_all_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/confirm_invoice_view.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_invoice_one_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_income_one_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_view_widget.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/search_bar_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -73,7 +73,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () => context.pushNamed(CreateInvoiceOneView.routeName),
+              onTap: () => context.pushNamed(CreateIncomeOneView.routeName),
               child: const Align(
                 alignment: Alignment.centerRight,
                 child: Icon(

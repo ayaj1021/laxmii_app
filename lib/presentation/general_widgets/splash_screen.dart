@@ -10,6 +10,7 @@ import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/welcome_screen.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -32,9 +33,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   void _init() {
     Future.delayed(const Duration(milliseconds: 2000), () async {
       final data = await secureStorage.loadCurrentState();
+      final isProfileSetup = await secureStorage.getProfileSetup();
       return switch (data) {
         CurrentState.onboarded => context.replaceNamed(LoginView.routeName),
-        CurrentState.loggedIn => context.replaceNamed(Dashboard.routeName),
+        CurrentState.loggedIn => isProfileSetup
+            ? context.replaceNamed(Dashboard.routeName)
+            : context.replaceNamed(ProfileSetupView.routeName),
         _ => context.replaceNamed(WelcomeScreen.routeName)
         // _ => context.replaceNamed(SignUpView.routeName),
       };

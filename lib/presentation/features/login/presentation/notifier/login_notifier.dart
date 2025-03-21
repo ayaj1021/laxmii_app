@@ -39,6 +39,9 @@ class LoginNotifier extends AutoDisposeNotifier<LoginNotifierState> {
       await AppDataStorage().saveUserEmail('${value.data?.email}');
 
       await AppDataStorage().saveCurrentState(CurrentState.loggedIn);
+      await AppDataStorage().saveProfileSetup(
+        value.data?.profileSetup ?? false,
+      );
       state = state.copyWith(loginState: LoadState.success);
       onSuccess(value.message.toString(), (value.data?.isVerified ?? false),
           value.data?.profileSetup ?? false);

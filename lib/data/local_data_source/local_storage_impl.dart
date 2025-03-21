@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 
@@ -94,6 +93,16 @@ class AppDataStorage {
     return value == 'true'; // Convert the string back to a boolean
   }
 
+  Future<void> saveProfileSetup(bool value) async {
+    await _storage.write(key: 'profile_setup', value: value.toString());
+  }
+
+// Retrieve the boolean value
+  Future<bool> getProfileSetup() async {
+    final value = await _storage.read(key: 'profile_setup');
+    return value == 'true'; // Convert the string back to a boolean
+  }
+
   Future<void> saveUserToken(String token) async {
     await _storage.write(key: 'token', value: token);
   }
@@ -147,12 +156,21 @@ class AppDataStorage {
     return value;
   }
 
-  Future<void> saveUserAccountName(String userEmail) async {
-    await _storage.write(key: 'user_account_name', value: userEmail);
+  Future<void> saveUserAccountName(String userAccountName) async {
+    await _storage.write(key: 'user_account_name', value: userAccountName);
   }
 
   Future<String?> getUserAccountName() async {
     String? value = await _storage.read(key: 'user_account_name');
+    return value;
+  }
+
+  Future<void> saveUserAccountEmail(String userEmail) async {
+    await _storage.write(key: 'user_email', value: userEmail);
+  }
+
+  Future<String?> getUserAccountEmail() async {
+    String? value = await _storage.read(key: 'user_email');
     return value;
   }
 

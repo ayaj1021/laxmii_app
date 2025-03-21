@@ -16,15 +16,15 @@ import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
-class CreateInvoiceOneView extends ConsumerStatefulWidget {
-  const CreateInvoiceOneView({super.key});
+class CreateIncomeOneView extends ConsumerStatefulWidget {
+  const CreateIncomeOneView({super.key});
   static const routeName = '/createInvoiceView';
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddSalesViewState();
 }
 
-class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
+class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
   final ValueNotifier<bool> _isAddSalesEnabled = ValueNotifier(false);
   late TextEditingController _amountController;
   late TextEditingController _customerNameController;
@@ -150,7 +150,7 @@ class _AddSalesViewState extends ConsumerState<CreateInvoiceOneView> {
 
     return Scaffold(
       appBar: const LaxmiiAppBar(
-        title: 'New invoice',
+        title: 'New income',
         centerTitle: true,
       ),
       body: SafeArea(

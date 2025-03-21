@@ -8,9 +8,11 @@ import 'package:laxmii_app/presentation/features/generate_report/presentation/vi
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_invoice_one_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/all_inventory_list_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_income_one_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
+import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/onboarding_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/welcome_screen.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
@@ -39,7 +41,7 @@ class AppRouter {
     TransactionsView.routeName: (context) => const TransactionsView(),
     CreateExpenseView.routeName: (context) => const CreateExpenseView(),
     InvoiceView.routeName: (context) => const InvoiceView(),
-    CreateInvoiceOneView.routeName: (context) => const CreateInvoiceOneView(),
+    CreateIncomeOneView.routeName: (context) => const CreateIncomeOneView(),
     TodoView.routeName: (context) => const TodoView(),
     CreateTaskView.routeName: (context) => const CreateTaskView(),
     GenerateReport.routeName: (context) => const GenerateReport(),
@@ -56,6 +58,8 @@ class AppRouter {
     OnboardingView.routeName: (context) => const OnboardingView(),
     WelcomeScreen.routeName: (context) => const WelcomeScreen(),
     ProfileSetupView.routeName: (context) => const ProfileSetupView(),
+    ManageAccountView.routeName: (context) => const ManageAccountView(),
+    AllInventoryListView.routeName: (context) => const AllInventoryListView(),
   };
   static Map<String, Widget Function(BuildContext)> get routes => _routes;
 }
