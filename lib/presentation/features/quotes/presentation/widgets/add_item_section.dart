@@ -4,7 +4,6 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
-import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_quote_item_text_field.dart';
@@ -12,8 +11,15 @@ import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class AddItemSection extends ConsumerStatefulWidget {
-  const AddItemSection({super.key});
-  static const String routeName = '/addItemSection';
+  const AddItemSection({
+    super.key,
+    required this.item,
+    required this.quantity,
+    required this.sellingPrice,
+  });
+  final String item;
+  final int quantity;
+  final num sellingPrice;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddItemSectionState();
@@ -31,14 +37,16 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
-      await ref
-          .read(getAllInventoryNotifierProvider.notifier)
-          .getAllInventory();
     });
 
     _quantityController = TextEditingController()..addListener(_validateInput);
-    _sellingPriceController = TextEditingController()
+    _sellingPriceController = widget.sellingPrice == 0
+        ? TextEditingController()
+        : TextEditingController(text: widget.sellingPrice.toString())
       ..addListener(_validateInput);
+
+    // TextEditingController()
+    //   ..addListener(_validateInput);
     super.initState();
   }
 
@@ -61,10 +69,6 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
 
   @override
   Widget build(BuildContext context) {
-    final inventoryList = ref
-        .watch(getAllInventoryNotifierProvider
-            .select((v) => v.getAllInventory.data?.inventory ?? []))
-        .toList();
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Add Quote',
@@ -90,37 +94,12 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                       color: AppColors.primary5E5E5E,
                     ),
                   ),
-                  DropdownButton<Inventory>(
-                    dropdownColor: AppColors.primary101010,
-                    value: _selectedProduct,
-                    padding: EdgeInsets.zero,
-                    hint: Text(
-                      'Select Product',
-                      style: context.textTheme.s12w300.copyWith(
-                        color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
-                      ),
+                  const VerticalSpacing(5),
+                  Text(
+                    widget.item,
+                    style: context.textTheme.s16w500.copyWith(
+                      color: AppColors.white,
                     ),
-                    underline: const SizedBox.shrink(),
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    isExpanded: true,
-                    items: inventoryList.map((Inventory item) {
-                      return DropdownMenuItem<Inventory>(
-                        value: item,
-                        child: Text(
-                          '${item.productName}',
-                          style: context.textTheme.s12w400.copyWith(
-                            color: AppColors.primary5E5E5E,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (Inventory? newValue) {
-                      setState(() {
-                        _selectedProduct = newValue;
-                        // _selectedProductPrice =
-                        //     (newValue?.sellingPrice ?? 0) as Inventory?;
-                      });
-                    },
                   ),
                 ],
               ),
@@ -182,19 +161,19 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
             const VerticalSpacing(29),
             GestureDetector(
               onTap: () {
-                if (_selectedProduct == null ||
-                    _sellingPriceController.text.isEmpty ||
+                if (_sellingPriceController.text.isEmpty ||
                     _quantityController.text.isEmpty) {
                   context.showError(message: 'All fields are required');
                 } else {
                   final item = ProductItem(
-                    itemName: '${_selectedProduct?.productName}',
+                    itemName: widget.item,
                     itemPrice:
                         double.parse(_sellingPriceController.text.trim()),
                     itemQuantity: num.parse(_quantityController.text.trim()),
                   );
 
                   Navigator.pop(context, item);
+                  context.showSuccess(message: 'Item added');
                 }
               },
               child: Text(

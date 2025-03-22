@@ -60,7 +60,7 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
         isLoading: isLoading,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: quotesList.isEmpty
                 ? const Center(
                     child: EmptyPage(emptyMessage: 'You have no quotes yet.'))
@@ -85,7 +85,7 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
                               quoteDate:
                                   formatDateTimeFromString('${data.issueDate}'),
                             ),
-                            const VerticalSpacing(10),
+                            const VerticalSpacing(15),
                           ],
                         ),
                       );

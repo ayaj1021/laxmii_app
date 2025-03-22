@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/add_product_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_invoice_number_notifier.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/view/all_inventory_list_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_details_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_new_product_widget.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_widget.dart';
@@ -306,42 +305,47 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                   final item = items[index];
                                   final price =
                                       item.itemQuantity * item.itemPrice;
-                                  return InkWell(
-                                    onLongPress: () {},
-                                    child: Column(
-                                      children: [
-                                        InvoiceNewProductWidget(
-                                          itemName: item.itemName,
-                                          itemQuantity: item.itemQuantity,
-                                          itemPrice: item.itemPrice,
-                                          totalItemPrice: double.parse(
-                                              price.toStringAsFixed(2)),
-                                          onItemDelete: () {
-                                            setState(() {
-                                              items.remove(item);
-                                            });
-                                            removeItem(item);
-                                          },
-                                        ),
-                                        const VerticalSpacing(5),
-                                        if (index < items.length - 1)
-                                          const Divider(
-                                            color: AppColors.primary3B3522,
-                                          )
-                                      ],
-                                    ),
+                                  return Column(
+                                    children: [
+                                      InvoiceNewProductWidget(
+                                        itemName: item.itemName,
+                                        itemQuantity: item.itemQuantity,
+                                        itemPrice: item.itemPrice,
+                                        totalItemPrice: double.parse(
+                                            price.toStringAsFixed(2)),
+                                        onItemDelete: () {
+                                          setState(() {
+                                            items.remove(item);
+                                          });
+                                          removeItem(item);
+                                        },
+                                      ),
+                                      const VerticalSpacing(5),
+                                      if (index < items.length - 1)
+                                        const Divider(
+                                          color: AppColors.primary3B3522,
+                                        )
+                                    ],
                                   );
                                 }),
                           );
                         }),
                     InkWell(
                       onTap: () async {
-                        final item = await context
-                            .pushNamed(AddNewInvoiceView.routeName);
-                        if (item != null) {
-                          itemsNotifier.value = [...itemsNotifier.value, item];
-                          addItem(item);
-                        }
+                        // final item = await context
+                        //     .pushNamed(AddNewInvoiceView.routeName);
+                        // if (item != null) {
+                        //   itemsNotifier.value = [...itemsNotifier.value, item];
+                        //   addItem(item);
+                        // }
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => AllInventoryListView(
+                                      addItem: addItem,
+                                      itemsNotifier: itemsNotifier,
+                                    )));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

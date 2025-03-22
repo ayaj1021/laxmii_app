@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_new_product_widget.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
-import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_item_section.dart';
+import 'package:laxmii_app/presentation/features/quotes/presentation/view/quotes_inventory_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class AddQuotesSection extends StatefulWidget {
@@ -67,11 +66,19 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
             }),
         InkWell(
           onTap: () async {
-            final item = await context.pushNamed(AddItemSection.routeName);
-            if (item != null) {
-              quoteItemsNotifier.value = [...quoteItemsNotifier.value, item];
-              widget.addItem(item);
-            }
+            // final item = await context.pushNamed(AddItemSection.routeName);
+            // if (item != null) {
+            //   quoteItemsNotifier.value = [...quoteItemsNotifier.value, item];
+            //   widget.addItem(item);
+            // }
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => QuoteInventoryListView(
+                          addItem: widget.addItem,
+                          itemsNotifier: quoteItemsNotifier,
+                        )));
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

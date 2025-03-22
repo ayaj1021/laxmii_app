@@ -7,8 +7,6 @@ import 'package:laxmii_app/presentation/features/forgot_password/presentation/vi
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/all_inventory_list_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/create_income_one_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
@@ -18,7 +16,6 @@ import 'package:laxmii_app/presentation/features/onboarding/presentation/view/we
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/create_quote_view.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/quote_view.dart';
-import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_item_section.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/view/sign_up_view.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/view/tax_calculation_result.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/view/tax_optimization_view.dart';
@@ -45,10 +42,10 @@ class AppRouter {
     TodoView.routeName: (context) => const TodoView(),
     CreateTaskView.routeName: (context) => const CreateTaskView(),
     GenerateReport.routeName: (context) => const GenerateReport(),
-    AddNewInvoiceView.routeName: (context) => const AddNewInvoiceView(),
+    // AddNewInvoiceView.routeName: (context) => const AddNewInvoiceView(),
     QuoteView.routeName: (context) => const QuoteView(),
     CreateQuoteView.routeName: (context) => const CreateQuoteView(),
-    AddItemSection.routeName: (context) => const AddItemSection(),
+    //  AddItemSection.routeName: (context) => const AddItemSection(),
     TaxView.routeName: (context) => const TaxView(),
     TaxCalculationResult.routeName: (context) => const TaxCalculationResult(),
     TaxOptimizationView.routeName: (context) => const TaxOptimizationView(),
@@ -59,7 +56,6 @@ class AppRouter {
     WelcomeScreen.routeName: (context) => const WelcomeScreen(),
     ProfileSetupView.routeName: (context) => const ProfileSetupView(),
     ManageAccountView.routeName: (context) => const ManageAccountView(),
-    AllInventoryListView.routeName: (context) => const AllInventoryListView(),
   };
   static Map<String, Widget Function(BuildContext)> get routes => _routes;
 }

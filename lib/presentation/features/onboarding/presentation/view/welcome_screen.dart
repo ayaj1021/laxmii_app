@@ -21,7 +21,8 @@ class WelcomeScreen extends StatelessWidget {
             const OnboardingPageBackground(),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 29, right: 29, top: 450),
+                padding: const EdgeInsets.only(
+                    left: 29, right: 29, top: 400, bottom: 30),
                 child: Column(
                   children: [
                     Text(
@@ -39,26 +40,30 @@ class WelcomeScreen extends StatelessWidget {
                         },
                         title: 'Get Started'),
                     const VerticalSpacing(24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: context.textTheme.s14w400.copyWith(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.w300),
-                        ),
-                        GestureDetector(
-                          onTap: () => context.pushNamed(LoginView.routeName),
-                          child: Text(
-                            'Sign in',
-                            style: context.textTheme.s14w500.copyWith(
-                              color: AppColors.primaryColor,
+                    InkWell(
+                      onTap: () => context.pushNamed(LoginView.routeName),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account? ',
+                            style: context.textTheme.s14w400.copyWith(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          GestureDetector(
+                            onTap: () => context.pushNamed(LoginView.routeName),
+                            child: Text(
+                              'Sign in',
+                              style: context.textTheme.s14w500.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      ),
+                    ),
+                    const VerticalSpacing(34),
                   ],
                 ),
               ),

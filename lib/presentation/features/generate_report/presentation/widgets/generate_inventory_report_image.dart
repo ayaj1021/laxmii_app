@@ -1,10 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -201,8 +201,9 @@ class InventoryReportImageGenerator {
       }
     } catch (e) {
       entry.remove();
-      print('Error generating image: $e');
+      log('Error generating image: $e');
       // Show error message to user
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to generate report image')),
       );

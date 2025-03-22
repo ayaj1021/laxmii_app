@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/add_product_notifier.dart';
-import 'package:laxmii_app/presentation/features/invoice/presentation/view/add_new_invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
+import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/add_item_section.dart';
+import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/get_quotes_widget.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
-class AllInventoryListView extends ConsumerStatefulWidget {
-  const AllInventoryListView({
+class QuoteInventoryListView extends ConsumerStatefulWidget {
+  const QuoteInventoryListView({
     super.key,
     required this.addItem,
     required this.itemsNotifier,
   });
-  final Function(ProductItems newItem) addItem;
-  final ValueNotifier<List<ProductItems>> itemsNotifier;
+  final Function(ProductItem newItem) addItem;
+  final ValueNotifier<List<ProductItem>> itemsNotifier;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _AllInventoryListViewState();
 }
 
-class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
+class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -67,7 +67,7 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
                       final item = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => AddNewInvoiceView(
+                          builder: (_) => AddItemSection(
                             item: data.productName ?? '',
                             quantity: data.quantity ?? 0,
                             sellingPrice: data.sellingPrice ?? 0,
@@ -83,37 +83,54 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
                         widget.addItem(item);
                       }
                     },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 7, horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary101010,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            data.productName ?? '',
-                            style: context.textTheme.s15w400.copyWith(
-                              color: AppColors.white,
-                            ),
-                          ),
-                          const VerticalSpacing(5),
-                          Text(
-                            data.description ?? '',
-                            style: context.textTheme.s12w400.copyWith(
-                              color: AppColors.primaryC4C4C4,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: GetQuotesWidget(
+                        quoteAmount: '\$${data.sellingPrice}',
+                        quoteTitle: '${data.productName}',
+                        quoteDate: formatDateTimeFromString('${data.createdAt}')
+
+                        // '${data.createdAt}',
+                        ),
                   ),
-                  const VerticalSpacing(15)
+                  const VerticalSpacing(15),
                 ],
               );
+
+              // ListTile(
+              //   onTap: () async {
+              //     final item = await Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (_) => AddItemSection(
+              //           //  addItem: widget.addItem(data),
+              //           item: data.productName ?? '',
+              //           quantity: data.quantity ?? 0,
+              //           sellingPrice: data.sellingPrice ?? 0,
+              //         ),
+              //       ),
+              //     );
+
+              //     //context.pushNamed(AddNewInvoiceView.routeName);
+              //     if (item != null) {
+              //       widget.itemsNotifier.value = [
+              //         ...widget.itemsNotifier.value,
+              //         item
+              //       ];
+              //       widget.addItem(item);
+              //     }
+              //   },
+              //   title: Text(
+              //     data.productName ?? '',
+              //     style: context.textTheme.s12w400.copyWith(
+              //       color: AppColors.white,
+              //     ),
+              //   ),
+              //   subtitle: Text(
+              //     data.description ?? '',
+              //     style: context.textTheme.s12w400.copyWith(
+              //       color: AppColors.white,
+              //     ),
+              //   ),
+              // );
             },
           ),
         )),

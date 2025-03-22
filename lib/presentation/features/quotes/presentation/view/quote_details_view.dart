@@ -47,8 +47,8 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
   }
 
   num totalAmount = 0.0; // Total amount
-  num taxAmount = 0.0; // Total amount
-  num balanceAmount = 0.0; // Total amount
+  // num taxAmount = 0.0; // Total amount
+  // num balanceAmount = 0.0; // Total amount
 
   void calculateAmounts() {
     final quoteDetails = ref.read(getSingleQuoteNotifierProvider
@@ -61,10 +61,10 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
           .reduce((a, b) => a + b);
 
       // Calculate 8% tax
-      taxAmount = totalAmount * 0.08;
+      //  taxAmount = totalAmount * 0.08;
 
       // Calculate balance due
-      balanceAmount = totalAmount + taxAmount;
+      //  balanceAmount = totalAmount + taxAmount;
 
       // Update the UI
       setState(() {});
@@ -107,7 +107,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
           isLoading: isLoading,
           child: SafeArea(
               child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
                 Container(
@@ -149,7 +149,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                               ),
                               const VerticalSpacing(10),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.75,
+                                width: MediaQuery.of(context).size.width * 0.70,
                                 decoration: const BoxDecoration(
                                     border: Border(
                                   bottom: BorderSide(
@@ -178,7 +178,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                               ),
                               const VerticalSpacing(10),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.75,
+                                width: MediaQuery.of(context).size.width * 0.70,
                                 decoration: const BoxDecoration(
                                     border: Border(
                                   bottom: BorderSide(
@@ -227,19 +227,19 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                   child: Column(
                     children: [
                       InvoiceWidget(
-                        title: 'Subtotal',
+                        title: 'Total',
                         subTitle: '\$${totalAmount.toStringAsFixed(2)}',
                       ),
                       const VerticalSpacing(14),
-                      InvoiceWidget(
-                        title: 'Tax 8%',
-                        subTitle: '\$${taxAmount.toStringAsFixed(2)}',
-                      ),
-                      const VerticalSpacing(14),
-                      InvoiceWidget(
-                        title: 'Balance due',
-                        subTitle: '\$${balanceAmount.toStringAsFixed(2)}',
-                      ),
+                      // InvoiceWidget(
+                      //   title: 'Tax 8%',
+                      //   subTitle: '\$${taxAmount.toStringAsFixed(2)}',
+                      // ),
+                      // const VerticalSpacing(14),
+                      // InvoiceWidget(
+                      //   title: 'Balance due',
+                      //   subTitle: '\$${balanceAmount.toStringAsFixed(2)}',
+                      // ),
                       const VerticalSpacing(19),
                       LaxmiiSendButton(
                           textColor: AppColors.black,
