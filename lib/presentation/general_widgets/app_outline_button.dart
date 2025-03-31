@@ -10,7 +10,7 @@ class LaxmiiOutlineSendButton extends StatefulWidget {
     super.key,
     this.isEnabled = true,
     this.backgroundColor,
-    this.textColor = Colors.white,
+    this.textColor = AppColors.primaryColor,
     this.hasBorder = false,
     this.isLoading = false,
     this.width = double.infinity,

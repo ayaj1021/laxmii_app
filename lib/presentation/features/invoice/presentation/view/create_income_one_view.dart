@@ -146,6 +146,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
   Widget build(BuildContext context) {
     final invoiceNumber = ref.watch(getInvoiceNumberNotifierProvider
         .select((v) => v.getInvoiceNumber.data?.invoiceNumber ?? ''));
+    final colorScheme = Theme.of(context);
 
     return Scaffold(
       appBar: const LaxmiiAppBar(
@@ -161,7 +162,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
               Text(
                 'Step 1 of 2',
                 style: context.textTheme.s12w500.copyWith(
-                  color: AppColors.white,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(10),
@@ -170,14 +171,14 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                     const EdgeInsets.symmetric(horizontal: 13, vertical: 17),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: AppColors.primary101010),
+                    color: colorScheme.cardColor),
                 child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 11.5),
                       child: TextField(
-                        style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.white,
+                        style: context.textTheme.s15w400.copyWith(
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                         controller: _customerNameController,
                         decoration: InputDecoration(
@@ -215,7 +216,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                           Text(
                             invoiceNumber,
                             style: context.textTheme.s12w400.copyWith(
-                              color: AppColors.white,
+                              color: colorScheme.colorScheme.onSurface,
                             ),
                           )
                         ],
@@ -243,7 +244,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                   ? 'Select Date'
                                   : _formatDate(_selectedDate!),
                               style: context.textTheme.s12w400.copyWith(
-                                color: AppColors.white,
+                                color: colorScheme.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -273,7 +274,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                   ? 'Select Date'
                                   : _formatDueDate(_selectedDueDate!),
                               style: context.textTheme.s12w400.copyWith(
-                                color: AppColors.white,
+                                color: colorScheme.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -290,7 +291,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                     const EdgeInsets.symmetric(vertical: 15, horizontal: 17),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: AppColors.primary101010),
+                    color: colorScheme.cardColor),
                 child: Column(
                   children: [
                     ValueListenableBuilder(
@@ -370,11 +371,11 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
               const VerticalSpacing(24),
               Container(
                 padding: const EdgeInsets.all(18),
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16)),
-                    color: AppColors.primary101010),
+                    color: colorScheme.cardColor),
                 child: Column(
                   children: [
                     InvoiceWidget(

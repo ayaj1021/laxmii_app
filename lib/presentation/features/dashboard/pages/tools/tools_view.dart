@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/tools/widgets/tabs_selection_widget.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
@@ -18,6 +17,7 @@ class ToolsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -26,7 +26,7 @@ class ToolsView extends ConsumerWidget {
         title: Text(
           'Tools',
           style: context.textTheme.s20w500.copyWith(
-            color: AppColors.white,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
       ),
@@ -53,11 +53,11 @@ class ToolsView extends ConsumerWidget {
                   icon: 'assets/icons/invoice.svg',
                   title: 'Invoice',
                 ),
-                const VerticalSpacing(20),
-                const TabsSelectionWidget(
-                  icon: 'assets/icons/mileage_tracker.svg',
-                  title: 'Mileage Tracker',
-                ),
+                // const VerticalSpacing(20),
+                // const TabsSelectionWidget(
+                //   icon: 'assets/icons/mileage_tracker.svg',
+                //   title: 'Mileage Tracker',
+                // ),
                 const VerticalSpacing(20),
                 TabsSelectionWidget(
                   onTap: () => context.pushNamed(TodoView.routeName),

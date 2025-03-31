@@ -93,6 +93,16 @@ class AppDataStorage {
     return value == 'true'; // Convert the string back to a boolean
   }
 
+  Future<void> setAppTheme(String key, bool value) async {
+    await _storage.write(key: key, value: value.toString());
+  }
+
+// Retrieve the boolean value
+  Future<bool> getAppTheme(String key) async {
+    final value = await _storage.read(key: key);
+    return value == 'true'; // Convert the string back to a boolean
+  }
+
   Future<void> saveProfileSetup(bool value) async {
     await _storage.write(key: 'profile_setup', value: value.toString());
   }
@@ -138,8 +148,8 @@ class AppDataStorage {
     return value;
   }
 
-  Future<void> saveUserId(int id) async {
-    await _storage.write(key: 'id', value: id.toString());
+  Future<void> saveUserId(String id) async {
+    await _storage.write(key: 'id', value: id);
   }
 
   Future<String?> getUserId() async {

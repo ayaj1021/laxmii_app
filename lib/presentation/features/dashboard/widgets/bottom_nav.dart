@@ -12,6 +12,7 @@ class NavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context);
     // ref.listen(
     //   logoutProvider,
     //   (previous, next) {
@@ -35,8 +36,8 @@ class NavBar extends ConsumerWidget {
         5,
         10,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.black,
+      decoration: BoxDecoration(
+        color: colorScheme.scaffoldBackgroundColor,
         //borderRadius: BorderRadius.circular(30),
       ),
       width: double.infinity,
@@ -68,9 +69,9 @@ class NavBar extends ConsumerWidget {
                             decoration: const BoxDecoration(
                                 color: AppColors.primaryColor,
                                 shape: BoxShape.circle),
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
-                              color: AppColors.black,
+                              color: colorScheme.scaffoldBackgroundColor,
                             ),
                           ),
                         )

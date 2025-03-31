@@ -42,8 +42,9 @@ class SetupProfileNotifier
 
       state = state.copyWith(setupProfileState: LoadState.idle);
       await AppDataStorage().saveCurrentState(CurrentState.onboarded);
+      await AppDataStorage().saveUserId(value.data?.savedProfile?.user ?? '');
       onSuccess(
-        value.data.message.toString(),
+        value.message.toString(),
       );
     } catch (e) {
       onError(e.toString());

@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/shopify/presentation/view/shopify_web_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class ConnectSpotifyButtonWidget extends StatelessWidget {
-  const ConnectSpotifyButtonWidget({super.key});
+  const ConnectSpotifyButtonWidget(
+      {super.key, required this.userId, required this.isConnected});
+  final String userId;
+  final bool? isConnected;
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +55,30 @@ class ConnectSpotifyButtonWidget extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            decoration: BoxDecoration(
-              color: AppColors.primary14131A,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.primary3B3522),
+          GestureDetector(
+            onTap: () {
+              log('user id ${userId.toString()}');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => ShopifyWebView(
+                            shopifyUrl:
+                                'https://laxmii.onrender.com/auth/shopify?shop=abbyxl&id=$userId',
+                          )));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                color: AppColors.primary14131A,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppColors.primary3B3522),
+              ),
+              child: Text(isConnected == true ? 'Connected' : 'Connect',
+                  style: context.textTheme.s12w500.copyWith(
+                    color: AppColors.primary5E8E3E,
+                    fontSize: 13,
+                  )),
             ),
-            child: Text('Connect',
-                style: context.textTheme.s12w500.copyWith(
-                  color: AppColors.primary5E8E3E,
-                  fontSize: 13,
-                )),
           )
         ],
       ),

@@ -7,6 +7,7 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
+import 'package:laxmii_app/presentation/features/profile_setup/presentation/notifier/get_countries_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/notifier/select_financial_goals_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/notifier/set_up_profile_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/financial_goals_setup_view.dart';
@@ -27,6 +28,14 @@ class ProfileSetupView extends ConsumerStatefulWidget {
 }
 
 class _ProfileSetupViewState extends ConsumerState<ProfileSetupView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(getCountriesNotifier.notifier).getCountries();
+    });
+  }
+
   final ValueNotifier<bool> isProfileInputEnabled = ValueNotifier(false);
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -49,6 +58,8 @@ class _ProfileSetupViewState extends ConsumerState<ProfileSetupView> {
     final isLoading = ref.watch(
       setupProfileNotifier.select((v) => v.setupProfileState.isLoading),
     );
+    // final countryList =
+    //     ref.watch(getCountriesNotifier.select((v) => v.data ?? []));
     return Scaffold(
       body: PageLoader(
         isLoading: isLoading,
@@ -151,13 +162,13 @@ class _ProfileSetupViewState extends ConsumerState<ProfileSetupView> {
                                         ? _pageController.animateToPage(
                                             _currentPage,
                                             duration:
-                                                const Duration(seconds: 1),
+                                                const Duration(milliseconds: 1),
                                             curve: Curves.easeInOut)
                                         : _currentPage == 2
                                             ? _pageController.animateToPage(
                                                 _currentPage,
-                                                duration:
-                                                    const Duration(seconds: 1),
+                                                duration: const Duration(
+                                                    milliseconds: 1),
                                                 curve: Curves.easeInOut)
                                             : _setUpProfile();
                                   });

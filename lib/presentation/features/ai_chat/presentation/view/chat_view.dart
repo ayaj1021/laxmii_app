@@ -17,8 +17,11 @@ import 'package:laxmii_app/presentation/features/login/presentation/notifier/get
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 
 class ChatView extends ConsumerStatefulWidget {
-  const ChatView({super.key});
-  static const String routeName = '/chatView';
+  const ChatView({
+    super.key,
+    required this.sessionId,
+  });
+  final String sessionId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatViewState();
@@ -53,15 +56,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
   }
 
   Future<void> _getChatHistory() async {
-    final sessionId = ref.read(
-      startChatNotifier.select(
-        (v) => v.startNewChatResponse.data?.sessionId,
-      ),
-    );
-
-    if (sessionId == null) return;
-
-    final data = GetChatHistoryRequest(sessionId: sessionId);
+    final data = GetChatHistoryRequest(sessionId: widget.sessionId);
     await ref.read(getChatHistoryNotifier.notifier).getChatHistory(
           onError: (error) {
             context.showError(message: error);
@@ -121,6 +116,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
     final isSendingMessage = ref.watch(
       chatAiNotifier.select((v) => v.loadState.isLoading),
     );
+    final isChatLoading =
+        ref.watch(getChatHistoryNotifier.select((v) => v.loadState.isLoading));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -129,119 +126,127 @@ class _ChatViewState extends ConsumerState<ChatView> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: messageHistory.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'No chat yet',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  : ListView.builder(
-                      controller: _scrollController,
-                      reverse: true,
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 20,
-                        left: 10,
-                        right: 10,
-                      ),
-                      itemCount: messageHistory.length,
-                      itemBuilder: (_, index) {
-                        final message =
-                            messageHistory[messageHistory.length - 1 - index];
-                        if (message.sender == 'user') {
-                          return UserChatCard(
-                            message: message.message ?? '',
-                            type: message.sender.toString(),
-                          );
-                        } else if ((message.sender ?? '').contains('ai')) {
-                          return AiMessageCard(
-                            type: message.sender.toString(),
-                            message: message.message ?? '',
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+        child: isChatLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
+                ),
+              )
+            : Column(
+                children: [
+                  Expanded(
+                    child: messageHistory.isEmpty
+                        ? const Center(
+                            child: Text(
+                              'No chat yet',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            reverse: true,
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 20,
+                              left: 10,
+                              right: 10,
+                            ),
+                            itemCount: messageHistory.length,
+                            itemBuilder: (_, index) {
+                              final message = messageHistory[
+                                  messageHistory.length - 1 - index];
+                              if (message.sender == 'user') {
+                                return UserChatCard(
+                                  message: message.message ?? '',
+                                  type: message.sender.toString(),
+                                );
+                              } else if ((message.sender ?? '')
+                                  .contains('ai')) {
+                                return AiMessageCard(
+                                  type: message.sender.toString(),
+                                  message: message.message ?? '',
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                      left: 15,
+                      right: 15,
+                      top: 16,
                     ),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-                left: 15,
-                right: 15,
-                top: 16,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -5),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, -5),
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      constraints: const BoxConstraints(maxHeight: 120),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary101010,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _controller,
+                              style: context.textTheme.s12w400.copyWith(
+                                color: AppColors.primaryC4C4C4,
+                              ),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 5,
+                              minLines: 1,
+                              textCapitalization: TextCapitalization.sentences,
+                              decoration: const InputDecoration(
+                                filled: false,
+                                hintText: 'Write your question',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 12),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: GestureDetector(
+                              onTap: sessionId != null &&
+                                      _controller.text.trim().isNotEmpty
+                                  ? () => _sendMessage(
+                                        sessionId: widget.sessionId,
+                                        userInput: _controller.text.trim(),
+                                        messages: messageHistory,
+                                      )
+                                  : null,
+                              child: isSendingMessage
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : SvgPicture.asset('assets/icons/send.svg'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
-              child: Container(
-                constraints: const BoxConstraints(maxHeight: 120),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  color: AppColors.primary101010,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        style: context.textTheme.s12w400.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        minLines: 1,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: const InputDecoration(
-                          filled: false,
-                          hintText: 'Write your question',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: GestureDetector(
-                        onTap: sessionId != null &&
-                                _controller.text.trim().isNotEmpty
-                            ? () => _sendMessage(
-                                  sessionId: sessionId,
-                                  userInput: _controller.text.trim(),
-                                  messages: messageHistory,
-                                )
-                            : null,
-                        child: isSendingMessage
-                            ? const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : SvgPicture.asset('assets/icons/send.svg'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

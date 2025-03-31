@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/env/base_env.dart';
@@ -8,6 +10,7 @@ import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_requ
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_response.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_request.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_response.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_recent_chats_response.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/start_new_chat_response.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_response.dart';
@@ -15,6 +18,9 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/m
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/settings_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_request.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/forgot_password_request.dart';
@@ -44,8 +50,10 @@ import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoi
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_response.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
+import 'package:laxmii_app/presentation/features/manage_account/data/model/uodate_image_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/set_up_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
@@ -54,6 +62,7 @@ import 'package:laxmii_app/presentation/features/quotes/data/model/delete_quote_
 import 'package:laxmii_app/presentation/features/quotes/data/model/get_all_quotes_response.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/get_quote_no_response.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/get_single_quote_response.dart';
+import 'package:laxmii_app/presentation/features/shopify/data/model/import_shopify_details_response.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_request.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_response.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/calculate_tax_request.dart';
@@ -199,6 +208,11 @@ abstract class RestClient {
     @Path() required String inventoryId,
   });
 
+  @PUT('/api/settings')
+  Future<UpdateSettingsResponse> updateSettings(
+    @Body() UpdateSettingsRequest request,
+  );
+
   @DELETE('/api/inventory/delete/{inventoryId}')
   Future<DeleteInventoryResponse> deleteInventory({
     @Path() required String inventoryId,
@@ -229,6 +243,21 @@ abstract class RestClient {
       // @Queries() Map<String, dynamic> queries,
       );
 
+  @GET('/auth/profile')
+  Future<GetUserDetailsResponse> getUserDetails(
+      // @Queries() Map<String, dynamic> queries,
+      );
+
+  @GET('/api/settings')
+  Future<SettingsResponse> getSettings(
+      // @Queries() Map<String, dynamic> queries,
+      );
+
+  @GET('/auth/shopify/import-all')
+  Future<ImportShopifyDetailsResponse> importShopifyDetails(
+      // @Queries() Map<String, dynamic> queries,
+      );
+
   @GET('/api/sales')
   Future<GetAllSalesResponse> getAllSales();
 
@@ -244,6 +273,9 @@ abstract class RestClient {
   Future<GetChatHistoryResponse> getChatHistory(
     @Body() GetChatHistoryRequest request,
   );
+
+  @GET('/api/chat/recent-chats')
+  Future<GetRecentChatsResponse> getRecentChatHistory();
 
   @GET('/api/tax/calculate')
   Future<CalculateTaxResponse> calculateTax(
@@ -298,6 +330,17 @@ abstract class RestClient {
   Future<GetInvoiceByNameResponse> getInvoiceByName(
     @Body() GetInvoiceByNameRequest request,
   );
+
+  @MultiPart()
+  @PUT('/auth/profile')
+  Future<UpdateImageProfileResponse> updateImageProfile({
+    // @Part(
+    //   name: 'proof_of_payment',
+    //   contentType: 'image/jpeg',
+    // )
+    // required File proofOfPayment,
+    @Part(contentType: 'image/jpeg') required File picture,
+  });
 }
 
 ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(

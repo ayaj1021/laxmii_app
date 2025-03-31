@@ -48,6 +48,7 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
     final isLoading = ref.watch(
       forgotPasswordNotifier.select((v) => v.forgotPasswordState.isLoading),
     );
+    final colorScheme = Theme.of(context);
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -60,14 +61,14 @@ class _ForgotPasswordState extends ConsumerState<ForgotPassword> {
               Text(
                 'Forgot password?',
                 style: context.textTheme.s24w400.copyWith(
-                  color: AppColors.white,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(2),
               Text(
                 'It\'s not your fault, it happens sometimes. Enter your email to recover your password.',
                 style: context.textTheme.s14w400.copyWith(
-                  color: AppColors.white,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(50),

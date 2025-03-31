@@ -10,6 +10,7 @@ import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/remember_me_provider.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/widgets/login_header_section.dart';
@@ -46,11 +47,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
   }
 
+  String userEmail = '';
+
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController()..addListener(_validateInput);
     _passwordController = TextEditingController()..addListener(_validateInput);
+    getUserEmail();
   }
 
   void _validateInput() {
@@ -58,8 +62,27 @@ class _LoginViewState extends ConsumerState<LoginView> {
         _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
   }
 
+  // getUserEmail() async {
+  //   final email = await AppDataStorage().getUserEmail();
+  // setState(() {
+  //   userEmail = email ?? '';
+  // });
+  // }
+
+  void getUserEmail() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    final email = await AppDataStorage().getUserEmail();
+
+    setState(() {
+      userEmail = email ?? '';
+    });
+
+    _emailController.text = userEmail;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     final rememberMe = ref.watch(rememberMeProvider);
     final isLoading =
         ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
@@ -89,7 +112,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     controller: _passwordController,
                     hintText: 'Password',
                     hintStyle: context.textTheme.s14w400.copyWith(
-                        color: AppColors.primary212121,
+                        color: colorScheme.colorScheme.onSurface,
                         fontWeight: FontWeight.w300),
                     backgroundColor: Colors.transparent,
                     bordercolor: AppColors.primary212121,
@@ -114,7 +137,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           Text(
                             'Remember me',
                             style: context.textTheme.s14w400.copyWith(
-                              color: AppColors.white,
+                              color: colorScheme.colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -140,7 +163,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       builder: (context, r, c) {
                         return LaxmiiSendButton(
                           isEnabled: r,
-                          onTap: () => _login(),
+                          onTap: () async {
+                            await AppDataStorage().saveUserPassword(
+                                _passwordController.text.trim());
+                            _login();
+                          },
                           title: 'Sign In',
                         );
                       }),
@@ -150,22 +177,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     children: [
                       SizedBox(
                         width: 135.w,
-                        child: const Divider(
-                          color: AppColors.white,
+                        child: Divider(
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                       ),
                       const HorizontalSpacing(7),
                       Text(
                         'Or',
                         style: context.textTheme.s14w400.copyWith(
-                            color: AppColors.white,
+                            color: colorScheme.colorScheme.onSurface,
                             fontWeight: FontWeight.w300),
                       ),
                       const HorizontalSpacing(7),
                       SizedBox(
                         width: 135.w,
-                        child: const Divider(
-                          color: AppColors.white,
+                        child: Divider(
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                       ),
                     ],
@@ -186,7 +213,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       Text(
                         'Don\'t have an account? ',
                         style: context.textTheme.s14w400.copyWith(
-                            color: AppColors.white,
+                            color: colorScheme.colorScheme.onSurface,
                             fontWeight: FontWeight.w300),
                       ),
                       GestureDetector(
@@ -209,10 +236,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
     );
   }
 
-  void _login() {
+  void _login() async {
+    await AppDataStorage().saveUserPassword(_passwordController.text.trim());
     ref.read(loginNotifier.notifier).login(
           data: LoginRequest(
-              email: _emailController.text.trim(),
+              email: _emailController.text.toLowerCase().trim(),
               password: _passwordController.text.trim()),
           onError: (error) {
             context.showError(message: error);
@@ -233,6 +261,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     ? context.pushReplacementNamed(Dashboard.routeName)
                     //   : context.pushReplacementNamed(Dashboard.routeName);
                     : context.pushReplacementNamed(ProfileSetupView.routeName);
+            ref.read(getUserDetailsNotifier.notifier).getUserDetails();
           },
         );
   }

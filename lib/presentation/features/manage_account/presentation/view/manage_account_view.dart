@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -20,6 +22,9 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
   void initState() {
     super.initState();
     getUserName();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+    });
   }
 
   String userName = '';
@@ -37,6 +42,7 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
 
   @override
   Widget build(BuildContext context) {
+    final userDetails = ref.watch(getUserDetailsNotifier.select((v) => v.data));
     return Scaffold(
       appBar: const LaxmiiAppBar(),
       body: SafeArea(
@@ -46,16 +52,41 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
           children: [
             Stack(
               children: [
-                const Column(
+                Column(
                   children: [
                     Center(
                       child: Stack(
                         children: [
+                          // CircleAvatar(
+                          //     radius: 50,
+                          //     backgroundImage: userDetails?.profilePicture !=
+                          //                 null &&
+                          //             userDetails!.profilePicture!.isNotEmpty
+                          //         ? NetworkImage(userDetails.profilePicture!)
+                          //         : const AssetImage(
+                          //             'assets/images/account_image.png')
+                          //     //  NetworkImage(userDetails?.profilePicture ?? ''),
+                          //     ),
+
                           CircleAvatar(
                             radius: 50,
                             backgroundImage:
-                                AssetImage('assets/images/account_image.png'),
-                          ),
+                                userDetails?.profilePicture != null &&
+                                        userDetails!.profilePicture!.isNotEmpty
+                                    ? CachedNetworkImageProvider(
+                                        userDetails.profilePicture!)
+                                    : const AssetImage(
+                                            'assets/images/account_image.png')
+                                        as ImageProvider,
+                            onBackgroundImageError: (_, __) {
+                              // Handle error if needed (e.g., logging)
+                            },
+                            child: userDetails?.profilePicture == null ||
+                                    userDetails!.profilePicture!.isEmpty
+                                ? Image.asset(
+                                    'assets/images/account_image.png') // Ensures a default image
+                                : null,
+                          )
                         ],
                       ),
                     )

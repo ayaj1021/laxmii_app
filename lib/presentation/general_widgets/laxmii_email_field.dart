@@ -100,6 +100,7 @@ class _LaxmiiEmailFieldState extends State<LaxmiiEmailField> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       // height: 50.h,
@@ -144,7 +145,7 @@ class _LaxmiiEmailFieldState extends State<LaxmiiEmailField> {
                   },
                   style: widget.textStyle ??
                       TextStyle(
-                        color: AppColors.white,
+                        color: colorScheme.colorScheme.onSurface,
                         fontSize: 14.sp,
                       ),
                   cursorColor: AppColors.primaryColor,

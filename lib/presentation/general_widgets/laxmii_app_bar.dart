@@ -22,13 +22,14 @@ class LaxmiiAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return AppBar(
       title: titleWidget ??
           (title != null
               ? Text(
                   title ?? '',
                   style: context.textTheme.s16w500.copyWith(
-                    color: AppColors.white,
+                    color: colorScheme.colorScheme.onSurface,
                   ),
                 )
               : null),
@@ -40,6 +41,8 @@ class LaxmiiAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: SvgPicture.asset(
               'assets/icons/arrowleft.svg',
               fit: BoxFit.scaleDown,
+              colorFilter: ColorFilter.mode(
+                  colorScheme.colorScheme.onSurface, BlendMode.srcIn),
             ),
           ),
       centerTitle: centerTitle,

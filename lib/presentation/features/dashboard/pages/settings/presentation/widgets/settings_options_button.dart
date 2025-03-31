@@ -15,11 +15,11 @@ class SettingsOptionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.primary101010),
+          borderRadius: BorderRadius.circular(8), color: colorScheme.cardColor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

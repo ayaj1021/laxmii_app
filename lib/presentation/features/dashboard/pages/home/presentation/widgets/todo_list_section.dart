@@ -83,9 +83,10 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
                               deleteTask(taskId: '${data?.id}'),
                           isCompleted: data?.completed,
                           onMarkCompletedTapped: () => updateTask(
-                              taskId: '${data?.id}',
-                              priority: '${data?.priority}',
-                              completed: data?.completed ?? false),
+                            taskId: '${data?.id}',
+                            priority: '${data?.priority}',
+                            completed: true,
+                          ),
                         ),
                         const VerticalSpacing(16)
                       ],

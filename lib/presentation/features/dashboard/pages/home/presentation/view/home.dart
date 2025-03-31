@@ -14,6 +14,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentati
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/delete_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
@@ -35,6 +36,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+      await ref.read(getUserDetailsNotifier.notifier).getUserDetails();
     });
     super.initState();
   }
@@ -67,7 +69,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
     'Investment Insight',
   ];
 
-  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     final greetingMessage = getGreetingMessage();
@@ -166,46 +167,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
                         ]),
                     const VerticalSpacing(10),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.24,
-                      child: PageView(
-                        controller: _pageController,
-                        children: List.generate(aiInsights.length, (index) {
-                          final data = aiInsights[index];
-
-                          return ExpensesTaxWidget(
-                            onBackPressed: () {
-                              if (_currentIndex > 0) {
-                                setState(() {
-                                  _currentIndex--;
-                                });
-                                _pageController.animateToPage(
-                                  _currentIndex,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            },
-                            onForwardPressed: () {
-                              if (_currentIndex < aiInsights.length - 1) {
-                                setState(() {
-                                  _currentIndex++;
-                                });
-                                _pageController.animateToPage(
-                                  _currentIndex,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            },
-                            title: data,
-                            subTitle:
-                                'Your utility bills were 30% higher this month due to increased energy use',
-                            controller: _pageController,
-                            length: aiInsights.length,
-                          );
-                        }),
-                      ),
-                    ),
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: ExpensesTaxWidget(
+                          aiInsights: aiInsights,
+                          subTitle:
+                              'Your utility bills were 30% higher this month due to increased energy use',
+                          controller: _pageController,
+                          length: aiInsights.length,
+                        )),
                     const VerticalSpacing(14),
                     const LaxmiAiTabWidget(),
                     const VerticalSpacing(12),

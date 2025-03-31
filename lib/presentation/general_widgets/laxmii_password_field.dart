@@ -103,6 +103,7 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       // height: 50.h,
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -150,7 +151,7 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
                     },
                     style: widget.textStyle ??
                         TextStyle(
-                          color: AppColors.white,
+                          color: colorScheme.colorScheme.onSurface,
                           fontSize: 14.sp,
                         ),
                     cursorColor: AppColors.primaryColor,

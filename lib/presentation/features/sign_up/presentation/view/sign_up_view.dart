@@ -63,6 +63,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     final isLoading = ref.watch(
       signUpNotifier.select((v) => v.signUpState.isLoading),
     );
+    final colorScheme = Theme.of(context);
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -154,21 +155,22 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                   children: [
                     SizedBox(
                       width: 135.w,
-                      child: const Divider(
-                        color: AppColors.white,
+                      child: Divider(
+                        color: colorScheme.colorScheme.onSurface,
                       ),
                     ),
                     const HorizontalSpacing(7),
                     Text(
                       'Or',
                       style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.white, fontWeight: FontWeight.w300),
+                          color: colorScheme.colorScheme.onSurface,
+                          fontWeight: FontWeight.w300),
                     ),
                     const HorizontalSpacing(7),
                     SizedBox(
                       width: 135.w,
-                      child: const Divider(
-                        color: AppColors.white,
+                      child: Divider(
+                        color: colorScheme.colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -189,7 +191,8 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                     Text(
                       'Already have an account? ',
                       style: context.textTheme.s14w400.copyWith(
-                          color: AppColors.white, fontWeight: FontWeight.w300),
+                          color: colorScheme.colorScheme.onSurface,
+                          fontWeight: FontWeight.w300),
                     ),
                     GestureDetector(
                       onTap: () => context.pushNamed(LoginView.routeName),
@@ -214,7 +217,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
     ref.read(signUpNotifier.notifier).signUp(
           data: SignUpRequest(
             name: _nameController.text.trim(),
-            email: _emailController.text.trim(),
+            email: _emailController.text.toLowerCase().trim(),
             password: _passwordController.text.trim(),
           ),
           onError: (error) {

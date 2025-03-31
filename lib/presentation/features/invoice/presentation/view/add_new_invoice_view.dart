@@ -70,6 +70,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Add invoice',
@@ -95,7 +96,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                 child: Text(
                   widget.item,
                   style: context.textTheme.s14w500.copyWith(
-                    color: AppColors.primaryC4C4C4,
+                    color: colorScheme.colorScheme.onSurface,
                   ),
                 ),
               ),

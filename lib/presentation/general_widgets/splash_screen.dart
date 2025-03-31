@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
-import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/face_id_login.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/welcome_screen.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
@@ -31,13 +30,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   void _init() {
-    Future.delayed(const Duration(milliseconds: 2000), () async {
+    Future.delayed(const Duration(seconds: 4), () async {
       final data = await secureStorage.loadCurrentState();
       final isProfileSetup = await secureStorage.getProfileSetup();
       return switch (data) {
         CurrentState.onboarded => context.replaceNamed(LoginView.routeName),
         CurrentState.loggedIn => isProfileSetup
-            ? context.replaceNamed(Dashboard.routeName)
+            //  ? context.replaceNamed(Dashboard.routeName)
+            ? context.replaceNamed(FaceIdLogin.routeName)
             : context.replaceNamed(ProfileSetupView.routeName),
         _ => context.replaceNamed(WelcomeScreen.routeName)
         // _ => context.replaceNamed(SignUpView.routeName),
@@ -67,12 +67,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
           ),
           const VerticalSpacing(20),
-          SizedBox(
-            width: 150.w,
-            child: const LinearProgressIndicator(
-              color: AppColors.primaryColor,
-            ),
-          )
+          // SizedBox(
+          //   width: 150.w,
+          //   child: const LinearProgressIndicator(
+          //     color: AppColors.primaryColor,
+          //   ),
+          // )
         ],
       ),
     );

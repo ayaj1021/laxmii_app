@@ -14,6 +14,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -28,7 +29,7 @@ class WelcomeScreen extends StatelessWidget {
                     Text(
                       'All Your finances in one place with',
                       style: context.textTheme.s14w400.copyWith(
-                        color: AppColors.white,
+                        color: colorScheme.colorScheme.onSurface,
                         fontSize: 40,
                       ),
                     ),
@@ -48,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                           Text(
                             'Already have an account? ',
                             style: context.textTheme.s14w400.copyWith(
-                                color: AppColors.white,
+                                color: colorScheme.colorScheme.onSurface,
                                 fontWeight: FontWeight.w300),
                           ),
                           GestureDetector(

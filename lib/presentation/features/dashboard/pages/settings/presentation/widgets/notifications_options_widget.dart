@@ -11,11 +11,13 @@ class NotificationsOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.primary101010),
+        borderRadius: BorderRadius.circular(8),
+        color: colorScheme.cardColor,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -30,7 +32,7 @@ class NotificationsOptionsWidget extends StatelessWidget {
               scaleX: 1,
               child: Switch(
                   activeTrackColor: AppColors.primaryColor,
-                  inactiveTrackColor: AppColors.primary101010,
+                  inactiveTrackColor: colorScheme.cardColor,
                   value: value,
                   onChanged: onChanged))
         ],

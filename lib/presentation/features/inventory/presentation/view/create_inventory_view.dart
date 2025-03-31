@@ -70,6 +70,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(createInventoryNotifier
         .select((v) => v.createInventoryState.isLoading));
+
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(

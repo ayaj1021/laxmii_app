@@ -25,11 +25,12 @@ class TodoListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary101010.withValues(alpha: 0.6),
+        color: colorScheme.cardColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +41,7 @@ class TodoListWidget extends StatelessWidget {
               Text(
                 todoTask.capitalize,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               // Text(

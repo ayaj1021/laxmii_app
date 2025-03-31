@@ -37,42 +37,45 @@ class _YearlyPageState extends ConsumerState<YearlyPage> {
         ref.watch(getAllTasksNotifierProvider.select((v) => v.getAllTasks));
     final tasksList =
         tasks.data?.tasks?.where((task) => task.priority == 'month').toList();
-    return Column(
-      children: [
-        tasksList == null
-            ? const SizedBox.shrink()
-            : tasksList.isEmpty
-                ? const EmptyPage(
-                    emptyMessage: 'No Tasks Yet',
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                        itemCount: tasksList.length,
-                        itemBuilder: (_, index) {
-                          final data = tasksList[index];
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                child: TodoListWidget(
-                                  time: '${data.time}',
-                                  todoTask: '${data.title}',
-                                  taskPriority: '${data.priority}ly priority',
-                                  taskPriorityColor: AppColors.primary5E5E5E,
-                                  onDeleteTapped: () =>
-                                      deleteTask(taskId: '${data.id}'),
-                                  onMarkCompletedTapped: () => updateTask(
-                                      taskId: '${data.id}',
-                                      priority: '${data.priority}',
-                                      completed: true),
-                                  isCompleted: data.completed,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          tasksList == null
+              ? const SizedBox.shrink()
+              : tasksList.isEmpty
+                  ? const EmptyPage(
+                      emptyMessage: 'No Tasks Yet',
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                          itemCount: tasksList.length,
+                          itemBuilder: (_, index) {
+                            final data = tasksList[index];
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  child: TodoListWidget(
+                                    time: '${data.time}',
+                                    todoTask: '${data.title}',
+                                    taskPriority: '${data.priority}ly priority',
+                                    taskPriorityColor: AppColors.primary5E5E5E,
+                                    onDeleteTapped: () =>
+                                        deleteTask(taskId: '${data.id}'),
+                                    onMarkCompletedTapped: () => updateTask(
+                                        taskId: '${data.id}',
+                                        priority: '${data.priority}',
+                                        completed: true),
+                                    isCompleted: data.completed,
+                                  ),
                                 ),
-                              ),
-                              const VerticalSpacing(15)
-                            ],
-                          );
-                        }),
-                  )
-      ],
+                                const VerticalSpacing(15)
+                              ],
+                            );
+                          }),
+                    )
+        ],
+      ),
     );
   }
 

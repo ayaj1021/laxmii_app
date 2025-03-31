@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class TransactionsWidget extends StatelessWidget {
   const TransactionsWidget(
@@ -19,7 +20,7 @@ class TransactionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppColors.primary101010,
@@ -36,6 +37,7 @@ class TransactionsWidget extends StatelessWidget {
                   color: AppColors.primaryC4C4C4,
                 ),
               ),
+              const VerticalSpacing(5),
               Text(
                 expenseType,
                 style: context.textTheme.s12w300.copyWith(
@@ -53,6 +55,7 @@ class TransactionsWidget extends StatelessWidget {
                   color: amountColor ?? AppColors.primaryC4C4C4,
                 ),
               ),
+              const VerticalSpacing(5),
               Text(
                 expenseDate,
                 style: context.textTheme.s12w300.copyWith(

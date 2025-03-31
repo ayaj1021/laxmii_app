@@ -4,10 +4,15 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/theme/theme_provider.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/notifications_model.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/get_settings_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/logout_notifier.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/notifier/update_settings_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/connect_spotify_button_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
@@ -24,25 +29,44 @@ class SettingsView extends ConsumerStatefulWidget {
 }
 
 class _SettingsViewState extends ConsumerState<SettingsView> {
-  bool todoNotification = false;
-  bool taxOptimization = false;
-  bool inventoryAlerts = false;
-  bool performanceInsights = false;
+  String userId = '';
+
+  @override
+  void initState() {
+    getUserId();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(settingsNotifer.notifier).getSettings();
+    });
+    super.initState();
+  }
+
+  getUserId() async {
+    final id = await AppDataStorage().getUserId();
+
+    setState(() {
+      userId = id ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLoading =
         ref.watch(logOutNotifer.select((v) => v.logOut.isLoading));
+    final settings = ref.watch(settingsNotifer.select((v) => v.data));
+    final isLightTheme = ref.watch(themeProvider);
+    final colorScheme = Theme.of(context);
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: colorScheme.appBarTheme.backgroundColor,
             automaticallyImplyLeading: false,
             centerTitle: false,
+            foregroundColor: colorScheme.appBarTheme.foregroundColor,
             title: Text(
               'Settings',
               style: context.textTheme.s20w500.copyWith(
-                color: AppColors.white,
+                color: colorScheme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -56,7 +80,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                   Text(
                     'Profile Informations',
                     style: context.textTheme.s14w500.copyWith(
-                        color: AppColors.primaryC4C4C4,
+                        color: colorScheme.colorScheme.tertiary,
                         fontWeight: FontWeight.w300),
                   ),
                   const VerticalSpacing(6),
@@ -67,7 +91,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                           vertical: 10, horizontal: 16),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: AppColors.primary101010),
+                          color: colorScheme.cardColor),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -77,9 +101,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                               color: AppColors.primary5E5E5E,
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
-                            color: AppColors.primaryC4C4C4,
+                            color: colorScheme.iconTheme.color,
                             size: 18,
                           )
                         ],
@@ -91,10 +115,18 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     color: AppColors.primary5E5E5E,
                   ),
                   const VerticalSpacing(24),
+                  NotificationsOptionsWidget(
+                    title: 'Change Theme',
+                    onChanged: (v) {
+                      ref.read(themeProvider.notifier).state = v;
+                    },
+                    value: isLightTheme,
+                  ),
+                  const VerticalSpacing(24),
                   Text(
                     'Notifications',
                     style: context.textTheme.s14w500.copyWith(
-                        color: AppColors.primaryC4C4C4,
+                        color: colorScheme.colorScheme.tertiary,
                         fontWeight: FontWeight.w300),
                   ),
                   const VerticalSpacing(6),
@@ -102,47 +134,77 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     title: 'To-do Notification',
                     onChanged: (v) {
                       setState(() {
-                        todoNotification = v;
+                        settings?.settings?.notifications?.todoNotification = v;
                       });
+
+                      final notifications = settings?.settings?.notifications;
+                      if (notifications != null) {
+                        _updateSettings(notifications);
+                      }
                     },
-                    value: todoNotification,
+                    value:
+                        settings?.settings?.notifications?.todoNotification ??
+                            false,
                   ),
                   const VerticalSpacing(10),
                   NotificationsOptionsWidget(
                     title: 'Tax Optimization',
                     onChanged: (v) {
                       setState(() {
-                        taxOptimization = v;
+                        settings?.settings?.notifications?.taxOptimization = v;
                       });
+
+                      final notifications = settings?.settings?.notifications;
+                      if (notifications != null) {
+                        _updateSettings(notifications);
+                      }
                     },
-                    value: taxOptimization,
+                    value: settings?.settings?.notifications?.taxOptimization ??
+                        false,
                   ),
                   const VerticalSpacing(10),
                   NotificationsOptionsWidget(
                     title: 'Inventory Alerts',
                     onChanged: (v) {
                       setState(() {
-                        inventoryAlerts = v;
+                        settings?.settings?.notifications?.inventoryAlerts = v;
                       });
+
+                      final notifications = settings?.settings?.notifications;
+                      if (notifications != null) {
+                        _updateSettings(notifications);
+                      }
                     },
-                    value: inventoryAlerts,
+                    value: settings?.settings?.notifications?.inventoryAlerts ??
+                        false,
                   ),
                   const VerticalSpacing(10),
                   NotificationsOptionsWidget(
                     title: 'Performance Insight',
                     onChanged: (v) {
                       setState(() {
-                        performanceInsights = v;
+                        settings?.settings?.notifications?.performanceInsight =
+                            v;
                       });
+
+                      final notifications = settings?.settings?.notifications;
+                      if (notifications != null) {
+                        _updateSettings(notifications);
+                      }
                     },
-                    value: performanceInsights,
+                    value:
+                        settings?.settings?.notifications?.performanceInsight ??
+                            false,
                   ),
                   const VerticalSpacing(24),
                   const Divider(
                     color: AppColors.primary5E5E5E,
                   ),
                   const VerticalSpacing(20),
-                  const ConnectSpotifyButtonWidget(),
+                  ConnectSpotifyButtonWidget(
+                    isConnected: settings?.settings?.shopifyConnected ?? false,
+                    userId: userId,
+                  ),
                   const VerticalSpacing(20),
                   const Divider(
                     color: AppColors.primary5E5E5E,
@@ -151,7 +213,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                   Text(
                     'Currency',
                     style: context.textTheme.s14w500.copyWith(
-                        color: AppColors.primaryC4C4C4,
+                        color: colorScheme.colorScheme.tertiary,
                         fontWeight: FontWeight.w300),
                   ),
                   const VerticalSpacing(6),
@@ -179,9 +241,20 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     );
   }
 
+  void _updateSettings(Notifications notifications) {
+    final data = UpdateSettingsRequest(notifications: notifications);
+    ref.read(updateSettingsNotifer.notifier).updateSettings(
+        data: data,
+        onError: (error) {
+          context.showError(message: error);
+        },
+        onSuccess: (message) {
+          context.showSuccess(message: message);
+          ref.read(settingsNotifer.notifier).getSettings();
+        });
+  }
+
   void _logout() async {
-    // await AppDataStorage().clearToken();
-    // context.pushReplacementNamed(LoginView.routeName);
     final refreshToken = await AppDataStorage().getUserRefreshToken();
     final data = LogoutRequest(refreshToken: refreshToken.toString());
     ref.read(logOutNotifer.notifier).logOut(

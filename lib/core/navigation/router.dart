@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/ai_assistant.dart';
-import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/chat_view.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/face_id_login.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
@@ -50,12 +50,13 @@ class AppRouter {
     TaxCalculationResult.routeName: (context) => const TaxCalculationResult(),
     TaxOptimizationView.routeName: (context) => const TaxOptimizationView(),
     AiAssistant.routeName: (context) => const AiAssistant(),
-    ChatView.routeName: (context) => const ChatView(),
+    // ChatView.routeName: (context) => const ChatView(),
     AiInsightsView.routeName: (context) => const AiInsightsView(),
     OnboardingView.routeName: (context) => const OnboardingView(),
     WelcomeScreen.routeName: (context) => const WelcomeScreen(),
     ProfileSetupView.routeName: (context) => const ProfileSetupView(),
     ManageAccountView.routeName: (context) => const ManageAccountView(),
+    FaceIdLogin.routeName: (context) => const FaceIdLogin(),
   };
   static Map<String, Widget Function(BuildContext)> get routes => _routes;
 }

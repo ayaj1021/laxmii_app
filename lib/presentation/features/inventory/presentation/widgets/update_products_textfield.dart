@@ -22,6 +22,7 @@ class UpdateProductsTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,7 +41,7 @@ class UpdateProductsTextField extends StatelessWidget {
                     color: AppColors.primary5E5E5E.withValues(alpha: 0.5))),
             child: TextFormField(
               style: context.textTheme.s14w500.copyWith(
-                color: AppColors.primaryC4C4C4,
+                color: colorScheme.colorScheme.onSurface,
               ),
               keyboardType: keyboardType,
               inputFormatters: inputFormatters,
@@ -50,8 +51,8 @@ class UpdateProductsTextField extends StatelessWidget {
                   prefix: isMoney == true
                       ? Text(
                           '\$',
-                          style: context.textTheme.s12w500.copyWith(
-                            color: AppColors.primaryC4C4C4,
+                          style: context.textTheme.s14w500.copyWith(
+                            color: colorScheme.colorScheme.onSurface,
                           ),
                         )
                       : const SizedBox.shrink(),

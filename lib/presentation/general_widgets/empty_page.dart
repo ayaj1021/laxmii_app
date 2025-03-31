@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class EmptyPage extends StatelessWidget {
@@ -10,6 +9,7 @@ class EmptyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -18,7 +18,7 @@ class EmptyPage extends StatelessWidget {
         Text(
           emptyMessage,
           style: context.textTheme.s14w500.copyWith(
-            color: AppColors.white,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
       ],

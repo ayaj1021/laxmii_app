@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class TabsSelectionWidget extends StatelessWidget {
@@ -13,6 +12,7 @@ class TabsSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Row(
@@ -24,7 +24,7 @@ class TabsSelectionWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColors.primary101010,
+                  color: colorScheme.colorScheme.onPrimaryContainer,
                 ),
                 child: SvgPicture.asset(icon),
               ),
@@ -32,14 +32,14 @@ class TabsSelectionWidget extends StatelessWidget {
               Text(
                 title,
                 style: context.textTheme.s14w400.copyWith(
-                  color: AppColors.white,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               )
             ],
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios,
-            color: AppColors.white,
+            color: colorScheme.iconTheme.color,
             size: 14,
           )
         ],

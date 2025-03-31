@@ -40,6 +40,10 @@ dependencies:
   cross_file: ^0.3.4+2
   pdf_render: ^1.4.12
   local_auth: ^2.3.0
+  webview_flutter: ^4.10.0
+  webview_flutter_wkwebview: ^3.18.4
+  webview_flutter_android: ^4.3.4
+  cached_network_image: ^3.4.1
   # google_maps_flutter: ^2.10.0
 
 dev_dependencies:

@@ -14,11 +14,13 @@ class HomeBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 27),
       height: MediaQuery.of(context).size.height * 0.4,
-      decoration: const BoxDecoration(
-          color: AppColors.black,
-          borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+          color: colorScheme.scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(20),
           )),
@@ -62,13 +64,14 @@ class HomeBottomNavSelectionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.primary101010),
+            color: colorScheme.cardColor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -78,7 +81,7 @@ class HomeBottomNavSelectionsWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary101010,
+                    color: colorScheme.colorScheme.onPrimaryContainer,
                   ),
                   child: SvgPicture.asset(icon),
                 ),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/all_transactions_page.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_in_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_out_page.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/spotify_page.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/view/create_expense_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -76,16 +74,16 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
                       ]),
                 ),
                 // const HorizontalSpacing(50),
-                GestureDetector(
-                  onTap: () => context.pushNamed(CreateExpenseView.routeName),
-                  child: const Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.add_circle,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () => context.pushNamed(CreateExpenseView.routeName),
+                //   child: const Align(
+                //     alignment: Alignment.centerRight,
+                //     child: Icon(
+                //       Icons.add_circle,
+                //       color: AppColors.primaryColor,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             const VerticalSpacing(15),
