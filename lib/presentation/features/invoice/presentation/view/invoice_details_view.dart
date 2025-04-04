@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/create_invoice_notifier.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/update_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/confirm_invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -200,6 +205,12 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                         ),
                       ),
                       const VerticalSpacing(200),
+                      LaxmiiOutlineSendButton(
+                          onTap: () {
+                            markInvoiceAsPaid();
+                          },
+                          title: 'Mark as paid'),
+                      const VerticalSpacing(20),
                       LaxmiiSendButton(
                         onTap: () {
                           createInvoice();
@@ -213,7 +224,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                         //     issueDate: widget.issueDate),
                         title: 'Save',
                         textColor: AppColors.black,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -225,17 +236,53 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
     );
   }
 
+  void markInvoiceAsPaid() async {
+    await ref.read(getAccessTokenNotifier.notifier).accessToken();
+    ref.read(createInvoiceNotifier.notifier).createInvoice(
+          data: CreateInvoiceRequest(
+              customerName: widget.customerName,
+              issueDate: widget.issueDate.toString(),
+              dueDate: widget.dueDate.toString(),
+              invoiceNumber: widget.invoiceNumber,
+              items: widget.items,
+              totalAmount: widget.totalAmount,
+              status: "paid"),
+          onError: (error) {
+            context.showError(message: error);
+          },
+          onSuccess: (message, id, status) {
+            context.hideOverLay();
+            context.showSuccess(message: message);
+            ref.read(updateInvoiceNotifier.notifier).updateInvoice(
+                  data: UpdateInvoiceRequest(status: 'paid'),
+                  onError: (error) {
+                    context.showError(message: error);
+                  },
+                  onSuccess: (message) {
+                    context.hideOverLay();
+                    context.showSuccess(message: message);
+                    //  context.popUntil(ModalRoute.withName(InvoiceView.routeName));
+                    context.pushReplacementNamed(Dashboard.routeName);
+                  },
+                  invoiceId: id,
+                );
+
+            //  context.pushReplacementNamed(Dashboard.routeName);
+          },
+        );
+  }
+
   void createInvoice() async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(createInvoiceNotifier.notifier).createInvoice(
           data: CreateInvoiceRequest(
-            customerName: widget.customerName,
-            issueDate: widget.issueDate.toString(),
-            dueDate: widget.dueDate.toString(),
-            invoiceNumber: widget.invoiceNumber,
-            items: widget.items,
-            totalAmount: widget.totalAmount,
-          ),
+              customerName: widget.customerName,
+              issueDate: widget.issueDate.toString(),
+              dueDate: widget.dueDate.toString(),
+              invoiceNumber: widget.invoiceNumber,
+              items: widget.items,
+              totalAmount: widget.totalAmount,
+              status: "unpaid"),
           onError: (error) {
             context.showError(message: error);
           },

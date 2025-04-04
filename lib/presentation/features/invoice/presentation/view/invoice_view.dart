@@ -61,6 +61,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
           (invoice.invoiceNumber?.contains(_searchQuery) ?? false);
       return matchesStatus && matchesSearch;
     }).toList();
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Invoice',
@@ -98,7 +99,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                 PopupMenuButton(
                     padding: EdgeInsets.zero,
                     elevation: 0,
-                    color: AppColors.black,
+                    color: colorScheme.cardColor,
                     onSelected: (value) {
                       setState(() {
                         _selectedOption = value; // Update selected option
@@ -179,7 +180,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                             Text(
                               'Not Available',
                               style: context.textTheme.s14w500.copyWith(
-                                color: AppColors.white,
+                                color: colorScheme.colorScheme.onSurface,
                               ),
                             ),
                           ],

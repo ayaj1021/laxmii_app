@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -84,17 +85,23 @@ Page resource error:
       ..loadRequest(Uri.parse(widget.shopifyUrl));
 
     _controller = controller;
+    log(widget.shopifyUrl);
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.white,
+      //  backgroundColor: colorScheme.scaffoldBackgroundColor,
       appBar: AppBar(
+        backgroundColor: colorScheme.appBarTheme.backgroundColor,
+        foregroundColor: colorScheme.appBarTheme.foregroundColor,
         //  title: const Text('Flutter WebView'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
             onPressed: () async {
               if (await _controller.canGoBack()) {
                 await _controller.goBack();

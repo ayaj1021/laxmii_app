@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
+import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/face_id_login.dart';
@@ -67,12 +68,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
           ),
           const VerticalSpacing(20),
-          // SizedBox(
-          //   width: 150.w,
-          //   child: const LinearProgressIndicator(
-          //     color: AppColors.primaryColor,
-          //   ),
-          // )
+          SizedBox(
+            width: 150.w,
+            child: const LinearProgressIndicator(
+              color: AppColors.primaryColor,
+            ),
+          )
         ],
       ),
     );

@@ -5,7 +5,7 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/all_transactions_page.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_in_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_out_page.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/pages/spotify_page.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/pages/spotify_transaction_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -55,6 +55,7 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
                       tabAlignment: TabAlignment.start,
                       indicatorSize: TabBarIndicatorSize.tab,
                       indicatorWeight: 0,
+                      dividerHeight: 0,
                       labelPadding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       indicator: BoxDecoration(

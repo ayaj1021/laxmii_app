@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-
 import 'package:laxmii_app/core/theme/app_colors.dart';
 
 class QuoteTextField extends StatelessWidget {
@@ -15,6 +14,7 @@ class QuoteTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       width: width,
       decoration: const BoxDecoration(
@@ -24,11 +24,11 @@ class QuoteTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         style: context.textTheme.s14w400.copyWith(
-            color: AppColors.white.withValues(alpha: 0.8),
+            color: colorScheme.colorScheme.onSurface,
             fontWeight: FontWeight.w300),
         decoration: InputDecoration(
             hintStyle: context.textTheme.s14w400.copyWith(
-                color: AppColors.white.withValues(alpha: 0.8),
+                color: colorScheme.colorScheme.onSurface,
                 fontWeight: FontWeight.w300),
             contentPadding: EdgeInsets.zero,
             hintText: hintText,

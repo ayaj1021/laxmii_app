@@ -19,11 +19,12 @@ class TransactionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary101010,
+        color: colorScheme.cardColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,7 +35,7 @@ class TransactionsWidget extends StatelessWidget {
               Text(
                 expenseName,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(5),

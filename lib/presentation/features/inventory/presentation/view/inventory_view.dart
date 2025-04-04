@@ -43,6 +43,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
         getAllInventoryNotifierProvider.select((v) => v.getAllInventory));
     final isLoading = ref.watch(
         getAllInventoryNotifierProvider.select((v) => v.loadState.isLoading));
+    final colorScheme = Theme.of(context);
     return PageLoader(
       isLoading: isLoading,
       child: Scaffold(
@@ -77,7 +78,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
                             Text(
                               'No Inventory Yet',
                               style: context.textTheme.s14w500.copyWith(
-                                color: AppColors.white,
+                                color: colorScheme.colorScheme.onSurface,
                               ),
                             ),
                           ],

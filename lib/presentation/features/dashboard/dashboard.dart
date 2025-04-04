@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/view/activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/view/home.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/home_bottom_nav.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/view/settings_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/tools/tools_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/widgets/bottom_nav.dart';
@@ -35,7 +34,9 @@ class _DashboardState extends ConsumerState<Dashboard> {
         children: const [
           HomeView(),
           ActivityView(),
-          HomeBottomNav(),
+
+          SizedBox.shrink(),
+          // HomeBottomNav(),
           ToolsView(),
           SettingsView(),
         ],

@@ -37,6 +37,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       await ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+      ref.read(getUserDetailsNotifier.notifier).getUserDetails();
     });
     super.initState();
   }

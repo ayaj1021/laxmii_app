@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -94,7 +95,12 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
                             ],
                           );
                         },
-                      ),
+                      )
+                          .animate()
+                          .fade(duration: 400.ms)
+                          .slideY(begin: 0.2, end: 0, curve: Curves.easeOut),
+
+                      //.animate().fade(duration: 300.ms),
                     )
         ],
       ),

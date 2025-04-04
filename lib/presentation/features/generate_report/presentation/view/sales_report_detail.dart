@@ -6,8 +6,8 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/generate_report/data/model/get_single_report_request.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/notifier/get_single_report_notifier.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/bottom_section.dart';
-import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_report_pdf.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_report_image.dart';
+import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/generate_report_pdf.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/report_dropdown_widget.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/widgets/table_section.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -105,6 +105,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
 
     final totalAmount = reports.fold<double>(initialValue,
         (previousValue, element) => previousValue + element.amount!.toDouble());
+
     return Scaffold(
       appBar: LaxmiiAppBar(
         centerTitle: true,

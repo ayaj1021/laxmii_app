@@ -69,6 +69,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Add Quote',
@@ -84,7 +85,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
               padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColors.primary101010),
+                  color: colorScheme.cardColor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -98,7 +99,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                   Text(
                     widget.item,
                     style: context.textTheme.s16w500.copyWith(
-                      color: AppColors.white,
+                      color: colorScheme.colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -135,7 +136,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                   Text(
                     'Amount',
                     style: context.textTheme.s12w300.copyWith(
-                      color: AppColors.primaryC4C4C4,
+                      color: colorScheme.colorScheme.onSurface,
                       fontSize: 14,
                     ),
                   ),
@@ -145,7 +146,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                       return Text(
                         '\$$totalAmount',
                         style: context.textTheme.s12w300.copyWith(
-                          color: AppColors.primaryC4C4C4,
+                          color: colorScheme.colorScheme.onSurface,
                           fontSize: 14,
                         ),
                       );

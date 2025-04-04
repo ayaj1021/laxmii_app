@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/optimize_tax_request.dart';
@@ -32,6 +31,8 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
         .select((v) => v.calculateTaxResponse.taxCalculation));
     final isLoading = ref
         .watch(optimizeTaxProfitNotifier.select((v) => v.loadState.isLoading));
+    final colorScheme = Theme.of(context);
+
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Tax Calculation Result',
@@ -52,7 +53,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: AppColors.primary101010,
+                    color: colorScheme.cardColor,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +61,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       Text(
                         'Calculation Summary',
                         style: context.textTheme.s16w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                       ),
                       const VerticalSpacing(8),
@@ -101,7 +102,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: AppColors.primary101010,
+                    color: colorScheme.cardColor,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +110,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       Text(
                         'Tax Due',
                         style: context.textTheme.s16w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                       ),
                       const VerticalSpacing(8),
@@ -137,11 +138,11 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                         title: 'Total income tax due',
                         subTitle: '\$${calculatedTax?.incomeTaxDue ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            //   color: AppColors.primaryC4C4C4,
+                            ),
                         subTitleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            //  color: AppColors.primaryC4C4C4,
+                            ),
                       ),
                     ],
                   ),
@@ -151,7 +152,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    color: AppColors.primary101010,
+                    color: colorScheme.cardColor,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,22 +167,22 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                         title: 'Tax Due',
                         subTitle: '\$${calculatedTax?.totalTax ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            // color: AppColors.primaryC4C4C4,
+                            ),
                         subTitleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            //  color: AppColors.primaryC4C4C4,
+                            ),
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'After-tax receipt',
                         subTitle: '\$${calculatedTax?.afterTaxIncome ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            // color: AppColors.primaryC4C4C4,
+                            ),
                         subTitleStyle: context.textTheme.s14w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
-                        ),
+                            //  color: AppColors.primaryC4C4C4,
+                            ),
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
@@ -189,11 +190,11 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                           subTitle:
                               '\$${calculatedTax?.effectiveTaxRate ?? ''}',
                           titleStyle: context.textTheme.s14w500.copyWith(
-                            color: AppColors.primaryC4C4C4,
-                          ),
+                              //  color: AppColors.primaryC4C4C4,
+                              ),
                           subTitleStyle: context.textTheme.s14w500.copyWith(
-                            color: AppColors.primaryC4C4C4,
-                          )),
+                              //  color: AppColors.primaryC4C4C4,
+                              )),
                     ],
                   ),
                 ),

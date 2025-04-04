@@ -81,6 +81,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
 
     final isDeleteQuoteLoading =
         ref.watch(deleteQuoteNotifier.select((v) => v.loadState.isLoading));
+    final colorScheme = Theme.of(context);
 
     return Scaffold(
       appBar: LaxmiiAppBar(
@@ -115,7 +116,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary101010,
+                    color: colorScheme.cardColor,
                   ),
                   child: Column(
                     children: [
@@ -126,7 +127,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                           Text(
                             quoteDetails?.customerName ?? '',
                             style: context.textTheme.s14w400.copyWith(
-                                color: AppColors.white.withValues(alpha: 0.8),
+                                color: colorScheme.colorScheme.onSurface,
                                 fontWeight: FontWeight.w300),
                           )
                         ],
@@ -143,8 +144,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                                 formatDateTimeYear(
                                     '${quoteDetails?.issueDate}'),
                                 style: context.textTheme.s14w400.copyWith(
-                                    color:
-                                        AppColors.white.withValues(alpha: 0.8),
+                                    color: colorScheme.colorScheme.onSurface,
                                     fontWeight: FontWeight.w300),
                               ),
                               const VerticalSpacing(10),
@@ -172,8 +172,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                                 formatDateTimeYear(
                                     '${quoteDetails?.expiryDate}'),
                                 style: context.textTheme.s14w400.copyWith(
-                                    color:
-                                        AppColors.white.withValues(alpha: 0.8),
+                                    color: colorScheme.colorScheme.onSurface,
                                     fontWeight: FontWeight.w300),
                               ),
                               const VerticalSpacing(10),
@@ -199,7 +198,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary101010,
+                    color: colorScheme.cardColor,
                   ),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
@@ -219,11 +218,11 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                 const VerticalSpacing(30),
                 Container(
                   padding: const EdgeInsets.all(18),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16)),
-                      color: AppColors.primary101010),
+                      color: colorScheme.cardColor),
                   child: Column(
                     children: [
                       InvoiceWidget(

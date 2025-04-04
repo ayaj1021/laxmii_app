@@ -91,6 +91,41 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<UpdateProfileResponse> updateProfile(
+      UpdateProfileRequest updtaeProfileRequest) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updtaeProfileRequest.toJson());
+    final _options = _setStreamType<UpdateProfileResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/auth/profile/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UpdateProfileResponse _value;
+    try {
+      _value = UpdateProfileResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
       VerifyEmailOtpRequest verifyEmailOtpRequest) async {
     final _extra = <String, dynamic>{};
@@ -1776,6 +1811,7 @@ class _RestClient implements RestClient {
       MultipartFile.fromFileSync(
         picture.path,
         filename: picture.path.split(Platform.pathSeparator).last,
+        //  contentType: MediaType.parse('image/jpeg'),
       ),
     ));
     final _options = _setStreamType<UpdateImageProfileResponse>(Options(

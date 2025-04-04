@@ -7,51 +7,51 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class LaxmiiFormfield extends StatefulWidget {
-  const LaxmiiFormfield({
-    super.key,
-    this.textStyle,
-    this.width,
-    this.labelSpace = 3,
-    this.textCapitalization = TextCapitalization.sentences,
-    this.onTap,
-    this.decoration,
-    this.hintStyle,
-    this.backgroundColor,
-    this.isLoading = false,
-    this.readOnly = false,
-    this.customLabel,
-    this.hintText,
-    this.controller,
-    this.minLines = 1,
-    this.maxLength,
-    this.obscureText = false,
-    this.enabled = true,
-    this.validateFunction,
-    this.borderSide = BorderSide.none,
-    this.onSaved,
-    this.onChange,
-    this.keyboardType,
-    this.textInputAction,
-    this.focusNode,
-    this.nextFocusNode,
-    this.submitAction,
-    this.enableErrorMessage = true,
-    this.maxLines = 1,
-    this.onFieldSubmitted,
-    this.suffixIcon,
-    this.prefixIcon,
-    this.bordercolor = Colors.white,
-    this.autofocus,
-    this.label,
-    this.inputFormatters,
-    this.borderRadius = 5,
-    this.initialValue,
-    this.labelSize,
-    this.labelColor,
-    this.errorMessage,
-    this.bottomLabel,
-    this.prefix,
-  });
+  const LaxmiiFormfield(
+      {super.key,
+      this.textStyle,
+      this.width,
+      this.labelSpace = 3,
+      this.textCapitalization = TextCapitalization.sentences,
+      this.onTap,
+      this.decoration,
+      this.hintStyle,
+      this.backgroundColor,
+      this.isLoading = false,
+      this.readOnly = false,
+      this.customLabel,
+      this.hintText,
+      this.controller,
+      this.minLines = 1,
+      this.maxLength,
+      this.obscureText = false,
+      this.enabled = true,
+      this.validateFunction,
+      this.borderSide = BorderSide.none,
+      this.onSaved,
+      this.onChange,
+      this.keyboardType,
+      this.textInputAction,
+      this.focusNode,
+      this.nextFocusNode,
+      this.submitAction,
+      this.enableErrorMessage = true,
+      this.maxLines = 1,
+      this.onFieldSubmitted,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.bordercolor = Colors.white,
+      this.autofocus,
+      this.label,
+      this.inputFormatters,
+      this.borderRadius = 5,
+      this.initialValue,
+      this.labelSize,
+      this.labelColor,
+      this.errorMessage,
+      this.bottomLabel,
+      this.prefix,
+      this.hasIcon = true});
   final double? width;
   final double? labelSize;
   final String? hintText;
@@ -95,6 +95,7 @@ class LaxmiiFormfield extends StatefulWidget {
   final String? errorMessage;
   final Widget? bottomLabel;
   final Widget? prefix;
+  final bool? hasIcon;
 
   @override
   State<LaxmiiFormfield> createState() => _LaxmiiFormfieldState();
@@ -105,6 +106,7 @@ class _LaxmiiFormfieldState extends State<LaxmiiFormfield> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -125,10 +127,12 @@ class _LaxmiiFormfieldState extends State<LaxmiiFormfield> {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/icons/user.svg',
-                    fit: BoxFit.scaleDown,
-                  ),
+                  widget.hasIcon == true
+                      ? SvgPicture.asset(
+                          'assets/icons/user.svg',
+                          fit: BoxFit.scaleDown,
+                        )
+                      : const SizedBox.shrink(),
                   const HorizontalSpacing(5),
                   Expanded(
                     child: TextFormField(
@@ -158,7 +162,7 @@ class _LaxmiiFormfieldState extends State<LaxmiiFormfield> {
                       },
                       style: widget.textStyle ??
                           TextStyle(
-                            color: AppColors.white,
+                            color: colorScheme.colorScheme.onSurface,
                             fontSize: 14.sp,
                           ),
                       //cursorColor: AppColors.primarysWatch,

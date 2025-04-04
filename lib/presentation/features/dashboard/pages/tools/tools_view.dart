@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -82,7 +83,12 @@ class ToolsView extends ConsumerWidget {
                   icon: 'assets/icons/quote.svg',
                   title: 'Generate Report',
                 ),
-              ],
+              ]
+                  .animate(interval: 150.ms)
+                  .fade(duration: 400.ms)
+                  .slideY(begin: 0.2, end: 0, curve: Curves.easeOut),
+
+              //.animate(interval: 300.ms).fade(duration: 300.ms),
             ),
           ),
         ),

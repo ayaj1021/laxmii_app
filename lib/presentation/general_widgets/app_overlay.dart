@@ -130,63 +130,70 @@ class AppOverLayState extends State<AppOverLay> {
     required Color messageColor,
     required VoidCallback onClose,
   }) {
-    return Material(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(
-          color: messageText?.messageType == MessageType.error
-              ? AppColors.red
-              : AppColors.greenC1F3D3,
+    return Dismissible(
+      key: const Key("overlay_message"),
+      direction: DismissDirection.horizontal,
+      onDismissed: (direction) {
+        onClose();
+      },
+      child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: messageText?.messageType == MessageType.error
+                ? AppColors.red
+                : AppColors.greenC1F3D3,
+          ),
         ),
-      ),
-      color: messageText?.messageType == MessageType.error
-          ? const Color(0XFFFFF2F2)
-          : AppColors.greenEBFFED,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-        width: double.infinity,
-        constraints: BoxConstraints(
-          minHeight: 63,
-          maxWidth: MediaQuery.of(context).size.width,
-          minWidth: MediaQuery.of(context).size.width,
-        ),
-        child: Row(
-          textDirection: TextDirection.ltr,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SvgPicture.asset(
-              messageIcon,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Expanded(
-              child: Column(
-                textDirection: TextDirection.ltr,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (messageText?.title != null)
+        color: messageText?.messageType == MessageType.error
+            ? const Color(0XFFFFF2F2)
+            : AppColors.greenEBFFED,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+          width: double.infinity,
+          constraints: BoxConstraints(
+            minHeight: 63,
+            maxWidth: MediaQuery.of(context).size.width,
+            minWidth: MediaQuery.of(context).size.width,
+          ),
+          child: Row(
+            textDirection: TextDirection.ltr,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SvgPicture.asset(
+                messageIcon,
+              ),
+              const SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Column(
+                  textDirection: TextDirection.ltr,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (messageText?.title != null)
+                      Text(
+                        messageText!.title,
+                        style: Theme.of(context).textTheme.s12w700.copyWith(
+                              color: messageColor,
+                            ),
+                        textDirection: TextDirection.ltr,
+                      ),
                     Text(
-                      messageText!.title,
-                      style: Theme.of(context).textTheme.s12w700.copyWith(
+                      messageText?.message ?? '',
+                      maxLines: 10,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.s12w400.copyWith(
                             color: messageColor,
                           ),
                       textDirection: TextDirection.ltr,
                     ),
-                  Text(
-                    messageText?.message ?? '',
-                    maxLines: 10,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.s12w400.copyWith(
-                          color: messageColor,
-                        ),
-                    textDirection: TextDirection.ltr,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

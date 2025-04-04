@@ -123,7 +123,7 @@ class _LaxmiiPasswordFieldState extends State<LaxmiiPasswordField> {
               const HorizontalSpacing(5),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 8),
                   child: TextFormField(
                     key: widget.key,
                     textCapitalization: widget.textCapitalization,

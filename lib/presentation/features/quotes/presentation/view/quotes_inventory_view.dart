@@ -61,106 +61,108 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
         child: SafeArea(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: inventoryList.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const EmptyPage(
-                          emptyMessage:
-                              'Inventory is empty try to create inventory'),
-                      const VerticalSpacing(10),
-                      GestureDetector(
-                        onTap: () =>
-                            context.pushNamed(CreateInventory.routeName),
-                        child: Text(
-                          'Create inventory',
-                          style: context.textTheme.s15w600.copyWith(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: inventoryList.length,
-                  itemBuilder: (context, index) {
-                    final data = inventoryList[index];
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            final item = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => AddItemSection(
-                                  item: data.productName ?? '',
-                                  quantity: data.quantity ?? 0,
-                                  sellingPrice: data.sellingPrice ?? 0,
-                                ),
+          child: isLoading
+              ? const SizedBox.shrink()
+              : inventoryList.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const EmptyPage(
+                              emptyMessage:
+                                  'Inventory is empty try to create inventory'),
+                          const VerticalSpacing(10),
+                          GestureDetector(
+                            onTap: () =>
+                                context.pushNamed(CreateInventory.routeName),
+                            child: Text(
+                              'Create inventory',
+                              style: context.textTheme.s15w600.copyWith(
+                                color: AppColors.primaryColor,
                               ),
-                            );
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: inventoryList.length,
+                      itemBuilder: (context, index) {
+                        final data = inventoryList[index];
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                final item = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => AddItemSection(
+                                      item: data.productName ?? '',
+                                      quantity: data.quantity ?? 0,
+                                      sellingPrice: data.sellingPrice ?? 0,
+                                    ),
+                                  ),
+                                );
 
-                            if (item != null) {
-                              widget.itemsNotifier.value = [
-                                ...widget.itemsNotifier.value,
-                                item
-                              ];
-                              widget.addItem(item);
-                            }
-                          },
-                          child: GetQuotesWidget(
-                              quoteAmount: '\$${data.sellingPrice}',
-                              quoteTitle: '${data.productName}',
-                              quoteDate:
-                                  formatDateTimeFromString('${data.createdAt}')
+                                if (item != null) {
+                                  widget.itemsNotifier.value = [
+                                    ...widget.itemsNotifier.value,
+                                    item
+                                  ];
+                                  widget.addItem(item);
+                                }
+                              },
+                              child: GetQuotesWidget(
+                                  quoteAmount: '\$${data.sellingPrice}',
+                                  quoteTitle: '${data.productName}',
+                                  quoteDate: formatDateTimeFromString(
+                                      '${data.createdAt}')
 
-                              // '${data.createdAt}',
-                              ),
-                        ),
-                        const VerticalSpacing(15),
-                      ],
-                    );
+                                  // '${data.createdAt}',
+                                  ),
+                            ),
+                            const VerticalSpacing(15),
+                          ],
+                        );
 
-                    // ListTile(
-                    //   onTap: () async {
-                    //     final item = await Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (_) => AddItemSection(
-                    //           //  addItem: widget.addItem(data),
-                    //           item: data.productName ?? '',
-                    //           quantity: data.quantity ?? 0,
-                    //           sellingPrice: data.sellingPrice ?? 0,
-                    //         ),
-                    //       ),
-                    //     );
+                        // ListTile(
+                        //   onTap: () async {
+                        //     final item = await Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (_) => AddItemSection(
+                        //           //  addItem: widget.addItem(data),
+                        //           item: data.productName ?? '',
+                        //           quantity: data.quantity ?? 0,
+                        //           sellingPrice: data.sellingPrice ?? 0,
+                        //         ),
+                        //       ),
+                        //     );
 
-                    //     //context.pushNamed(AddNewInvoiceView.routeName);
-                    //     if (item != null) {
-                    //       widget.itemsNotifier.value = [
-                    //         ...widget.itemsNotifier.value,
-                    //         item
-                    //       ];
-                    //       widget.addItem(item);
-                    //     }
-                    //   },
-                    //   title: Text(
-                    //     data.productName ?? '',
-                    //     style: context.textTheme.s12w400.copyWith(
-                    //       color: AppColors.white,
-                    //     ),
-                    //   ),
-                    //   subtitle: Text(
-                    //     data.description ?? '',
-                    //     style: context.textTheme.s12w400.copyWith(
-                    //       color: AppColors.white,
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                ),
+                        //     //context.pushNamed(AddNewInvoiceView.routeName);
+                        //     if (item != null) {
+                        //       widget.itemsNotifier.value = [
+                        //         ...widget.itemsNotifier.value,
+                        //         item
+                        //       ];
+                        //       widget.addItem(item);
+                        //     }
+                        //   },
+                        //   title: Text(
+                        //     data.productName ?? '',
+                        //     style: context.textTheme.s12w400.copyWith(
+                        //       color: AppColors.white,
+                        //     ),
+                        //   ),
+                        //   subtitle: Text(
+                        //     data.description ?? '',
+                        //     style: context.textTheme.s12w400.copyWith(
+                        //       color: AppColors.white,
+                        //     ),
+                        //   ),
+                        // );
+                      },
+                    ),
         )),
       ),
     );

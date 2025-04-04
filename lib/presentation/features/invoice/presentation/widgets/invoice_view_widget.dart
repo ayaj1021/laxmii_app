@@ -21,11 +21,12 @@ class InvoiceViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary101010,
+        color: colorScheme.cardColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,7 +37,7 @@ class InvoiceViewWidget extends StatelessWidget {
               Text(
                 invoiceName,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               Row(
@@ -73,7 +74,7 @@ class InvoiceViewWidget extends StatelessWidget {
               Text(
                 invoiceAmount,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               Container(
@@ -84,7 +85,9 @@ class InvoiceViewWidget extends StatelessWidget {
                 child: Text(
                   invoiceStatus,
                   style: context.textTheme.s12w300.copyWith(
-                    color: AppColors.primary5E5E5E,
+                    color: colorScheme.colorScheme.onSurface,
+
+                    // AppColors.primary5E5E5E,
                   ),
                 ),
               )

@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/notifier/get_recent_chat_history_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/notifier/start_new_chat_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/chat_view.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/presentation/widget/chat_history_widget.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -37,10 +35,14 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
 
   @override
   Widget build(BuildContext context) {
-    final recentChats = ref
-        .watch(getRecentChatsNotifier.select((v) => v.data?.recentChats ?? []));
+    final recentChats = ref.watch(getRecentChatsNotifier.select((v) =>
+        v.data?.recentChats
+            ?.where((e) => e.lastMessage?.message?.isNotEmpty ?? false)
+            .toList() ??
+        []));
     final sessionId = ref.watch(startChatNotifier
         .select((v) => v.startNewChatResponse.data?.sessionId));
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'AI Assistant',
@@ -62,7 +64,7 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
               Text(
                 'Welcome to AI Chat',
                 style: context.textTheme.s20w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(10),
@@ -85,7 +87,7 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
                     );
                   },
                   title: 'New Chat'),
-              const VerticalSpacing(50),
+              const VerticalSpacing(30),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -100,7 +102,7 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
                 height: MediaQuery.sizeOf(context).height * 0.6,
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: recentChats.length < 8 ? recentChats.length : 8,
+                    itemCount: recentChats.length < 6 ? recentChats.length : 6,
                     itemBuilder: (_, index) {
                       final data = recentChats[index];
                       return GestureDetector(
@@ -111,8 +113,6 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
                                   builder: (_) => ChatView(
                                         sessionId: data.sessionId ?? '',
                                       )));
-
-                          log('This is session ID ${data.sessionId}');
                         },
                         child: Column(
                           children: [
@@ -129,41 +129,6 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
             ],
           ),
         )),
-      ),
-    );
-  }
-}
-
-class ChatHistoryWidget extends StatelessWidget {
-  const ChatHistoryWidget({super.key, required this.message});
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 7,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primary101010,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset('assets/icons/message.svg'),
-          const HorizontalSpacing(10),
-          SizedBox(
-            width: MediaQuery.sizeOf(context).width * 0.6,
-            child: Text(
-              message,
-              style: context.textTheme.s13w400.copyWith(
-                color: AppColors.primaryC4C4C4,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          )
-        ],
       ),
     );
   }

@@ -16,11 +16,12 @@ class ProductServicesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        color: AppColors.primary101010,
+        color: colorScheme.cardColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,7 +32,7 @@ class ProductServicesWidget extends StatelessWidget {
               Text(
                 itemName,
                 style: context.textTheme.s18w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               Text(
@@ -48,7 +49,7 @@ class ProductServicesWidget extends StatelessWidget {
               Text(
                 itemPrice,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               Text(

@@ -33,10 +33,8 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(getAccessTokenNotifier.notifier).accessToken();
-      await ref
-          .read(getInvoiceNumberNotifierProvider.notifier)
-          .getAllInvoices();
+      ref.read(getAccessTokenNotifier.notifier).accessToken();
+      ref.read(getInvoiceNumberNotifierProvider.notifier).getAllInvoices();
     });
     _amountController = TextEditingController()..addListener(_validateInput);
 
@@ -383,60 +381,49 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                       subTitle: '\$${calculateTotalAmount()}',
                       //'\$${totalAmount.toStringAsFixed(2)}',
                     ),
-                    //  const VerticalSpacing(14),
-                    // InvoiceWidget(
-                    //   title: 'Tax 8%',
-                    //   subTitle: '\$${taxAmounts()}',
-                    //   //'\$${taxAmount.toStringAsFixed(2)}',
-                    // ),
-                    // const VerticalSpacing(14),
-                    // InvoiceWidget(
-                    //   title: 'Balance due',
-                    //   subTitle: '\$${balanceDue()}',
-                    //   //'\$${balanceAmount.toStringAsFixed(2)}',
-                    // ),
-                    const VerticalSpacing(40),
+                    const VerticalSpacing(30),
                     ValueListenableBuilder(
                         valueListenable: _isAddSalesEnabled,
                         builder: (context, r, c) {
                           return LaxmiiSendButton(
-                              isEnabled: r,
-                              textColor: AppColors.black,
-                              onTap: () {
-                                if (_selectedDate == null ||
-                                    _selectedDueDate == null) {
-                                  context.showError(
-                                      message: 'Dates cannot be empty');
-                                } else if (itemsNotifier.value.isEmpty) {
-                                  context.showError(message: 'Add a product');
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => ValueListenableBuilder(
-                                        valueListenable: itemsNotifier,
-                                        builder: (context, item, _) {
-                                          final items =
-                                              convertProductItemsToItems(item);
-                                          return InvoiceDetailsView(
-                                            customerName:
-                                                _customerNameController.text
-                                                    .trim(),
-                                            issueDate:
-                                                _formatDate(_selectedDate!),
-                                            dueDate: _formatDueDate(
-                                                _selectedDueDate!),
-                                            invoiceNumber: invoiceNumber,
-                                            items: items,
-                                            totalAmount: balanceAmount,
-                                          );
-                                        },
-                                      ),
+                            isEnabled: r,
+                            textColor: colorScheme.colorScheme.onSurface,
+                            onTap: () {
+                              if (_selectedDate == null ||
+                                  _selectedDueDate == null) {
+                                context.showError(
+                                    message: 'Dates cannot be empty');
+                              } else if (itemsNotifier.value.isEmpty) {
+                                context.showError(message: 'Add a product');
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ValueListenableBuilder(
+                                      valueListenable: itemsNotifier,
+                                      builder: (context, item, _) {
+                                        final items =
+                                            convertProductItemsToItems(item);
+                                        return InvoiceDetailsView(
+                                          customerName: _customerNameController
+                                              .text
+                                              .trim(),
+                                          issueDate:
+                                              _formatDate(_selectedDate!),
+                                          dueDate:
+                                              _formatDueDate(_selectedDueDate!),
+                                          invoiceNumber: invoiceNumber,
+                                          items: items,
+                                          totalAmount: balanceAmount,
+                                        );
+                                      },
                                     ),
-                                  );
-                                }
-                              },
-                              title: 'Continue');
+                                  ),
+                                );
+                              }
+                            },
+                            title: 'Continue',
+                          );
                         }),
                   ],
                 ),

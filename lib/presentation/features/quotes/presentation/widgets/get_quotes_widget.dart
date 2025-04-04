@@ -15,10 +15,11 @@ class GetQuotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
       decoration: BoxDecoration(
-        color: AppColors.primary101010,
+        color: colorScheme.cardColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -30,7 +31,7 @@ class GetQuotesWidget extends StatelessWidget {
               Text(
                 quoteTitle,
                 style: context.textTheme.s14w500.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               const VerticalSpacing(3),

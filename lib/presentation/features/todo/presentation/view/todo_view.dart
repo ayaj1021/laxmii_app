@@ -83,6 +83,7 @@ class _TodoViewState extends ConsumerState<TodoView>
                             isScrollable: true,
                             tabAlignment: TabAlignment.start,
                             indicatorSize: TabBarIndicatorSize.tab,
+                            dividerHeight: 0,
                             indicatorWeight: 0,
                             labelPadding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 4),

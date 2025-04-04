@@ -42,7 +42,12 @@
 //     }
 //   }
 
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
   // static String formatDate(date) {
@@ -56,5 +61,39 @@ class AppUtils {
     DateFormat("MMM d yyyy").format(parsedDate);
 
     return formattedDate;
+  }
+
+  static Future<void> launchURL(String url) async {
+    if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
+      await launchUrl(
+          Uri.parse(
+            url,
+          ),
+          mode: LaunchMode.inAppBrowserView);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static Future<File?> pickImage(
+      {ImageSource source = ImageSource.gallery}) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickImage(
+        source: source,
+        maxWidth: 800,
+        imageQuality: 85, // Compress image quality (0-100)
+      );
+
+      if (pickedFile != null) {
+        return File(pickedFile.path);
+      } else {
+        log('No image selected.');
+        return null;
+      }
+    } catch (e) {
+      log('Error picking image: $e');
+      return null;
+    }
   }
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 
 class AppDataStorage {
   AppDataStorage._();
@@ -129,6 +131,20 @@ class AppDataStorage {
   Future<String?> getUserFirebaseToken() async {
     String? value = await _storage.read(key: 'firebase_token');
     return value;
+  }
+
+  Future<void> storeProfile(UpdateProfileResponse profileResponse) async {
+    final String jsonString = jsonEncode(profileResponse.toJson());
+    await _storage.write(key: 'user_profile', value: jsonString);
+  }
+
+  Future<UpdateProfileResponse?> getStoredProfile() async {
+    final String? jsonString = await _storage.read(key: 'user_profile');
+
+    if (jsonString == null) return null;
+
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    return UpdateProfileResponse.fromJson(jsonMap);
   }
 
   Future<void> clearToken() async {

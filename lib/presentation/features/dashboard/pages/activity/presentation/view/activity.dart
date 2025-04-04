@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/invoice_activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
@@ -30,6 +29,7 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
   Widget build(BuildContext context) {
     final cashFlowList = ref.watch(getCashFlowNotifierProvider
         .select((v) => v.getCashFlow.data?.cashflow ?? []));
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -38,7 +38,7 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
         title: Text(
           'Activity',
           style: context.textTheme.s24w400.copyWith(
-            color: AppColors.primaryC4C4C4,
+            color: colorScheme.colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),

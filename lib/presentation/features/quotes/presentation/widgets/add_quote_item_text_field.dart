@@ -18,12 +18,13 @@ class AddQuoteItemTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.primary101010),
+          color: colorScheme.cardColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,7 +37,7 @@ class AddQuoteItemTextField extends StatelessWidget {
           TextField(
             controller: controller,
             style: context.textTheme.s12w500.copyWith(
-              color: AppColors.primaryC4C4C4,
+              color: colorScheme.colorScheme.onSurface,
             ),
             onChanged: onChanged,
             keyboardType: TextInputType.number,
@@ -45,7 +46,7 @@ class AddQuoteItemTextField extends StatelessWidget {
                     ? Text(
                         '\$',
                         style: context.textTheme.s12w500.copyWith(
-                          color: AppColors.primaryC4C4C4,
+                          color: colorScheme.colorScheme.onSurface,
                         ),
                       )
                     : const SizedBox.shrink(),

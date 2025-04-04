@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -37,88 +38,103 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
             controller: _pageController,
             children: List.generate(widget.aiInsights.length, (index) {
               final data = widget.aiInsights[index];
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                decoration: BoxDecoration(
-                    color: colorScheme.cardColor,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      data,
-                      style: context.textTheme.s16w500.copyWith(
-                        color: colorScheme.colorScheme.onSurface,
-                      ),
-                    ),
-                    const VerticalSpacing(5),
-                    Text(
-                      widget.subTitle,
-                      style: context.textTheme.s10w300.copyWith(
-                        color: AppColors.primary5E5E5E,
-                      ),
-                    ),
-                    const VerticalSpacing(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5.33),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primary075427,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '%12',
-                                        style:
-                                            context.textTheme.s10w600.copyWith(
-                                          color: AppColors.primary1FCB4F,
-                                        ),
-                                      ),
-                                      const HorizontalSpacing(5),
-                                      SvgPicture.asset(
-                                          'assets/icons/arrow_up.svg'),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const HorizontalSpacing(16),
-                            SvgPicture.asset('assets/icons/expense_icon.svg')
-                          ],
+              return Animate(
+                effects: const [
+                  FadeEffect(
+                    // curve: Curves.easeInOut,
+                    delay: Duration(milliseconds: 400),
+                    duration: Duration(milliseconds: 300),
+                  ),
+
+                  // ScaleEffect(
+                  //   // curve: Curves.easeInOut,
+                  //   delay: Duration(milliseconds: 400),
+                  //   duration: Duration(milliseconds: 300),
+                  // )
+                ],
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  decoration: BoxDecoration(
+                      color: colorScheme.cardColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data,
+                        style: context.textTheme.s16w500.copyWith(
+                          color: colorScheme.colorScheme.onSurface,
                         ),
-                        GestureDetector(
-                          onTap: () =>
-                              context.pushNamed(AiInsightsView.routeName),
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
+                      ),
+                      const VerticalSpacing(5),
+                      Text(
+                        widget.subTitle,
+                        style: context.textTheme.s10w300.copyWith(
+                          color: AppColors.primary5E5E5E,
+                        ),
+                      ),
+                      const VerticalSpacing(20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(5.33),
+                                decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: AppColors.primary3B3522,
-                                  )),
-                              child: Text(
-                                'View',
-                                style: context.textTheme.s12w500.copyWith(
-                                  color: AppColors.primary3B3522,
+                                    color: AppColors.primary075427,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              )),
-                        )
-                      ],
-                    ),
-                    // const VerticalSpacing(27),
-                  ],
+                                child: Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '%12',
+                                          style: context.textTheme.s10w600
+                                              .copyWith(
+                                            color: AppColors.primary1FCB4F,
+                                          ),
+                                        ),
+                                        const HorizontalSpacing(5),
+                                        SvgPicture.asset(
+                                            'assets/icons/arrow_up.svg'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const HorizontalSpacing(16),
+                              SvgPicture.asset('assets/icons/expense_icon.svg')
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () =>
+                                context.pushNamed(AiInsightsView.routeName),
+                            child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: AppColors.primary3B3522,
+                                    )),
+                                child: Text(
+                                  'View',
+                                  style: context.textTheme.s12w500.copyWith(
+                                    color: AppColors.primary3B3522,
+                                  ),
+                                )),
+                          )
+                        ],
+                      ),
+                      // const VerticalSpacing(27),
+                    ],
+                  ),
                 ),
               );
             })),

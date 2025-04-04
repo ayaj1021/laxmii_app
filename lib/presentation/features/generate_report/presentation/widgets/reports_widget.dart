@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 
 class ReportsWidget extends ConsumerWidget {
   const ReportsWidget(
@@ -17,6 +16,7 @@ class ReportsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context);
     return Column(
       children: [
         Row(
@@ -25,7 +25,8 @@ class ReportsWidget extends ConsumerWidget {
             Text(
               report,
               style: context.textTheme.s14w400.copyWith(
-                  color: AppColors.white, fontWeight: FontWeight.w300),
+                  color: colorScheme.colorScheme.onSurface,
+                  fontWeight: FontWeight.w300),
             ),
             // GestureDetector(
             //   onTap: onTap,

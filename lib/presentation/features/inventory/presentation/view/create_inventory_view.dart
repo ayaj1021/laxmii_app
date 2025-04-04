@@ -131,7 +131,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                   keyboardType: TextInputType.number,
                   title: 'Cost Price',
                 ),
-                const VerticalSpacing(98),
+                const VerticalSpacing(68),
                 ValueListenableBuilder(
                     valueListenable: _isCreateInventoryEnabled,
                     builder: (context, r, c) {

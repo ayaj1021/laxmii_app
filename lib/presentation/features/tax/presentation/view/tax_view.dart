@@ -7,13 +7,13 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
-import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/calculate_tax_request.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/get_total_profit_request.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/notifier/calculate_tax_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/notifier/get_total_tax_profit_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/view/tax_calculation_result.dart';
+import 'package:laxmii_app/presentation/features/tax/presentation/widgets/entity_dropdown.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/widgets/tax_date_select_section.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/widgets/tax_dropdown_widget.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
@@ -31,8 +31,8 @@ class TaxView extends ConsumerStatefulWidget {
 }
 
 class _TaxViewState extends ConsumerState<TaxView> {
-  final _entityController = TextEditingController();
   String? _selectedValue;
+  String? _selectedEntityValue;
 
   DateTime? _fromDate;
   DateTime? _toDate;
@@ -135,6 +135,7 @@ class _TaxViewState extends ConsumerState<TaxView> {
         .watch(getTotalTaxProfitNotifier.select((v) => v.loadState.isLoading));
     final taxProfit = ref.watch(
         getTotalTaxProfitNotifier.select((v) => v.getTotalTaxProfitResponse));
+
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Tax Optimization Calculator',
@@ -219,9 +220,13 @@ class _TaxViewState extends ConsumerState<TaxView> {
                     data: '\$${taxProfit.profit ?? ''}',
                   ),
                   const VerticalSpacing(8),
-                  UpdateProductsTextField(
-                    product: _entityController,
-                    title: 'Entity',
+                  EntityDropdownWidget(
+                    selectedValue: _selectedEntityValue ?? '',
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedEntityValue = newValue;
+                      });
+                    },
                   ),
                   const VerticalSpacing(70),
                   LaxmiiSendButton(
@@ -266,6 +271,7 @@ class TaxProfitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -287,7 +293,7 @@ class TaxProfitWidget extends StatelessWidget {
           child: Text(
             data,
             style: context.textTheme.s14w500.copyWith(
-              color: AppColors.primaryC4C4C4,
+              color: colorScheme.colorScheme.onSurface,
             ),
           ),
         ),

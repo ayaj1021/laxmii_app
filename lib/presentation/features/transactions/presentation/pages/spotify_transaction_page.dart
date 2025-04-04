@@ -6,59 +6,69 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_sales_notifier.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_transactions_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/widgets/transactions_widget.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
-class MoneyInPage extends ConsumerStatefulWidget {
-  const MoneyInPage({super.key});
+class SpotifyPage extends ConsumerStatefulWidget {
+  const SpotifyPage({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MoneyInPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SpotifyPageState();
 }
 
-class _MoneyInPageState extends ConsumerState<MoneyInPage> {
+class _SpotifyPageState extends ConsumerState<SpotifyPage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(getAllSalesNotifierProvider.notifier).getAllSales();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref
+          .read(getAllTransactionsNotifierProvider.notifier)
+          .getAllTransactions();
 
-      ref.read(getAccessTokenNotifier.notifier).accessToken();
+      await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final salesList = ref.watch(
-        getAllSalesNotifierProvider.select((v) => v.getAllSales.data?.sales));
-    final isLoading = ref.watch(
-        getAllSalesNotifierProvider.select((v) => v.loadState.isLoading));
+    final shopifyList = ref.watch(getAllTransactionsNotifierProvider.select(
+        (v) =>
+            v.getAllTransactions.data?.transactions
+                ?.where((e) => e.type == 'shopify')
+                .toList() ??
+            []));
+
+    final isLoading = ref.watch(getAllTransactionsNotifierProvider
+        .select((v) => v.loadState.isLoading));
+    final colorScheme = Theme.of(context);
     return PageLoader(
       isLoading: isLoading,
       child: Column(
         children: [
-          salesList == null
+          isLoading
               ? const SizedBox.shrink()
-              : salesList.isEmpty
-                  ? Column(
-                      children: [
-                        SvgPicture.asset('assets/icons/empty_data.svg'),
-                        const VerticalSpacing(10),
-                        Text(
-                          'No Sales Available',
-                          style: context.textTheme.s14w500.copyWith(
-                            color: AppColors.white,
+              : shopifyList.isEmpty
+                  ? Center(
+                      child: Column(
+                        children: [
+                          SvgPicture.asset('assets/icons/empty_data.svg'),
+                          const VerticalSpacing(10),
+                          Text(
+                            'No data Available',
+                            style: context.textTheme.s14w500.copyWith(
+                              color: colorScheme.colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   : Expanded(
                       child: ListView.builder(
-                        itemCount: salesList.length,
+                        itemCount: shopifyList.length,
                         itemBuilder: (_, index) {
-                          final data = salesList[index];
+                          final data = shopifyList[index];
                           String inputDate = "${data.createdAt}";
                           DateTime parsedDate = DateTime.parse(inputDate);
 

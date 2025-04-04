@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_picker.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -109,6 +108,7 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
 
     final isLoading = ref.watch(
         createQuotesNotifier.select((v) => v.createQuotesState.isLoading));
+    final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
         centerTitle: true,
@@ -141,7 +141,7 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                 Text(
                   'Items',
                   style: context.textTheme.s14w400.copyWith(
-                      color: AppColors.primaryC4C4C4,
+                      color: colorScheme.colorScheme.onSurface,
                       fontWeight: FontWeight.w300),
                 ),
                 const VerticalSpacing(36),

@@ -17,6 +17,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presen
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -29,13 +30,14 @@ class SettingsView extends ConsumerStatefulWidget {
 }
 
 class _SettingsViewState extends ConsumerState<SettingsView> {
-  String userId = '';
+  String useruId = '';
 
   @override
   void initState() {
-    getUserId();
+    // getUserId();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(settingsNotifer.notifier).getSettings();
+      ref.read(getUserDetailsNotifier.notifier).getUserDetails();
     });
     super.initState();
   }
@@ -44,7 +46,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     final id = await AppDataStorage().getUserId();
 
     setState(() {
-      userId = id ?? '';
+      useruId = id ?? '';
     });
   }
 
@@ -53,6 +55,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     final isLoading =
         ref.watch(logOutNotifer.select((v) => v.logOut.isLoading));
     final settings = ref.watch(settingsNotifer.select((v) => v.data));
+    final userId =
+        ref.watch(getUserDetailsNotifier.select((v) => v.data?.userId ?? ''));
     final isLightTheme = ref.watch(themeProvider);
     final colorScheme = Theme.of(context);
     return PageLoader(
@@ -209,23 +213,23 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                   const Divider(
                     color: AppColors.primary5E5E5E,
                   ),
-                  const VerticalSpacing(30),
-                  Text(
-                    'Currency',
-                    style: context.textTheme.s14w500.copyWith(
-                        color: colorScheme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w300),
-                  ),
-                  const VerticalSpacing(6),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const SettingsOptionsButton(
-                      title: 'US Dollar (\$)',
-                      icon: Icons.keyboard_arrow_down,
-                      textColor: AppColors.primary5E5E5E,
-                    ),
-                  ),
-                  const VerticalSpacing(48),
+                  // const VerticalSpacing(30),
+                  // Text(
+                  //   'Currency',
+                  //   style: context.textTheme.s14w500.copyWith(
+                  //       color: colorScheme.colorScheme.tertiary,
+                  //       fontWeight: FontWeight.w300),
+                  // ),
+                  // const VerticalSpacing(6),
+                  // GestureDetector(
+                  //   onTap: () {},
+                  //   child: const SettingsOptionsButton(
+                  //     title: 'US Dollar (\$)',
+                  //     icon: Icons.keyboard_arrow_down,
+                  //     textColor: AppColors.primary5E5E5E,
+                  //   ),
+                  // ),
+                  const VerticalSpacing(20),
                   GestureDetector(
                     onTap: () => _logout(),
                     child: const SettingsOptionsButton(

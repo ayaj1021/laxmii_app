@@ -3,8 +3,8 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
-class TaxDropdownWidget extends StatelessWidget {
-  const TaxDropdownWidget(
+class EntityDropdownWidget extends StatelessWidget {
+  const EntityDropdownWidget(
       {super.key, this.onChanged, required this.selectedValue});
   final Function(String?)? onChanged;
   final String selectedValue;
@@ -18,7 +18,7 @@ class TaxDropdownWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tax Period',
+              'Entity',
               style: context.textTheme.s14w400.copyWith(
                 color: AppColors.primary5E5E5E,
               ),
@@ -36,11 +36,12 @@ class TaxDropdownWidget extends StatelessWidget {
               child: DropdownButton<String>(
                   elevation: 0,
                   dropdownColor: colorScheme.cardColor,
-                  value:
-                      taxDates.contains(selectedValue) ? selectedValue : null,
+                  value: entityTypes.contains(selectedValue)
+                      ? selectedValue
+                      : null,
                   padding: EdgeInsets.zero,
                   hint: Text(
-                    'Select Duration',
+                    'Select entity type',
                     style: context.textTheme.s12w300.copyWith(
                       color: colorScheme.colorScheme.onSurface,
                     ),
@@ -48,7 +49,7 @@ class TaxDropdownWidget extends StatelessWidget {
                   underline: const SizedBox.shrink(),
                   icon: const Icon(Icons.keyboard_arrow_down),
                   isExpanded: true,
-                  items: taxDates.map((String item) {
+                  items: entityTypes.map((String item) {
                     return DropdownMenuItem<String>(
                       value: item,
                       child: Text(
@@ -68,4 +69,4 @@ class TaxDropdownWidget extends StatelessWidget {
   }
 }
 
-final List<String> taxDates = ['6 months', '1 year'];
+final List<String> entityTypes = ['Individual', 'Limited Company'];

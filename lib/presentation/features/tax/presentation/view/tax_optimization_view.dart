@@ -45,6 +45,7 @@ class _TaxOptimizationViewState extends ConsumerState<TaxOptimizationView> {
         .select((v) => v.optimizeTaxResponse.optimizedTax));
 
     Map<String, dynamic> optimizedData = optimizedTax!.toJson();
+
     return Scaffold(
       appBar: LaxmiiAppBar(
         title: 'Tax Optimization',

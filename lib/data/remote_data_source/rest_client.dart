@@ -53,7 +53,9 @@ import 'package:laxmii_app/presentation/features/login/data/model/get_access_tok
 import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
-import 'package:laxmii_app/presentation/features/manage_account/data/model/uodate_image_profile_response.dart';
+import 'package:laxmii_app/presentation/features/manage_account/data/model/update_image_profile_response.dart';
+import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_request.dart';
+import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/set_up_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
@@ -104,6 +106,11 @@ abstract class RestClient {
   @POST('/auth/set-profile/')
   Future<SetupUpProfileResponse> setupProfile(
     @Body() SetupUpProfileRequest setupProfileRequest,
+  );
+
+  @PUT('/auth/profile/')
+  Future<UpdateProfileResponse> updateProfile(
+    @Body() UpdateProfileRequest updtaeProfileRequest,
   );
 
   @POST('/auth/verify-otp/')

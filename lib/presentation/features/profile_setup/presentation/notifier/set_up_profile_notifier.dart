@@ -44,7 +44,7 @@ class SetupProfileNotifier
       await AppDataStorage().saveCurrentState(CurrentState.onboarded);
       await AppDataStorage().saveUserId(value.data?.savedProfile?.user ?? '');
       onSuccess(
-        value.message.toString(),
+        value.message ?? 'Profile setup',
       );
     } catch (e) {
       onError(e.toString());

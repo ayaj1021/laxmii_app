@@ -16,6 +16,7 @@ class TableSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -27,7 +28,7 @@ class TableSection extends StatelessWidget {
             ),
             children: [
               if (headers.isNotEmpty)
-                buildRow(headers, context, isHeader: true),
+                buildRow(colorScheme, headers, context, isHeader: true),
             ],
           ),
           SizedBox(
@@ -57,7 +58,8 @@ class TableSection extends StatelessWidget {
                                 AppColors.primaryC4C4C4.withValues(alpha: 0.6),
                             width: 1),
                         children: [
-                          if (rowData.isNotEmpty) buildRow(rowData, context),
+                          if (rowData.isNotEmpty)
+                            buildRow(colorScheme, rowData, context),
                         ],
                       );
                     }),
@@ -67,11 +69,12 @@ class TableSection extends StatelessWidget {
     );
   }
 
-  TableRow buildRow(List<String> cells, BuildContext context,
+  TableRow buildRow(
+          ThemeData colorScheme, List<String> cells, BuildContext context,
           {bool isHeader = false}) =>
       TableRow(
         decoration: BoxDecoration(
-          color: isHeader ? AppColors.primary101010 : AppColors.primary5E5E5E,
+          color: isHeader ? AppColors.primary101010 : colorScheme.cardColor,
         ),
         children: cells
             .map((cell) => Padding(
@@ -82,7 +85,7 @@ class TableSection extends StatelessWidget {
                     style: context.textTheme.s11w600.copyWith(
                       color: isHeader
                           ? AppColors.primaryC4C4C4
-                          : AppColors.primary101010,
+                          : AppColors.primary5E5E5E,
                     ),
                   ),
                 ))

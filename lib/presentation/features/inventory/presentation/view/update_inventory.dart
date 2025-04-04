@@ -120,7 +120,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                     product: _costPriceController,
                     title: 'Cost Price',
                   ),
-                  const VerticalSpacing(88),
+                  const VerticalSpacing(60),
                   LaxmiiOutlineSendButton(
                       backgroundColor: Colors.transparent,
                       hasBorder: true,
@@ -128,6 +128,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       textColor: AppColors.primaryColor,
                       onTap: () => _updateInventory(inventoryId: widget.itemId),
                       title: 'Update'),
+                  const VerticalSpacing(20),
                   LaxmiiOutlineSendButton(
                       backgroundColor: Colors.transparent,
                       textColor: AppColors.red,

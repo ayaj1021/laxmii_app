@@ -37,6 +37,7 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -55,7 +56,8 @@ class _ReportDropDownWidgetState extends State<ReportDropDownWidget> {
             ),
           ),
           child: DropdownButton(
-            dropdownColor: AppColors.primary101010,
+            dropdownColor: colorScheme.cardColor,
+            elevation: 0,
             underline: const SizedBox.shrink(),
             isExpanded: true,
             icon: const Icon(

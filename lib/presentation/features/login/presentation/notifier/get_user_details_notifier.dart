@@ -25,11 +25,11 @@ class GetUserDetailsNotifier
     try {
       final value = await _getUserDetailsRepository.getUserDetails();
       // debugLog(data);
-      if (!value.status) throw value.message.toException;
-      await AppDataStorage().saveUserId('${value.data?.userId}');
 
-      state = state.copyWith(state: LoadState.idle);
+      if (!value.status) throw value.message.toException;
       // onSuccess(value.message.toString());
+      state = state.copyWith(state: LoadState.idle, data: value.data);
+      await AppDataStorage().saveUserId('${value.data?.userId}');
     } catch (e) {
       // onError(e.toString());
       state = state.copyWith(state: LoadState.idle);

@@ -11,6 +11,7 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       height: 40.h,
       padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -24,7 +25,7 @@ class SearchBarWidget extends StatelessWidget {
         onChanged: onChanged,
         controller: searchController,
         style: context.textTheme.s12w300.copyWith(
-          color: AppColors.white,
+          color: colorScheme.colorScheme.onSurface,
         ),
         decoration: InputDecoration(
           hintText: 'Search Invoice',

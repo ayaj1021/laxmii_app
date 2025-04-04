@@ -19,6 +19,7 @@ class InvoiceNewProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,7 +29,7 @@ class InvoiceNewProductWidget extends StatelessWidget {
             Text(
               itemName,
               style: context.textTheme.s14w400.copyWith(
-                color: AppColors.primary5E5E5E,
+                color: colorScheme.colorScheme.onSurface,
               ),
             ),
             Row(

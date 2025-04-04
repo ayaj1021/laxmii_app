@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/circle_widget.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class InvoiceChartWidget extends StatefulWidget {
   const InvoiceChartWidget({super.key, required this.allInvoices});
@@ -28,57 +28,53 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
             0;
     return Column(
       children: [
-        // ElevatedButton(
-        //     onPressed: () {
-        //       log(paidInvoice.toString());
-        //     },
-        //     child: Text('data')),
-        Stack(
-          children: [
-            SegmentedCircle(
-              //  gapAngle: 0.4,
-              segments: [
-                CircleSegment(
-                  color: AppColors.primary062613,
-                  value: paidInvoice.toDouble(),
-                ),
-                CircleSegment(
-                  color: AppColors.primary3B0D0D,
-                  value: unPaidInvoice.toDouble(),
-                ),
-                CircleSegment(
-                  color: AppColors.primary493703,
-                  value: overDueInvoice.toDouble(),
-                ),
-              ],
-              size: paidInvoice.toDouble() * 20,
-            ),
-            Positioned(
-              bottom: 60,
-              top: 50,
-              right: 65,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '$invoiceLength',
-                    style: context.textTheme.s20w700.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.primaryC4C4C4,
-                    ),
-                  ),
-                  Text(
-                    'Total Invoices',
-                    style: context.textTheme.s12w600.copyWith(
-                      color: AppColors.primary737373,
-                    ),
-                  ),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.2,
+          child: SfCircularChart(
+            series: <DoughnutSeries<_ChartData, String>>[
+              DoughnutSeries<_ChartData, String>(
+                dataSource: [
+                  _ChartData(
+                      'Paid', paidInvoice.toDouble(), AppColors.primary062613),
+                  _ChartData('Unpaid', unPaidInvoice.toDouble(),
+                      AppColors.primary3B0D0D),
+                  _ChartData('Overdue', overDueInvoice.toDouble(),
+                      AppColors.primary493703),
                 ],
-              ),
-            )
-          ],
+                xValueMapper: (datum, _) => datum.label,
+                yValueMapper: (datum, _) => datum.value,
+                pointColorMapper: (datum, _) => datum.color,
+                startAngle: 360, // Creates the semi-doughnut effect
+                endAngle: 360,
+                innerRadius: '70%', // Controls the thickness of the doughnut
+              )
+            ],
+          ),
         ),
-        const VerticalSpacing(15),
+        //   const VerticalSpacing(15),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                '$invoiceLength',
+                style: context.textTheme.s20w700.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primaryC4C4C4,
+                ),
+              ),
+              const HorizontalSpacing(5),
+              Text(
+                'Total Invoices',
+                style: context.textTheme.s12w600.copyWith(
+                  color: AppColors.primary737373,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const VerticalSpacing(5),
         Padding(
           padding: const EdgeInsets.only(left: 30),
           child: Row(
@@ -86,19 +82,19 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
               InvoiceContainerNameWIdget(
                 title: 'Paid',
                 color: AppColors.primary075427.withValues(alpha: 0.7),
-                textColor: AppColors.primaryCFFEE8,
+                textColor: AppColors.white,
               ),
               const HorizontalSpacing(8),
               InvoiceContainerNameWIdget(
                 title: 'Unpaid',
                 color: AppColors.primary861919.withValues(alpha: 0.7),
-                textColor: AppColors.primaryB17F7F,
+                textColor: AppColors.white,
               ),
               const HorizontalSpacing(8),
               InvoiceContainerNameWIdget(
                 title: 'Overdue',
                 color: AppColors.primaryA67C00.withValues(alpha: 0.7),
-                textColor: AppColors.primaryB17F7F,
+                textColor: AppColors.white,
               ),
             ],
           ),
@@ -106,6 +102,14 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
       ],
     );
   }
+}
+
+class _ChartData {
+  final String label;
+  final double value;
+  final Color color;
+
+  _ChartData(this.label, this.value, this.color);
 }
 
 class InvoiceContainerNameWIdget extends StatelessWidget {

@@ -23,11 +23,12 @@ class QoutesInfoInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primary101010,
+        color: colorScheme.cardColor,
       ),
       child: Column(
         children: [
@@ -58,7 +59,7 @@ class QoutesInfoInputSection extends StatelessWidget {
                       Text(
                         quoteStartDate,
                         style: context.textTheme.s14w400.copyWith(
-                            color: AppColors.white.withValues(alpha: 0.8),
+                            color: colorScheme.colorScheme.onSurface,
                             fontWeight: FontWeight.w300),
                       ),
                       const VerticalSpacing(10),
@@ -91,7 +92,7 @@ class QoutesInfoInputSection extends StatelessWidget {
                       Text(
                         quoteExpiryDate,
                         style: context.textTheme.s14w400.copyWith(
-                            color: AppColors.white.withValues(alpha: 0.8),
+                            color: colorScheme.colorScheme.onSurface,
                             fontWeight: FontWeight.w300),
                       ),
                       const VerticalSpacing(10),

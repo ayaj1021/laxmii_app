@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
@@ -64,34 +65,51 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
           child: widget.taskListLoading
               ? const SizedBox.shrink()
               : ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: (widget.tasksList?.length ?? 0) < 2
-                      ? widget.tasksList?.length
-                      : 2,
-                  itemBuilder: (_, index) {
-                    final data = widget.tasksList?[index];
-                    return Column(
-                      children: [
-                        TodoListWidget(
-                          time: '${data?.time}',
-                          todoTask: '${data?.title}',
-                          taskPriority: '${data?.priority} Priority',
-                          taskPriorityColor: data?.priority == 'Low'
-                              ? AppColors.primaryF94D4D
-                              : AppColors.primary5E5E5E,
-                          onDeleteTapped: () =>
-                              deleteTask(taskId: '${data?.id}'),
-                          isCompleted: data?.completed,
-                          onMarkCompletedTapped: () => updateTask(
-                            taskId: '${data?.id}',
-                            priority: '${data?.priority}',
-                            completed: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: (widget.tasksList?.length ?? 0) < 2
+                          ? widget.tasksList?.length
+                          : 2,
+                      itemBuilder: (_, index) {
+                        final data = widget.tasksList?[index];
+                        return Animate(
+                          effects: const [
+                            FadeEffect(
+                              // curve: Curves.easeInOut,
+                              delay: Duration(milliseconds: 400),
+                              duration: Duration(milliseconds: 300),
+                            ),
+                            ScaleEffect(
+                              // curve: Curves.easeInOut,
+                              delay: Duration(milliseconds: 400),
+                              duration: Duration(milliseconds: 300),
+                            )
+                          ],
+                          child: Column(
+                            children: [
+                              TodoListWidget(
+                                time: '${data?.time}',
+                                todoTask: '${data?.title}',
+                                taskPriority: '${data?.priority} Priority',
+                                taskPriorityColor: data?.priority == 'Low'
+                                    ? AppColors.primaryF94D4D
+                                    : AppColors.primary5E5E5E,
+                                onDeleteTapped: () =>
+                                    deleteTask(taskId: '${data?.id}'),
+                                isCompleted: data?.completed,
+                                onMarkCompletedTapped: () => updateTask(
+                                  taskId: '${data?.id}',
+                                  priority: '${data?.priority}',
+                                  completed: true,
+                                ),
+                              ),
+                              const VerticalSpacing(16)
+                            ],
                           ),
-                        ),
-                        const VerticalSpacing(16)
-                      ],
-                    );
-                  }),
+                        );
+                      }).animate().fade(
+                    duration: const Duration(seconds: 2),
+                    curve: Curves.easeIn,
+                  ),
         ),
       ],
     );

@@ -10,6 +10,7 @@ class LaxmiAiTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
@@ -29,7 +30,7 @@ class LaxmiAiTabWidget extends StatelessWidget {
                   Text(
                     'LAXMII AI Assistant',
                     style: context.textTheme.s16w500.copyWith(
-                      color: AppColors.primaryC4C4C4,
+                      color: colorScheme.colorScheme.onSurface,
                     ),
                   ),
                   const HorizontalSpacing(5),
@@ -60,7 +61,7 @@ class LaxmiAiTabWidget extends StatelessWidget {
               child: Text(
                 'Start chat',
                 style: context.textTheme.s12w400
-                    .copyWith(color: AppColors.primary212121),
+                    .copyWith(color: colorScheme.scaffoldBackgroundColor),
               ),
             ),
           )

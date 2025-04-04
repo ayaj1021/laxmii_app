@@ -18,6 +18,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
   List<String> priorityList = ['Week', 'Month', 'Year'];
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,14 +40,15 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
             ),
           ),
           child: DropdownButton(
-              dropdownColor: AppColors.primary101010,
+              dropdownColor: colorScheme.cardColor,
               value: widget.selectedValue,
+              elevation: 0,
               padding: EdgeInsets.zero,
               hint: Text(
                 'None',
                 style: context.textTheme.s12w300.copyWith(
                   fontSize: 13,
-                  color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
+                  color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               underline: const SizedBox.shrink(),
