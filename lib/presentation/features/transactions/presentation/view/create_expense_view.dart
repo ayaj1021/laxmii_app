@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
@@ -110,14 +111,14 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
         getAccessTokenNotifier.select((v) => v.getAccessTokenState.isLoading));
     final inventoryList = ref.watch(getAllInventoryNotifierProvider
         .select((v) => v.getAllInventory.data?.inventory));
-    return PageLoader(
-      isLoading: isLoading,
-      child: Scaffold(
-        appBar: const LaxmiiAppBar(
-          title: 'New Expense',
-          centerTitle: true,
-        ),
-        body: SafeArea(
+    return Scaffold(
+      appBar: const LaxmiiAppBar(
+        title: 'New Expense',
+        centerTitle: true,
+      ),
+      body: PageLoader(
+        isLoading: isLoading,
+        child: SafeArea(
             child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
@@ -165,7 +166,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                     return DropdownMenuItem(
                                       value: item,
                                       child: Text(
-                                        item.productName ?? '',
+                                        (item.productName?.capitalize) ?? '',
                                         style:
                                             context.textTheme.s12w400.copyWith(
                                           color: AppColors.primary5E5E5E,
@@ -229,7 +230,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   ),
                 const VerticalSpacing(20),
                 AddSalesTextField(
-                  hintText: 'Amount',
+                  hintText: 'Total Amount',
                   controller: _amountController,
                   isMoney: true,
                   keyboardType: TextInputType.number,

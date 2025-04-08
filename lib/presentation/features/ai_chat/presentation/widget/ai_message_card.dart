@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class AiMessageCard extends StatelessWidget {
@@ -17,6 +16,7 @@ class AiMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       children: [
         Align(
@@ -37,16 +37,16 @@ class AiMessageCard extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.7,
                   padding: const EdgeInsets.all(13),
-                  decoration: const BoxDecoration(
-                      color: AppColors.primary505050,
-                      borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                      color: colorScheme.unselectedWidgetColor,
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(25),
                           bottomRight: Radius.circular(25))),
                   child: Text(
                     message,
                     style: context.textTheme.s14w400.copyWith(
-                      color: AppColors.primaryC4C4C4,
+                      color: colorScheme.colorScheme.tertiary,
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/update_inventory_request.dart';
@@ -54,12 +55,13 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
 
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
-    _productNameController = TextEditingController(text: widget.productName);
+    _productNameController =
+        TextEditingController(text: widget.productName.capitalize);
     _sellingPriceController = TextEditingController(text: widget.sellingPrice);
     _costPriceController = TextEditingController(text: widget.costPrice);
     _quantityController = TextEditingController(text: widget.itemQuantity);
     _descriptionController =
-        TextEditingController(text: widget.productDescription);
+        TextEditingController(text: widget.productDescription.capitalize);
     super.initState();
   }
 
@@ -87,6 +89,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
         child: Scaffold(
           appBar: const LaxmiiAppBar(
             title: 'Update Product/Services',
+            centerTitle: true,
           ),
           body: SafeArea(
               child: SingleChildScrollView(
@@ -96,7 +99,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                 children: [
                   UpdateProductsTextField(
                     product: _productNameController,
-                    title: 'Product',
+                    title: 'Product name',
                   ),
                   const VerticalSpacing(15),
                   UpdateProductsTextField(

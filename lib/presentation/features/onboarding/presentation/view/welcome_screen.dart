@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'All Your finances in one place with',
+                      'Master Your Money. Move Different',
                       style: context.textTheme.s14w400.copyWith(
                         color: colorScheme.colorScheme.onSurface,
                         fontSize: 40,

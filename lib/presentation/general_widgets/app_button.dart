@@ -9,7 +9,7 @@ class LaxmiiSendButton extends StatefulWidget {
     super.key,
     this.isEnabled = true,
     this.backgroundColor = AppColors.primaryColor,
-    this.textColor = Colors.white,
+    this.textColor,
     this.hasBorder = false,
     this.width = double.infinity,
     this.borderColor = AppColors.primary1D1446,
@@ -18,7 +18,7 @@ class LaxmiiSendButton extends StatefulWidget {
 
   final bool isEnabled;
   final Color backgroundColor;
-  final Color textColor;
+  final Color? textColor;
   final Color borderColor;
   final bool hasBorder;
   final String title;
@@ -34,6 +34,7 @@ class LaxmiiSendButton extends StatefulWidget {
 class _LaxmiiSendButtonState extends State<LaxmiiSendButton> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return SizedBox(
       width: widget.width,
       child: InkWell(
@@ -58,7 +59,7 @@ class _LaxmiiSendButtonState extends State<LaxmiiSendButton> {
                 Text(
                   widget.title,
                   style: TextStyle(
-                    color: widget.textColor,
+                    color: colorScheme.canvasColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),

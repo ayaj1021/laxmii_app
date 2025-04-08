@@ -51,10 +51,22 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
 
     final isLoading = ref.watch(
         getAllInventoryNotifierProvider.select((v) => v.loadState.isLoading));
+
     return Scaffold(
-      appBar: const LaxmiiAppBar(
+      appBar: LaxmiiAppBar(
         title: 'Inventory',
         centerTitle: true,
+        actions: [
+          GestureDetector(
+              onTap: () => context.pushNamed(CreateInventory.routeName),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.add_circle,
+                  color: AppColors.primaryColor,
+                ),
+              ))
+        ],
       ),
       body: PageLoader(
         isLoading: isLoading,

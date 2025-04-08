@@ -26,6 +26,7 @@ class QuoteTextField extends StatelessWidget {
         style: context.textTheme.s14w400.copyWith(
             color: colorScheme.colorScheme.onSurface,
             fontWeight: FontWeight.w300),
+        textCapitalization: TextCapitalization.words,
         decoration: InputDecoration(
             hintStyle: context.textTheme.s14w400.copyWith(
                 color: colorScheme.colorScheme.onSurface,

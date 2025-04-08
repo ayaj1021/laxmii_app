@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
@@ -51,9 +52,20 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
         getAllInventoryNotifierProvider.select((v) => v.loadState.isLoading));
     final colorScheme = Theme.of(context);
     return Scaffold(
-      appBar: const LaxmiiAppBar(
+      appBar: LaxmiiAppBar(
         title: 'Inventory',
         centerTitle: true,
+        actions: [
+          GestureDetector(
+              onTap: () => context.pushNamed(CreateInventory.routeName),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.add_circle,
+                  color: AppColors.primaryColor,
+                ),
+              ))
+        ],
       ),
       body: PageLoader(
         isLoading: isLoading,
@@ -121,14 +133,14 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.productName ?? '',
+                                  (data.productName?.capitalize) ?? '',
                                   style: context.textTheme.s15w400.copyWith(
                                     color: colorScheme.colorScheme.onSurface,
                                   ),
                                 ),
                                 const VerticalSpacing(5),
                                 Text(
-                                  data.description ?? '',
+                                  (data.description?.capitalize) ?? '',
                                   style: context.textTheme.s12w400.copyWith(
                                     color: colorScheme.colorScheme.onSurface,
                                   ),

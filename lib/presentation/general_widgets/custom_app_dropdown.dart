@@ -93,6 +93,7 @@ class CustomDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,13 +114,14 @@ class CustomDropdown<T> extends StatelessWidget {
             ),
           ),
           child: DropdownButton<T>(
-            dropdownColor: AppColors.primary101010,
+            elevation: 0,
+            dropdownColor: colorScheme.cardColor,
             value: value,
             padding: EdgeInsets.zero,
             hint: Text(
               hintText,
               style: context.textTheme.s12w300.copyWith(
-                color: AppColors.primaryC4C4C4.withValues(alpha: 0.4),
+                color: colorScheme.colorScheme.onSurface,
               ),
             ),
             underline: const SizedBox.shrink(),

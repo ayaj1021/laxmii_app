@@ -45,7 +45,6 @@ class _QuotePageState extends State<QuotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       appBar: LaxmiiAppBar(
         title: 'Quote',
         actions: [

@@ -18,13 +18,14 @@ class GetCashFlowNotifier extends AutoDisposeNotifier<GetCashFlowState> {
     return GetCashFlowState.initial();
   }
 
-  Future<void> getCashFlow(
+  Future<void> getCashFlow({required String query}
+
       //   {
       //   required GetCashFlowRequest request,
       // }
       ) async {
     state = state.copyWith(loadState: LoadState.loading);
-    final request = GetCashFlowRequest(queryBy: 'year');
+    final request = GetCashFlowRequest(queryBy: query);
     try {
       final value = await _getCashFlowRepository.getCashFlow(request);
 

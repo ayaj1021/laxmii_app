@@ -192,46 +192,116 @@
 //
 //     final getCashFlowResponse = getCashFlowResponseFromJson(jsonString);
 
-import 'dart:convert';
+class CashflowResponse {
+  final bool? status;
+  final List<MonthlyCashflow>? cashflow;
 
-GetCashFlowResponse getCashFlowResponseFromJson(String str) =>
-    GetCashFlowResponse.fromJson(json.decode(str));
+  CashflowResponse({this.status, this.cashflow});
 
-String getCashFlowResponseToJson(GetCashFlowResponse data) =>
-    json.encode(data.toJson());
+  factory CashflowResponse.fromJson(Map<String, dynamic> json) {
+    return CashflowResponse(
+      status: json['status'],
+      cashflow: (json['cashflow'] as List<dynamic>?)
+          ?.map((e) => MonthlyCashflow.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
+class MonthlyCashflow {
+  final Map<String, MonthlyData>? monthData;
+
+  MonthlyCashflow({this.monthData});
+
+  factory MonthlyCashflow.fromJson(Map<String, dynamic> json) {
+    final mapped = <String, MonthlyData>{};
+    json.forEach((key, value) {
+      mapped[key] = MonthlyData.fromJson(value);
+    });
+    return MonthlyCashflow(monthData: mapped);
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    monthData?.forEach((key, value) {
+      data[key] = value.toJson();
+    });
+    return data;
+  }
+}
+
+class MonthlyData {
+  final int? invoice;
+  final int? expense;
+  final int? shopify;
+
+  MonthlyData({this.invoice, this.expense, this.shopify});
+
+  factory MonthlyData.fromJson(Map<String, dynamic> json) {
+    return MonthlyData(
+      invoice: json['invoice'],
+      expense: json['expense'],
+      shopify: json['shopify'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'invoice': invoice,
+      'expense': expense,
+      'shopify': shopify,
+    };
+  }
+}
 
 class GetCashFlowResponse {
   final bool? status;
-  final List<CashFlowData>? cashflow;
+  final List<MonthlyCashflow>? cashflow;
+  final List<CashFlowWeekData>? cashWeekflow;
 
   GetCashFlowResponse({
     this.status,
     this.cashflow,
+    this.cashWeekflow,
   });
 
-  GetCashFlowResponse copyWith({
-    bool? status,
-    List<CashFlowData>? cashflow,
-  }) =>
+  GetCashFlowResponse copyWith(
+          {bool? status,
+          List<MonthlyCashflow>? cashflow,
+          List<CashFlowWeekData>? cashWeekflow}) =>
       GetCashFlowResponse(
         status: status ?? this.status,
         cashflow: cashflow ?? this.cashflow,
+        cashWeekflow: cashWeekflow ?? this.cashWeekflow,
       );
 
   factory GetCashFlowResponse.fromJson(Map<String, dynamic> json) =>
       GetCashFlowResponse(
         status: json["status"],
-        cashflow: json["cashflow"] == null
-            ? []
-            : List<CashFlowData>.from(
-                json["cashflow"]!.map((x) => CashFlowData.fromJson(x))),
+        // cashflow: json["cashflow"] == null
+        //     ? []
+        //     : List<CashFlowData>.from(
+        //         json["cashflow"]!.map((x) => CashFlowData.fromJson(x))),
+
+        cashflow: (json['cashflow'] as List<dynamic>?)
+            ?.map((e) => MonthlyCashflow.fromJson(e as Map<String, dynamic>))
+            .toList(),
+
+        cashWeekflow: (json['cashflow'] as List<dynamic>?)
+            ?.map((e) => CashFlowWeekData.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        // cashWeekflow: json["cashflow"] == null
+        //     ? []
+        //     : List<CashFlowWeekData>.from(
+        //         json["cashflow"]!.map((x) => CashFlowWeekData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "cashflow": cashflow == null
-            ? []
-            : List<dynamic>.from(cashflow!.map((x) => x.toJson())),
+        'cashflow': cashflow?.map((e) => e.toJson()).toList(),
+        // "cashflow": cashflow == null
+        //     ? []
+        //     : List<dynamic>.from(cashflow!.map((x) => x.toJson())),
       };
 }
 
@@ -363,5 +433,68 @@ class April {
         "invoice": invoice,
         "expense": expense,
         "shopify": shopify,
+      };
+}
+
+class WeeklyCashflowResponse {
+  final bool? status;
+  final List<CashFlowWeekData>? cashflow;
+
+  WeeklyCashflowResponse({this.status, this.cashflow});
+
+  factory WeeklyCashflowResponse.fromJson(Map<String, dynamic> json) {
+    return WeeklyCashflowResponse(
+      status: json['status'],
+      cashflow: (json['cashflow'] as List<dynamic>?)
+          ?.map((item) => CashFlowWeekData.fromJson(item))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'status': status,
+        'cashflow': cashflow?.map((e) => e.toJson()).toList(),
+      };
+}
+
+class CashFlowWeekData {
+  final Map<String, CashflowValue>? weekData;
+
+  CashFlowWeekData({this.weekData});
+
+  factory CashFlowWeekData.fromJson(Map<String, dynamic> json) {
+    final map = <String, CashflowValue>{};
+    json.forEach((key, value) {
+      map[key] = CashflowValue.fromJson(value);
+    });
+    return CashFlowWeekData(weekData: map);
+  }
+
+  Map<String, dynamic> toJson() =>
+      weekData?.map(
+        (key, value) => MapEntry(key, value.toJson()),
+      ) ??
+      {};
+}
+
+class CashflowValue {
+  final int? invoice;
+  final int? expense;
+  final int? shopify;
+
+  CashflowValue({this.invoice, this.expense, this.shopify});
+
+  factory CashflowValue.fromJson(Map<String, dynamic> json) {
+    return CashflowValue(
+      invoice: json['invoice'],
+      expense: json['expense'],
+      shopify: json['shopify'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'invoice': invoice,
+        'expense': expense,
+        'shopify': shopify,
       };
 }

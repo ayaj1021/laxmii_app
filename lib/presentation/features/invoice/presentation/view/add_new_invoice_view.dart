@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
@@ -94,7 +95,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                   ),
                 ),
                 child: Text(
-                  widget.item,
+                  widget.item.capitalize,
                   style: context.textTheme.s14w500.copyWith(
                     color: colorScheme.colorScheme.onSurface,
                   ),

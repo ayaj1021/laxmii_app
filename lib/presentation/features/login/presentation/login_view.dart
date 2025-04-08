@@ -206,7 +206,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     backgroundColor: Colors.transparent,
                     borderColor: AppColors.primary212121,
                   ),
-                  const VerticalSpacing(100),
+                  const VerticalSpacing(150),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

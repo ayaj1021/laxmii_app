@@ -205,10 +205,10 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
                     builder: (context, r, c) {
                       return LaxmiiSendButton(
                           isEnabled: r,
-                          backgroundColor: Colors.transparent,
+                          //  backgroundColor: Colors.transparent,
                           hasBorder: true,
                           borderColor: AppColors.primaryColor,
-                          textColor: AppColors.primaryColor,
+                          // textColor: AppColors.primaryColor,
                           onTap: () {
                             if (_selectedPriority == null) {
                               context.showError(

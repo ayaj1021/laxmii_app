@@ -26,10 +26,13 @@ class AppThemes {
       iconTheme: const IconThemeData(
         color: AppColors.primary5E5E5E,
       ),
+      unselectedWidgetColor: AppColors.primaryC4C4C4,
+      dialogBackgroundColor: AppColors.primaryEFEFEF,
+      canvasColor: AppColors.white,
       cardColor: AppColors.primaryEFEFEF,
       scaffoldBackgroundColor: AppColors.white,
       colorScheme: ColorScheme.light(
-        onSurface: AppColors.black,
+        onSurface: AppColors.primary5E5E5E,
         primary: AppColors.primaryColor,
         secondary: AppColors.secondaryColor,
         onPrimaryContainer: AppColors.primaryEFEFEF,
@@ -90,12 +93,15 @@ class AppThemes {
       iconTheme: const IconThemeData(
         color: AppColors.white,
       ),
+      unselectedWidgetColor: AppColors.primary505050,
+      dialogBackgroundColor: AppColors.primary101010,
+      canvasColor: AppColors.black,
       scaffoldBackgroundColor: Colors.black,
       cardColor: AppColors.primary101010,
       colorScheme: ColorScheme.light(
         primary: AppColors.primaryColor,
         tertiary: AppColors.primaryC4C4C4,
-        onSurface: AppColors.white,
+        onSurface: AppColors.primaryC4C4C4,
         secondary: AppColors.secondaryColor,
         onPrimaryContainer: AppColors.primary101010,
         onErrorContainer: AppColors.red.withValues(alpha: .3),

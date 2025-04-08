@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class UserChatCard extends StatelessWidget {
@@ -9,6 +8,7 @@ class UserChatCard extends StatelessWidget {
   final String type;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       children: [
         Align(
@@ -19,16 +19,16 @@ class UserChatCard extends StatelessWidget {
             ),
             child: Container(
               padding: const EdgeInsets.all(13),
-              decoration: const BoxDecoration(
-                  color: AppColors.primary101010,
-                  borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                  color: colorScheme.dialogBackgroundColor,
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(25),
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25))),
               child: Text(
                 message,
                 style: context.textTheme.s14w400.copyWith(
-                  color: AppColors.primaryC4C4C4,
+                  color: colorScheme.colorScheme.tertiary,
                 ),
               ),
             ),

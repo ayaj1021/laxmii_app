@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/invoice_activity.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -18,7 +17,9 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(getCashFlowNotifierProvider.notifier).getCashFlow();
+      // await ref
+      //     .read(getCashFlowNotifierProvider.notifier)
+      //     .getCashFlow(query: 'year');
 
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
@@ -27,8 +28,8 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
 
   @override
   Widget build(BuildContext context) {
-    final cashFlowList = ref.watch(getCashFlowNotifierProvider
-        .select((v) => v.getCashFlow.data?.cashflow ?? []));
+    // final cashFlowList = ref.watch(getCashFlowNotifierProvider
+    //     .select((v) => v.getCashFlow.data?.cashflow ?? []));
     final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -43,19 +44,17 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Column(
-              children: [
-                CashFlowActivity(
-                  cashFlow: cashFlowList,
-                ),
-                const VerticalSpacing(20),
-                const InvoiceActivity()
-              ],
-            ),
+      body: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Column(
+            children: [
+              CashFlowActivity(
+                  //   cashFlow: cashFlowList,
+                  ),
+              VerticalSpacing(20),
+              InvoiceActivity()
+            ],
           ),
         ),
       ),

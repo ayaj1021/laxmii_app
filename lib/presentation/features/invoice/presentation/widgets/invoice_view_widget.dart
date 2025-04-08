@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -35,7 +36,7 @@ class InvoiceViewWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                invoiceName,
+                invoiceName.capitalize,
                 style: context.textTheme.s14w500.copyWith(
                   color: colorScheme.colorScheme.onSurface,
                 ),
@@ -83,9 +84,9 @@ class InvoiceViewWidget extends StatelessWidget {
                     color: invoiceStatusColor ?? AppColors.primaryC4C4C4,
                     borderRadius: BorderRadius.circular(6)),
                 child: Text(
-                  invoiceStatus,
+                  invoiceStatus.capitalize,
                   style: context.textTheme.s12w300.copyWith(
-                    color: colorScheme.colorScheme.onSurface,
+                    color: AppColors.white,
 
                     // AppColors.primary5E5E5E,
                   ),

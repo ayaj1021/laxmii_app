@@ -55,7 +55,7 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
             biometricOnly: false,
             useErrorDialogs: true,
           ));
-      log('Authenticated: $authenticated');
+
       if (mounted) {
         authenticated
             ? _login()
@@ -99,7 +99,10 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
                 // Optional: Add a button to retry authentication if needed
 
                 LaxmiiSendButton(
-                    onTap: _authenticate,
+                    onTap: () {
+                      _authenticate();
+                    },
+
                     //_getAvailableBiometrics,
                     title: 'Authenticate to login'),
                 const VerticalSpacing(20),

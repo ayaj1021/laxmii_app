@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 
@@ -30,14 +31,14 @@ class ProductServicesWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                itemName,
-                style: context.textTheme.s18w500.copyWith(
+                itemName.capitalize,
+                style: context.textTheme.s14w500.copyWith(
                   color: colorScheme.colorScheme.onSurface,
                 ),
               ),
               Text(
-                itemType,
-                style: context.textTheme.s14w400.copyWith(
+                itemType.capitalize,
+                style: context.textTheme.s12w300.copyWith(
                   color: AppColors.primary5E5E5E,
                 ),
               )

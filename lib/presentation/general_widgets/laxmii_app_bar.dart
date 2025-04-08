@@ -28,7 +28,7 @@ class LaxmiiAppBar extends StatelessWidget implements PreferredSizeWidget {
           (title != null
               ? Text(
                   title ?? '',
-                  style: context.textTheme.s16w500.copyWith(
+                  style: context.textTheme.s15w500.copyWith(
                     color: colorScheme.colorScheme.onSurface,
                   ),
                 )

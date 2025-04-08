@@ -1,3 +1,5 @@
+import 'package:laxmii_app/presentation/features/quotes/data/model/get_single_quote_response.dart';
+
 class CreateQuotesRequest {
   final String customerName;
   final String quoteNumber;
@@ -97,6 +99,14 @@ class ProductItem {
     required this.itemPrice,
     required this.itemQuantity,
   });
+  factory ProductItem.fromSingleQuote(SingleQuoteItems item) {
+    return ProductItem(
+      itemName: item.description ?? '',
+      itemPrice: item.price ?? 0,
+      itemQuantity: item.quantity ?? 0,
+      // map fields accordingly
+    );
+  }
 }
 
 extension ProductItemsConverter on ProductItem {

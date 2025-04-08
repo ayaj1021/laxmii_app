@@ -20,6 +20,7 @@ class AddSalesTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
         // padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -29,24 +30,24 @@ class AddSalesTextField extends StatelessWidget {
                 color: AppColors.primary5E5E5E.withValues(alpha: 0.5))),
         child: TextField(
           style: context.textTheme.s12w500.copyWith(
-            color: AppColors.primaryC4C4C4,
+            color: colorScheme.colorScheme.onSurface,
           ),
           onChanged: onChanged,
           keyboardType: keyboardType,
           controller: controller,
           decoration: InputDecoration(
-            hintText: hintText,
-            helperStyle: context.textTheme.s12w300.copyWith(
-              color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
-            ),
             prefix: isMoney == true
                 ? Text(
                     '\$',
                     style: context.textTheme.s12w500.copyWith(
-                      color: AppColors.primaryC4C4C4,
+                      color: colorScheme.colorScheme.onSurface,
                     ),
                   )
                 : const SizedBox.shrink(),
+            hintText: hintText,
+            hintStyle: context.textTheme.s12w300.copyWith(
+              color: colorScheme.colorScheme.onSurface,
+            ),
             fillColor: Colors.transparent,
             border: InputBorder.none,
             filled: false,

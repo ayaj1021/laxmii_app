@@ -26,6 +26,8 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
     final overDueInvoice =
         widget.allInvoices?.where((test) => test.status == 'overdue').length ??
             0;
+
+    final colorScheme = Theme.of(context);
     return Column(
       children: [
         SizedBox(
@@ -35,11 +37,11 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
               DoughnutSeries<_ChartData, String>(
                 dataSource: [
                   _ChartData(
-                      'Paid', paidInvoice.toDouble(), AppColors.primary062613),
+                      'Paid', paidInvoice.toDouble(), AppColors.primary075427),
                   _ChartData('Unpaid', unPaidInvoice.toDouble(),
-                      AppColors.primary3B0D0D),
+                      AppColors.primary861919),
                   _ChartData('Overdue', overDueInvoice.toDouble(),
-                      AppColors.primary493703),
+                      AppColors.primaryA67C00),
                 ],
                 xValueMapper: (datum, _) => datum.label,
                 yValueMapper: (datum, _) => datum.value,
@@ -52,48 +54,45 @@ class _InvoiceChartWidgetState extends State<InvoiceChartWidget> {
           ),
         ),
         //   const VerticalSpacing(15),
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                '$invoiceLength',
-                style: context.textTheme.s20w700.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primaryC4C4C4,
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$invoiceLength',
+              style: context.textTheme.s20w700.copyWith(
+                fontWeight: FontWeight.w800,
+                color: colorScheme.colorScheme.onSurface,
               ),
-              const HorizontalSpacing(5),
-              Text(
-                'Total Invoices',
-                style: context.textTheme.s12w600.copyWith(
-                  color: AppColors.primary737373,
-                ),
+            ),
+            const HorizontalSpacing(5),
+            Text(
+              'Total Invoices',
+              style: context.textTheme.s12w600.copyWith(
+                color: AppColors.primary737373,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        const VerticalSpacing(5),
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
+        const VerticalSpacing(15),
+        const Padding(
+          padding: EdgeInsets.only(left: 30),
           child: Row(
             children: [
               InvoiceContainerNameWIdget(
                 title: 'Paid',
-                color: AppColors.primary075427.withValues(alpha: 0.7),
+                color: AppColors.primary075427,
                 textColor: AppColors.white,
               ),
-              const HorizontalSpacing(8),
+              HorizontalSpacing(8),
               InvoiceContainerNameWIdget(
                 title: 'Unpaid',
-                color: AppColors.primary861919.withValues(alpha: 0.7),
+                color: AppColors.primary861919,
                 textColor: AppColors.white,
               ),
-              const HorizontalSpacing(8),
+              HorizontalSpacing(8),
               InvoiceContainerNameWIdget(
                 title: 'Overdue',
-                color: AppColors.primaryA67C00.withValues(alpha: 0.7),
+                color: AppColors.primaryA67C00,
                 textColor: AppColors.white,
               ),
             ],

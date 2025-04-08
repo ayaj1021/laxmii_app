@@ -224,54 +224,118 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class CashFlowChart extends StatelessWidget {
-  const CashFlowChart({super.key, required this.cashflow});
+class CashFlowYearChart extends StatelessWidget {
+  const CashFlowYearChart({super.key, required this.cashflow});
 
-  final List<CashFlowData> cashflow;
+  final List<MonthlyCashflow> cashflow;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     if (cashflow.isEmpty) {
       return const Center(child: Text("No data available"));
     }
 
-    final cashflowData = cashflow.first;
-    final List<_ChartData> chartData = [
-      _ChartData("Jan", (cashflowData.january?.invoice ?? 0).toDouble(),
-          (cashflowData.january?.expense ?? 0).toDouble()),
-      _ChartData("Feb", (cashflowData.february?.invoice ?? 0).toDouble(),
-          (cashflowData.february?.expense ?? 0).toDouble()),
-      _ChartData("Mar", (cashflowData.march?.invoice ?? 0).toDouble(),
-          (cashflowData.march?.expense ?? 0).toDouble()),
-      _ChartData("Apr", (cashflowData.april?.invoice ?? 0).toDouble(),
-          (cashflowData.april?.expense ?? 0).toDouble()),
-      _ChartData("May", (cashflowData.may?.invoice ?? 0).toDouble(),
-          (cashflowData.may?.expense ?? 0).toDouble()),
-      _ChartData("Jun", (cashflowData.june?.invoice ?? 0).toDouble(),
-          (cashflowData.june?.expense ?? 0).toDouble()),
-      _ChartData("Jul", (cashflowData.july?.invoice ?? 0).toDouble(),
-          (cashflowData.july?.expense ?? 0).toDouble()),
-      _ChartData("Aug", (cashflowData.august?.invoice ?? 0).toDouble(),
-          (cashflowData.august?.expense ?? 0).toDouble()),
-      _ChartData("Sep", (cashflowData.september?.invoice ?? 0).toDouble(),
-          (cashflowData.september?.expense ?? 0).toDouble()),
-      _ChartData("Oct", (cashflowData.october?.invoice ?? 0).toDouble(),
-          (cashflowData.october?.expense ?? 0).toDouble()),
-      _ChartData("Nov", (cashflowData.november?.invoice ?? 0).toDouble(),
-          (cashflowData.november?.expense ?? 0).toDouble()),
-      _ChartData("Dec", (cashflowData.december?.invoice ?? 0).toDouble(),
-          (cashflowData.december?.expense ?? 0).toDouble()),
-    ];
+    // final cashflowData = cashflow.first;
+    //   final List<_ChartData> chartData = cashflow.map((data) {
+    //       return _ChartData(
+    //   data.monthData., // e.g., 'Mar'
+    //   (data.invoice ?? 0).toDouble(),
+    //   (data.expense ?? 0).toDouble(),
+    // );
+    //   }).toList();
+
+    const monthAbbreviations = {
+      'January': 'Jan',
+      'February': 'Feb',
+      'March': 'Mar',
+      'April': 'Apr',
+      'May': 'May',
+      'June': 'Jun',
+      'July': 'Jul',
+      'August': 'Aug',
+      'September': 'Sep',
+      'October': 'Oct',
+      'November': 'Nov',
+      'December': 'Dec',
+    };
+
+    final List<_ChartData> chartData = [];
+    if (cashflow.isNotEmpty && cashflow.first.monthData != null) {
+      cashflow.first.monthData!.forEach((month, data) {
+        final shortMonth = monthAbbreviations[month] ?? month;
+
+        chartData.add(
+          _ChartData(
+            shortMonth,
+            (data.invoice ?? 0).toDouble(),
+            (data.expense ?? 0).toDouble(),
+          ),
+        );
+      });
+    }
+
+    // if (cashflow.isNotEmpty && cashflow.first.monthData != null) {
+    //   cashflow.first.monthData!.forEach((month, data) {
+    //     chartData.add(
+    //       _ChartData(
+    //         month, // e.g., 'March'
+    //         (data.invoice ?? 0).toDouble(),
+    //         (data.expense ?? 0).toDouble(),
+    //       ),
+    //     );
+    //   });
+    // }
+
+    //  [
+    //   _ChartData("Jan", (cashflowData.january?.invoice ?? 0).toDouble(),
+    //       (cashflowData.january?.expense ?? 0).toDouble()),
+    //   _ChartData("Feb", (cashflowData.february?.invoice ?? 0).toDouble(),
+    //       (cashflowData.february?.expense ?? 0).toDouble()),
+    //   _ChartData("Mar", (cashflowData.march?.invoice ?? 0).toDouble(),
+    //       (cashflowData.march?.expense ?? 0).toDouble()),
+    //   _ChartData("Apr", (cashflowData.april?.invoice ?? 0).toDouble(),
+    //       (cashflowData.april?.expense ?? 0).toDouble()),
+    //   _ChartData("May", (cashflowData.may?.invoice ?? 0).toDouble(),
+    //       (cashflowData.may?.expense ?? 0).toDouble()),
+    //   _ChartData("Jun", (cashflowData.june?.invoice ?? 0).toDouble(),
+    //       (cashflowData.june?.expense ?? 0).toDouble()),
+    //   _ChartData("Jul", (cashflowData.july?.invoice ?? 0).toDouble(),
+    //       (cashflowData.july?.expense ?? 0).toDouble()),
+    //   _ChartData("Aug", (cashflowData.august?.invoice ?? 0).toDouble(),
+    //       (cashflowData.august?.expense ?? 0).toDouble()),
+    //   _ChartData("Sep", (cashflowData.september?.invoice ?? 0).toDouble(),
+    //       (cashflowData.september?.expense ?? 0).toDouble()),
+    //   _ChartData("Oct", (cashflowData.october?.invoice ?? 0).toDouble(),
+    //       (cashflowData.october?.expense ?? 0).toDouble()),
+    //   _ChartData("Nov", (cashflowData.november?.invoice ?? 0).toDouble(),
+    //       (cashflowData.november?.expense ?? 0).toDouble()),
+    //   _ChartData("Dec", (cashflowData.december?.invoice ?? 0).toDouble(),
+    //       (cashflowData.december?.expense ?? 0).toDouble()),
+    // ];
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.2,
       child: SfCartesianChart(
-        primaryXAxis: const CategoryAxis(),
-        primaryYAxis: const NumericAxis(),
+        primaryXAxis: const CategoryAxis(
+          majorGridLines: MajorGridLines(width: 0),
+          majorTickLines: MajorTickLines(width: 0),
+          interval: 1,
+        ),
+        plotAreaBorderWidth: 0,
+        primaryYAxis: NumericAxis(
+          numberFormat: NumberFormat.compact(),
+          majorGridLines: MajorGridLines(
+              width: 1,
+              dashArray: const [4.4],
+              color: colorScheme.colorScheme.onSurface.withAlpha(20)),
+          majorTickLines: const MajorTickLines(width: 0),
+        ),
         legend: const Legend(isVisible: false),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CartesianSeries<_ChartData, String>>[
@@ -282,6 +346,10 @@ class CashFlowChart extends StatelessWidget {
             yValueMapper: (data, _) => data.invoice,
             color: AppColors.primary075427,
             animationDuration: 1500,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(2),
+              topRight: Radius.circular(2),
+            ),
           ),
           ColumnSeries<_ChartData, String>(
             name: "Expense",
@@ -290,6 +358,10 @@ class CashFlowChart extends StatelessWidget {
             yValueMapper: (data, _) => data.expense,
             color: AppColors.primary861919,
             animationDuration: 1500,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(2),
+              topRight: Radius.circular(2),
+            ),
           ),
         ],
       ),

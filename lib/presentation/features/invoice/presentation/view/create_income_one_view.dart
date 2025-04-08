@@ -179,6 +179,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                           color: colorScheme.colorScheme.onSurface,
                         ),
                         controller: _customerNameController,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           hintText: 'Customer (required)',
                           hintStyle: context.textTheme.s14w400.copyWith(
@@ -239,7 +240,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                             onTap: () => _selectDate(context),
                             child: Text(
                               _selectedDate == null
-                                  ? 'Select Date'
+                                  ? _formatDate(DateTime.now())
                                   : _formatDate(_selectedDate!),
                               style: context.textTheme.s12w400.copyWith(
                                 color: colorScheme.colorScheme.onSurface,
@@ -269,7 +270,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                             onTap: () => _selectDueDate(context),
                             child: Text(
                               _selectedDueDate == null
-                                  ? 'Select Date'
+                                  ? _formatDate(DateTime.now())
                                   : _formatDueDate(_selectedDueDate!),
                               style: context.textTheme.s12w400.copyWith(
                                 color: colorScheme.colorScheme.onSurface,

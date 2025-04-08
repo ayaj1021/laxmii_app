@@ -45,12 +45,6 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
                     delay: Duration(milliseconds: 400),
                     duration: Duration(milliseconds: 300),
                   ),
-
-                  // ScaleEffect(
-                  //   // curve: Curves.easeInOut,
-                  //   delay: Duration(milliseconds: 400),
-                  //   duration: Duration(milliseconds: 300),
-                  // )
                 ],
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.1,
@@ -75,7 +69,7 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
                           color: AppColors.primary5E5E5E,
                         ),
                       ),
-                      const VerticalSpacing(20),
+                      const VerticalSpacing(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -139,9 +133,14 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
               );
             })),
         Align(
+          heightFactor: 20,
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
+            padding: const EdgeInsets.only(
+              bottom: 30,
+              right: 15,
+              left: 15,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -29,7 +30,7 @@ class GetQuotesWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                quoteTitle,
+                quoteTitle.capitalize,
                 style: context.textTheme.s14w500.copyWith(
                   color: colorScheme.colorScheme.onSurface,
                 ),

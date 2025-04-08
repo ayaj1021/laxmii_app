@@ -57,7 +57,7 @@ class TodoListWidget extends StatelessWidget {
                   color: AppColors.primaryC4C4C4,
                 ),
               ),
-              const VerticalSpacing(10),
+
               isCompleted == true
                   ? Text(
                       'Completed',
