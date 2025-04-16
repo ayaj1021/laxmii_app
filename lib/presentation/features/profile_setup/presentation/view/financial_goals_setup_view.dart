@@ -12,34 +12,35 @@ class FinancialGoalsSetupView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final checkboxState = ref.watch(checkboxStateProvider);
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Financial Goals',
           style: context.textTheme.s24w400.copyWith(
-            color: AppColors.white,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
         Text(
           'Select all that applies',
           style: context.textTheme.s14w400.copyWith(
-            color: AppColors.primaryC4C4C4,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
         const VerticalSpacing(48),
-        FinancialGoalsListWidget(
-          icon: '💰',
-          name: 'Increase Savings',
-          isChecked: checkboxState['increaseSavings'] ?? false,
-          onChecked: (v) {
-            ref.read(checkboxStateProvider.notifier).toggleCheckbox(
-                  'increaseSavings',
-                  v ?? false,
-                );
-          },
-        ),
-        const VerticalSpacing(26),
+        // FinancialGoalsListWidget(
+        //   icon: '💰',
+        //   name: 'Increase Savings',
+        //   isChecked: checkboxState['increaseSavings'] ?? false,
+        //   onChecked: (v) {
+        //     ref.read(checkboxStateProvider.notifier).toggleCheckbox(
+        //           'increaseSavings',
+        //           v ?? false,
+        //         );
+        //   },
+        // ),
+        // const VerticalSpacing(26),
         FinancialGoalsListWidget(
           icon: '📉',
           name: 'Reduce Expenses',
@@ -73,16 +74,16 @@ class FinancialGoalsSetupView extends ConsumerWidget {
           },
         ),
         const VerticalSpacing(26),
-        FinancialGoalsListWidget(
-          icon: '🚀',
-          name: 'Invest Smarter',
-          isChecked: checkboxState['investSmarter'] ?? false,
-          onChecked: (v) {
-            ref
-                .read(checkboxStateProvider.notifier)
-                .toggleCheckbox('investSmarter', v ?? false);
-          },
-        ),
+        // FinancialGoalsListWidget(
+        //   icon: '🚀',
+        //   name: 'Invest Smarter',
+        //   isChecked: checkboxState['investSmarter'] ?? false,
+        //   onChecked: (v) {
+        //     ref
+        //         .read(checkboxStateProvider.notifier)
+        //         .toggleCheckbox('investSmarter', v ?? false);
+        //   },
+        // ),
       ],
     );
   }

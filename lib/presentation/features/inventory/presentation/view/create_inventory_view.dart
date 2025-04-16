@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/create_inventory_request.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/create_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
@@ -33,6 +34,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
 
   @override
   void initState() {
+    getUserCurrency();
     _productNameController = TextEditingController()
       ..addListener(_validateInput);
     _descriptionController = TextEditingController()
@@ -64,6 +66,16 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
         _costPriceController.text.isNotEmpty &&
         _supplierNameController.text.isNotEmpty &&
         _quantityController.text.isNotEmpty;
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency.toString();
+    });
   }
 
   @override

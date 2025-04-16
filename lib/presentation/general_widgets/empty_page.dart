@@ -4,8 +4,11 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class EmptyPage extends StatelessWidget {
-  const EmptyPage({super.key, required this.emptyMessage});
+  const EmptyPage(
+      {super.key, required this.emptyMessage, this.hasButton, this.button});
   final String emptyMessage;
+  final bool? hasButton;
+  final Widget? button;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,7 @@ class EmptyPage extends StatelessWidget {
             color: colorScheme.colorScheme.onSurface,
           ),
         ),
+        if (hasButton == true) button ?? const SizedBox.shrink()
       ],
     );
   }

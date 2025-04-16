@@ -209,6 +209,15 @@ class AppDataStorage {
     return value;
   }
 
+  Future<void> saveUserCurrency(String userCurrency) async {
+    await _storage.write(key: 'user_currency', value: userCurrency);
+  }
+
+  Future<String?> getUserCurrency() async {
+    String? value = await _storage.read(key: 'user_currency');
+    return value;
+  }
+
   Future<void> deleteTransactionDataList() async {
     await _storage.delete(key: 'transaction_data_list');
   }

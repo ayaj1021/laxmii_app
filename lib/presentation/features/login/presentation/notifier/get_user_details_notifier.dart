@@ -30,6 +30,7 @@ class GetUserDetailsNotifier
       // onSuccess(value.message.toString());
       state = state.copyWith(state: LoadState.idle, data: value.data);
       await AppDataStorage().saveUserId('${value.data?.userId}');
+      await AppDataStorage().saveUserCurrency('${value.data?.currency}');
     } catch (e) {
       // onError(e.toString());
       state = state.copyWith(state: LoadState.idle);

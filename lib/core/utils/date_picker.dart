@@ -28,12 +28,6 @@ Future<DateTime?> selectDate({
     initialDate: selectedDate ?? DateTime.now(),
     firstDate: DateTime(2000),
     lastDate: lastDate ?? DateTime(2100),
-    // builder: (context, child) {
-    //   return Theme(
-    //     data: ThemeData.dark(),
-    //     child: child!,
-    //   );
-    // },
   );
 
   return pickedDate;

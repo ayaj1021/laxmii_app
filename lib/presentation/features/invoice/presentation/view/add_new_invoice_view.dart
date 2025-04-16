@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_request.dart';
@@ -39,6 +40,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
 
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref
@@ -51,8 +53,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
         ? TextEditingController()
         : TextEditingController(text: widget.sellingPrice.toString())
       ..addListener(_validateInput);
-    // _sellingPriceController =  TextEditingController()
-    //   ..addListener(_validateInput);
+
     super.initState();
   }
 
@@ -67,6 +68,16 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
     _sellingPriceController.dispose();
 
     super.dispose();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency.toString();
+    });
   }
 
   @override
@@ -110,6 +121,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
               const VerticalSpacing(15),
               UpdateProductsTextField(
                 isMoney: true,
+                currency: userCurrency,
                 product: _sellingPriceController,
                 title: 'Selling Price',
                 keyboardType: TextInputType.number,

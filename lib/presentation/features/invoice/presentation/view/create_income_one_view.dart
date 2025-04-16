@@ -390,11 +390,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                             isEnabled: r,
                             textColor: colorScheme.colorScheme.onSurface,
                             onTap: () {
-                              if (_selectedDate == null ||
-                                  _selectedDueDate == null) {
-                                context.showError(
-                                    message: 'Dates cannot be empty');
-                              } else if (itemsNotifier.value.isEmpty) {
+                              if (itemsNotifier.value.isEmpty) {
                                 context.showError(message: 'Add a product');
                               } else {
                                 Navigator.push(
@@ -409,10 +405,11 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                           customerName: _customerNameController
                                               .text
                                               .trim(),
-                                          issueDate:
-                                              _formatDate(_selectedDate!),
-                                          dueDate:
-                                              _formatDueDate(_selectedDueDate!),
+                                          issueDate: _formatDate(
+                                              _selectedDate ?? DateTime.now()),
+                                          dueDate: _formatDueDate(
+                                              _selectedDueDate ??
+                                                  DateTime.now()),
                                           invoiceNumber: invoiceNumber,
                                           items: items,
                                           totalAmount: balanceAmount,

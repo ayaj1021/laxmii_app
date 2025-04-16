@@ -13,7 +13,9 @@ import 'package:laxmii_app/presentation/features/todo/data/model/get_all_tasks_r
 import 'package:laxmii_app/presentation/features/todo/data/model/update_task_request.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/delete_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/update_task_notifier.dart';
+import 'package:laxmii_app/presentation/features/todo/presentation/view/create_task_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
+import 'package:laxmii_app/presentation/general_widgets/empty_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class TodoListSection extends ConsumerStatefulWidget {
@@ -59,58 +61,75 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
         ),
         const VerticalSpacing(5),
         if (widget.tasksList == null) const SizedBox.shrink(),
-        SizedBox(
-          height: 400.h,
-          // height: MediaQuery.of(context).size.height,
-          child: widget.taskListLoading
-              ? const SizedBox.shrink()
-              : ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: (widget.tasksList?.length ?? 0) < 2
-                          ? widget.tasksList?.length
-                          : 2,
-                      itemBuilder: (_, index) {
-                        final data = widget.tasksList?[index];
-                        return Animate(
-                          effects: const [
-                            FadeEffect(
-                              // curve: Curves.easeInOut,
-                              delay: Duration(milliseconds: 400),
-                              duration: Duration(milliseconds: 300),
-                            ),
-                            ScaleEffect(
-                              // curve: Curves.easeInOut,
-                              delay: Duration(milliseconds: 400),
-                              duration: Duration(milliseconds: 300),
-                            )
-                          ],
-                          child: Column(
-                            children: [
-                              TodoListWidget(
-                                time: '${data?.time}',
-                                todoTask: '${data?.title}',
-                                taskPriority: '${data?.priority} Priority',
-                                taskPriorityColor: data?.priority == 'Low'
-                                    ? AppColors.primaryF94D4D
-                                    : AppColors.primary5E5E5E,
-                                onDeleteTapped: () =>
-                                    deleteTask(taskId: '${data?.id}'),
-                                isCompleted: data?.completed,
-                                onMarkCompletedTapped: () => updateTask(
-                                  taskId: '${data?.id}',
-                                  priority: '${data?.priority}',
-                                  completed: true,
-                                ),
-                              ),
-                              const VerticalSpacing(16)
-                            ],
-                          ),
-                        );
-                      }).animate().fade(
-                    duration: const Duration(seconds: 2),
-                    curve: Curves.easeIn,
+        widget.tasksList?.isEmpty ?? false
+            ? EmptyPage(
+                emptyMessage: 'You have no task yet',
+                hasButton: true,
+                button: InkWell(
+                  onTap: () {
+                    context.pushNamed(CreateTaskView.routeName);
+                  },
+                  child: Text(
+                    'Create Task',
+                    style: context.textTheme.s14w500.copyWith(
+                      color: AppColors.primaryColor,
+                    ),
                   ),
-        ),
+                ),
+              )
+            : SizedBox(
+                height: 400.h,
+                // height: MediaQuery.of(context).size.height,
+                child: widget.taskListLoading
+                    ? const SizedBox.shrink()
+                    : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: (widget.tasksList?.length ?? 0) < 2
+                                ? widget.tasksList?.length
+                                : 2,
+                            itemBuilder: (_, index) {
+                              final data = widget.tasksList?[index];
+                              return Animate(
+                                effects: const [
+                                  FadeEffect(
+                                    // curve: Curves.easeInOut,
+                                    delay: Duration(milliseconds: 400),
+                                    duration: Duration(milliseconds: 300),
+                                  ),
+                                  ScaleEffect(
+                                    // curve: Curves.easeInOut,
+                                    delay: Duration(milliseconds: 400),
+                                    duration: Duration(milliseconds: 300),
+                                  )
+                                ],
+                                child: Column(
+                                  children: [
+                                    TodoListWidget(
+                                      time: '${data?.time}',
+                                      todoTask: '${data?.title}',
+                                      taskPriority:
+                                          '${data?.priority} Priority',
+                                      taskPriorityColor: data?.priority == 'Low'
+                                          ? AppColors.primaryF94D4D
+                                          : AppColors.primary5E5E5E,
+                                      onDeleteTapped: () =>
+                                          deleteTask(taskId: '${data?.id}'),
+                                      isCompleted: data?.completed,
+                                      onMarkCompletedTapped: () => updateTask(
+                                        taskId: '${data?.id}',
+                                        priority: '${data?.priority}',
+                                        completed: true,
+                                      ),
+                                    ),
+                                    const VerticalSpacing(16)
+                                  ],
+                                ),
+                              );
+                            }).animate().fade(
+                          duration: const Duration(seconds: 2),
+                          curve: Curves.easeIn,
+                        ),
+              ),
       ],
     );
   }

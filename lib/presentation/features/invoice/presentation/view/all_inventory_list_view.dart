@@ -57,14 +57,17 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
         centerTitle: true,
         actions: [
           GestureDetector(
-              onTap: () => context.pushNamed(CreateInventory.routeName),
-              child: const Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: Icon(
-                  Icons.add_circle,
+            onTap: () => context.pushNamed(CreateInventory.routeName),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                'Create Inventory',
+                style: context.textTheme.s14w400.copyWith(
                   color: AppColors.primaryColor,
                 ),
-              ))
+              ),
+            ),
+          ),
         ],
       ),
       body: PageLoader(

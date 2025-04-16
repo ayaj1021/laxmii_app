@@ -34,9 +34,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
         children: const [
           HomeView(),
           ActivityView(),
-
           SizedBox.shrink(),
-          // HomeBottomNav(),
           ToolsView(),
           SettingsView(),
         ],

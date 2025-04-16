@@ -132,7 +132,7 @@ class AppOverLayState extends State<AppOverLay> {
   }) {
     return Dismissible(
       key: const Key("overlay_message"),
-      direction: DismissDirection.horizontal,
+      direction: DismissDirection.vertical,
       onDismissed: (direction) {
         onClose();
       },

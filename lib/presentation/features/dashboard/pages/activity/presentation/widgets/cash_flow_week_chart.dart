@@ -41,23 +41,6 @@ class CashFlowWeekChart extends StatelessWidget {
       });
     }
 
-    // final List<_ChartData> chartData = [
-    //   _ChartData("Mon", (cashflowData.monday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.monday?.expense ?? 0).toDouble()),
-    //   _ChartData("Tue", (cashflowData.tuesday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.tuesday?.expense ?? 0).toDouble()),
-    //   _ChartData("Wed", (cashflowData.wednesday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.wednesday?.expense ?? 0).toDouble()),
-    //   _ChartData("Thu", (cashflowData.thursday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.thursday?.expense ?? 0).toDouble()),
-    //   _ChartData("Fri", (cashflowData.friday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.friday?.expense ?? 0).toDouble()),
-    //   _ChartData("Sat", (cashflowData.saturday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.saturday?.expense ?? 0).toDouble()),
-    //   _ChartData("Sun", (cashflowData.sunday?.invoice ?? 0).toDouble(),
-    //       (cashflowData.sunday?.expense ?? 0).toDouble()),
-    // ];
-
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.2,
       child: SfCartesianChart(

@@ -17,33 +17,34 @@ class _SetAiPreferencePageState extends ConsumerState<SetAiPreferencePage> {
   @override
   Widget build(BuildContext context) {
     final checkboxState = ref.watch(checkboxStateProvider);
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Set AI Preference',
           style: context.textTheme.s24w400.copyWith(
-            color: AppColors.white,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
         Text(
           'Select all that applies',
           style: context.textTheme.s14w400.copyWith(
-            color: AppColors.primaryC4C4C4,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
         const VerticalSpacing(48),
-        SetAiPreferenceWidget(
-          title: 'Budget Alerts',
-          subTitle: 'Notify me if I exceed my budget',
-          value: checkboxState['budgetAlerts'] ?? false,
-          onChanged: (v) {
-            ref
-                .read(checkboxStateProvider.notifier)
-                .toggleCheckbox('budgetAlerts', v);
-          },
-        ),
-        const VerticalSpacing(20),
+        // SetAiPreferenceWidget(
+        //   title: 'Budget Alerts',
+        //   subTitle: 'Notify me if I exceed my budget',
+        //   value: checkboxState['budgetAlerts'] ?? false,
+        //   onChanged: (v) {
+        //     ref
+        //         .read(checkboxStateProvider.notifier)
+        //         .toggleCheckbox('budgetAlerts', v);
+        //   },
+        // ),
+        // const VerticalSpacing(20),
         SetAiPreferenceWidget(
           title: 'Tax Savings: ',
           subTitle: 'Show me new deductions I qualify for',
@@ -83,6 +84,7 @@ class SetAiPreferenceWidget extends StatelessWidget {
   final bool value;
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -92,7 +94,7 @@ class SetAiPreferenceWidget extends StatelessWidget {
             Text(
               title,
               style: context.textTheme.s14w400.copyWith(
-                color: AppColors.primaryC4C4C4,
+                color: colorScheme.colorScheme.onSurface,
               ),
             ),
             SizedBox(

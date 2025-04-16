@@ -14,7 +14,6 @@ import 'package:laxmii_app/presentation/features/login/presentation/login_view.d
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
-import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 import 'package:local_auth/local_auth.dart';
@@ -33,16 +32,26 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
   LocalAuthentication auth = LocalAuthentication();
   // bool _supportState = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Automatically trigger authentication when the screen is loaded
-    _authenticate();
-    //  auth = LocalAuthentication();
-    auth.isDeviceSupported().then((bool isSupported) {
-      setState(() {
-        // _supportState = isSupported;
-      });
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Automatically trigger authentication when the screen is loaded
+  //   _authenticate();
+  //   //  auth = LocalAuthentication();
+  //   auth.isDeviceSupported().then((bool isSupported) {
+  //     setState(() {
+  //       // _supportState = isSupported;
+  //     });
+  //   });
+  // }
+
+  String userName = '';
+
+  getUserName() async {
+    final name = await AppDataStorage().getUserAccountName();
+
+    setState(() {
+      userName = name.toString();
     });
   }
 
@@ -76,46 +85,47 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
     return Scaffold(
       body: PageLoader(
         isLoading: isLoading,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // if (_supportState)
                 Text(
-                  'Welcome Back',
+                  'Enter Pin Code',
                   style: context.textTheme.s16w400.copyWith(
                       color: colorScheme.colorScheme.onSurface,
                       fontWeight: FontWeight.w300),
                 ),
 
-                // Text(
-                //   'This device is not supported',
-                //   style: context.textTheme.s14w400.copyWith(
-                //       color: AppColors.white, fontWeight: FontWeight.w300),
-                // ),
-                const SizedBox(height: 20),
-                // Optional: Add a button to retry authentication if needed
-
-                LaxmiiSendButton(
-                    onTap: () {
-                      _authenticate();
-                    },
-
-                    //_getAvailableBiometrics,
-                    title: 'Authenticate to login'),
-                const VerticalSpacing(20),
-                GestureDetector(
-                  onTap: () =>
-                      context.pushReplacementNamed(LoginView.routeName),
-                  child: Text(
-                    'Login manually',
-                    style: context.textTheme.s16w400.copyWith(
-                        color: colorScheme.colorScheme.onSurface,
-                        fontWeight: FontWeight.w300),
+                Text(
+                  'Choose a PIN code to secure your account',
+                  style: context.textTheme.s14w400.copyWith(
+                    color: colorScheme.colorScheme.onSurface,
                   ),
-                )
+                ),
+
+                const VerticalSpacing(60),
+
+                // LaxmiiSendButton(
+                //     onTap: () {
+                //       _authenticate();
+                //     },
+
+                //     //_getAvailableBiometrics,
+                //     title: 'Authenticate to login'),
+                // const VerticalSpacing(20),
+                // GestureDetector(
+                //   onTap: () =>
+                //       context.pushReplacementNamed(LoginView.routeName),
+                //   child: Text(
+                //     'Login manually',
+                //     style: context.textTheme.s16w400.copyWith(
+                //         color: colorScheme.colorScheme.onSurface,
+                //         fontWeight: FontWeight.w300),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -123,17 +133,6 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
       ),
     );
   }
-
-  // Future<void> _getAvailableBiometrics() async {
-  //   List<BiometricType> availableBiometrics =
-  //       await auth.getAvailableBiometrics();
-  //   log("List of available biometric: $availableBiometrics");
-  //   if (!mounted) {
-  //     return;
-  //   } else {
-  //     _authenticate();
-  //   }
-  // }
 
   void _login() async {
     final userEmail = await AppDataStorage().getUserEmail();

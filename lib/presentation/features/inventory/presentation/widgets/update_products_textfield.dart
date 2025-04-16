@@ -13,8 +13,10 @@ class UpdateProductsTextField extends StatelessWidget {
       this.keyboardType,
       this.isMoney,
       this.validator,
-      this.inputFormatters});
+      this.inputFormatters,
+      this.currency});
   final String title;
+  final String? currency;
   final bool? isMoney;
   final TextEditingController product;
   final TextInputType? keyboardType;
@@ -54,7 +56,7 @@ class UpdateProductsTextField extends StatelessWidget {
               decoration: InputDecoration(
                   prefix: isMoney == true
                       ? Text(
-                          '\$',
+                          '$currency',
                           style: context.textTheme.s14w500.copyWith(
                             color: colorScheme.colorScheme.onSurface,
                           ),

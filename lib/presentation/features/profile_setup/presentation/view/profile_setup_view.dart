@@ -5,6 +5,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/notifier/get_countries_notifier.dart';
@@ -215,8 +216,10 @@ class _ProfileSetupViewState extends ConsumerState<ProfileSetupView> {
     );
   }
 
-  void _setUpProfile() {
+  void _setUpProfile() async {
     final checkboxState = ref.read(checkboxStateProvider);
+
+    await AppDataStorage().saveUserCurrency(_selectedCurrency.toString());
     final data = SetupUpProfileRequest(
       fullName: _nameController.text.trim(),
       country: _selectedCountry.toString(),

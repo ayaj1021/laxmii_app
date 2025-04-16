@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +32,7 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref
           .read(getCashFlowNotifierProvider.notifier)
-          .getCashFlow(query: 'year');
+          .getCashFlow(query: 'week');
 
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
@@ -75,10 +77,15 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Cashflow',
-                  style: context.textTheme.s14w400.copyWith(
-                    color: colorScheme.colorScheme.onSurface,
+                GestureDetector(
+                  onTap: () {
+                    log('This is year cash flow ${cashFlowWeekList.length}');
+                  },
+                  child: Text(
+                    'Cashflow',
+                    style: context.textTheme.s14w400.copyWith(
+                      color: colorScheme.colorScheme.onSurface,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -131,13 +138,13 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
                           ),
                         ],
                       )
-                    : _selectedType == 'year'
-                        ? CashFlowYearChart(
-                            cashflow: cashFlowList,
-                          )
-                        : CashFlowWeekChart(
+                    : _selectedType == 'week'
+                        ? CashFlowWeekChart(
                             cashWeekFlow: cashFlowWeekList,
                           )
+                        : CashFlowYearChart(
+                            cashflow: cashFlowList,
+                          ),
           ],
         ),
       ),
@@ -145,4 +152,4 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
   }
 }
 
-final List<String> cashFlowOptions = ['year', 'week'];
+final List<String> cashFlowOptions = ['week', 'year'];
