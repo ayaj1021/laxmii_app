@@ -20,22 +20,22 @@ class CustomKeyboard extends StatelessWidget {
       "7",
       "8",
       "9",
-      "",
+      "⌫",
       "0",
-      "⌫"
+      ""
     ];
 
     final colorScheme = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: colorScheme.cardColor,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   color: colorScheme.cardColor,
+      //   borderRadius: const BorderRadius.only(
+      //     bottomLeft: Radius.circular(20),
+      //     bottomRight: Radius.circular(20),
+      //   ),
+      // ),
       child: Column(
         children: [
           child ?? const SizedBox.shrink(),
@@ -64,7 +64,7 @@ class CustomKeyboard extends StatelessWidget {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   decoration: BoxDecoration(
-                    color: colorScheme.colorScheme.onSurface,
+                    color: colorScheme.cardColor,
 
                     // (index == 9 || index == 11)
                     //     ? Colors.transparent
@@ -76,8 +76,10 @@ class CustomKeyboard extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     keys[index],
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.colorScheme.onSurface),
                   ),
                 ),
               );

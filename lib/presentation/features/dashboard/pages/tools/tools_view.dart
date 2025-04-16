@@ -52,7 +52,7 @@ class ToolsView extends ConsumerWidget {
                 TabsSelectionWidget(
                   onTap: () => context.pushNamed(InvoiceView.routeName),
                   icon: 'assets/icons/invoice.svg',
-                  title: 'Invoice',
+                  title: 'Income',
                 ),
                 // const VerticalSpacing(20),
                 // const TabsSelectionWidget(

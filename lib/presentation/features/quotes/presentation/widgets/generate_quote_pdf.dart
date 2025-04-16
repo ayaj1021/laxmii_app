@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/widgets/quote_generator_class.dart';
@@ -31,6 +32,7 @@ class _QuotePageState extends State<QuotePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       calculateTotalAmount();
     });
+    getAddress();
     super.initState();
   }
 
@@ -39,6 +41,17 @@ class _QuotePageState extends State<QuotePage> {
     setState(() {
       totalAmount = widget.items.fold(0.0,
           (double sum, item) => sum + (item.itemPrice * item.itemQuantity));
+    });
+  }
+
+  String address = '';
+  String businessName = '';
+
+  getAddress() async {
+    final profileResponse = await AppDataStorage().getStoredProfile();
+    setState(() {
+      address = profileResponse?.profile?.address ?? '';
+      businessName = profileResponse?.profile?.businessName ?? '';
     });
   }
 
@@ -51,7 +64,16 @@ class _QuotePageState extends State<QuotePage> {
           IconButton(
             icon: const Icon(Icons.share),
             padding: const EdgeInsets.only(right: 12),
-            onPressed: () => QuoteGenerator().generateAndSharePDF(),
+            onPressed: () => QuoteGenerator().generateAndSharePDF(
+              clientName: widget.clientName,
+              invoiceNo: widget.quoteNo,
+              issueDate: widget.issueDate,
+              dueDate: widget.dueDate,
+              items: widget.items,
+              totalAmount: '$totalAmount',
+              address: address,
+              businessName: businessName,
+            ),
           ),
         ],
       ),
@@ -288,15 +310,15 @@ class _QuotePageState extends State<QuotePage> {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('SUBTOTAL:'),
-                    Text('TOTAL (GBP):'),
+                    //   Text('SUBTOTAL:'),
+                    Text('TOTAL:'),
                   ],
                 ),
                 const SizedBox(width: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('\$$totalAmount'),
+                    //  Text('\$$totalAmount'),
                     Text('\$$totalAmount'),
                   ],
                 ),

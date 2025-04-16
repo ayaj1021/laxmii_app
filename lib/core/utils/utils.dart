@@ -54,11 +54,21 @@ class AppUtils {
   //   return DateFormat('d MMM, yy').format(date);
   // }
 
-  static formatAppDate(String date) {
-    DateTime parsedDate = DateTime.parse(date);
+  // static formatAppDate(String date) {
+  //   DateTime parsedDate = DateTime.parse(date);
 
+  //   String formattedDate = DateFormat('d MMM, yy').format(parsedDate);
+  //   DateFormat("MMM d yyyy").format(parsedDate);
+
+  //   return formattedDate;
+  // }
+
+  static String formatAppDate(String date) {
+    // Parse the input date string with the correct format
+    DateTime parsedDate = DateFormat('MMM d, yyyy').parse(date);
+
+    // Format the parsed date into your desired format
     String formattedDate = DateFormat('d MMM, yy').format(parsedDate);
-    DateFormat("MMM d yyyy").format(parsedDate);
 
     return formattedDate;
   }

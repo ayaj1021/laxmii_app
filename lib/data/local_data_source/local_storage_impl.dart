@@ -182,6 +182,16 @@ class AppDataStorage {
     return value;
   }
 
+  Future<void> saveIsPinSet(bool value) async {
+    await _storage.write(key: 'pin_set', value: value.toString());
+  }
+
+// Retrieve the boolean value
+  Future<bool> getIsPinSet() async {
+    final value = await _storage.read(key: 'pin_set');
+    return value == 'true'; // Convert the string back to a boolean
+  }
+
   Future<void> saveUserAccountName(String userAccountName) async {
     await _storage.write(key: 'user_account_name', value: userAccountName);
   }

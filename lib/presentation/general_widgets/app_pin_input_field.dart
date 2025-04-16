@@ -3,29 +3,32 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class AppPinInputField extends StatelessWidget {
-  const AppPinInputField({super.key, required this.otpController});
+  const AppPinInputField(
+      {super.key, required this.otpController, this.onCompleted});
   final TextEditingController otpController;
+  final Function(String)? onCompleted;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15),
-      width: MediaQuery.sizeOf(context).width * 0.65,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.black, width: 2),
-        borderRadius: BorderRadius.circular(30),
+        color: colorScheme.cardColor,
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
         child: PinCodeTextField(
           appContext: context,
-          length: 4,
+          length: 6,
           controller: otpController,
           keyboardType: TextInputType.number, // Disable system keyboard
           pinTheme: PinTheme(
-            shape: PinCodeFieldShape.underline,
-            // borderRadius: BorderRadius.circular(8),
+            shape: PinCodeFieldShape.box,
+            borderRadius: BorderRadius.circular(13),
             // fieldHeight: 50,
-            // fieldWidth: 30,
+            fieldWidth: 45,
             activeFillColor: Colors.white,
             selectedFillColor: Colors.white,
             inactiveFillColor: Colors.grey[200]!,
@@ -34,6 +37,8 @@ class AppPinInputField extends StatelessWidget {
             inactiveColor: AppColors.black,
           ),
           onChanged: (value) {},
+
+          onCompleted: onCompleted,
         ),
       ),
     );

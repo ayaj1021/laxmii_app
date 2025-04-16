@@ -1,19 +1,20 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
+import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
+import 'package:laxmii_app/presentation/general_widgets/app_pin_input_field.dart';
+import 'package:laxmii_app/presentation/general_widgets/custom_keyboard.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 import 'package:local_auth/local_auth.dart';
@@ -30,50 +31,79 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
   // final LocalAuthApi _localAuthApi = LocalAuthApi();
 
   LocalAuthentication auth = LocalAuthentication();
+  final otpController = TextEditingController();
   // bool _supportState = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Automatically trigger authentication when the screen is loaded
-  //   _authenticate();
-  //   //  auth = LocalAuthentication();
-  //   auth.isDeviceSupported().then((bool isSupported) {
-  //     setState(() {
-  //       // _supportState = isSupported;
-  //     });
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+    // Automatically trigger authentication when the screen is loaded
+    // _authenticate();
+    //  auth = LocalAuthentication();
+    // auth.isDeviceSupported().then((bool isSupported) {
+    //   setState(() {
+    //     // _supportState = isSupported;
+    //   });
+    // });
+  }
 
   String userName = '';
+  String userPin = '';
 
   getUserName() async {
     final name = await AppDataStorage().getUserAccountName();
+    final pin = await AppDataStorage().getUserPin();
 
     setState(() {
+      userPin = pin ?? '';
       userName = name.toString();
     });
   }
 
-  Future<void> _authenticate() async {
-    try {
-      bool authenticated = await auth.authenticate(
-          localizedReason: 'Please scan to authenticate',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: false,
-            useErrorDialogs: true,
-          ));
+  void _onKeyboardTap(String value) {
+    if (otpController.text.length < 6) {
+      setState(() {
+        otpController.text += value;
+      });
+    }
+  }
 
-      if (mounted) {
-        authenticated
-            ? _login()
-            : context.pushReplacementNamed(LoginView.routeName);
-      }
+  void _onDelete() {
+    if (otpController.text.isNotEmpty) {
+      setState(() {
+        otpController.text =
+            otpController.text.substring(0, otpController.text.length - 1);
+      });
+    }
+  }
 
-      //context.pushReplacementNamed(LoginView.routeName);
-    } on PlatformException catch (e) {
-      log(e.toString());
+  // Future<void> _authenticate() async {
+  //   try {
+  //     bool authenticated = await auth.authenticate(
+  //         localizedReason: 'Please scan to authenticate',
+  //         options: const AuthenticationOptions(
+  //           stickyAuth: true,
+  //           biometricOnly: false,
+  //           useErrorDialogs: true,
+  //         ));
+
+  //     if (mounted) {
+  //       authenticated
+  //           ? _login()
+  //           : context.pushReplacementNamed(LoginView.routeName);
+  //     }
+
+  //     //context.pushReplacementNamed(LoginView.routeName);
+  //   } on PlatformException catch (e) {
+  //     log(e.toString());
+  //   }
+  // }
+  void setLogin(String pin) {
+    if (userPin == pin) {
+      _login();
+    } else {
+      context.showError(message: 'Incorrect Pin');
     }
   }
 
@@ -87,16 +117,16 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
         isLoading: isLoading,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 50),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // if (_supportState)
                 Text(
                   'Enter Pin Code',
-                  style: context.textTheme.s16w400.copyWith(
-                      color: colorScheme.colorScheme.onSurface,
-                      fontWeight: FontWeight.w300),
+                  style: context.textTheme.s24w400.copyWith(
+                    color: colorScheme.colorScheme.onSurface,
+                  ),
                 ),
 
                 Text(
@@ -107,25 +137,32 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
                 ),
 
                 const VerticalSpacing(60),
-
-                // LaxmiiSendButton(
-                //     onTap: () {
-                //       _authenticate();
-                //     },
-
-                //     //_getAvailableBiometrics,
-                //     title: 'Authenticate to login'),
-                // const VerticalSpacing(20),
-                // GestureDetector(
-                //   onTap: () =>
-                //       context.pushReplacementNamed(LoginView.routeName),
-                //   child: Text(
-                //     'Login manually',
-                //     style: context.textTheme.s16w400.copyWith(
-                //         color: colorScheme.colorScheme.onSurface,
-                //         fontWeight: FontWeight.w300),
-                //   ),
-                // )
+                AppPinInputField(
+                  otpController: otpController,
+                  onCompleted: (pin) {
+                    if (pin.length == 6) {
+                      setLogin(pin);
+                    }
+                  },
+                ),
+                const VerticalSpacing(44),
+                CustomKeyboard(
+                  onKeyTap: _onKeyboardTap,
+                  onDelete: _onDelete,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed(SetupPinPage.routeName);
+                  },
+                  child: Center(
+                    child: Text(
+                      'Set Passcode',
+                      style: context.textTheme.s16w500.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),

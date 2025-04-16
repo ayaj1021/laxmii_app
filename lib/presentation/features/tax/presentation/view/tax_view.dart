@@ -7,6 +7,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/calculate_tax_request.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/get_total_profit_request.dart';
@@ -31,11 +32,27 @@ class TaxView extends ConsumerStatefulWidget {
 }
 
 class _TaxViewState extends ConsumerState<TaxView> {
+  @override
+  void initState() {
+    super.initState();
+    getUserCurrency();
+  }
+
   String? _selectedValue;
   String? _selectedEntityValue;
 
   DateTime? _fromDate;
   DateTime? _toDate;
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency.toString();
+    });
+  }
 
   Future<void> _fromDateSelect(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -207,17 +224,17 @@ class _TaxViewState extends ConsumerState<TaxView> {
                   const VerticalSpacing(8),
                   TaxProfitWidget(
                     title: 'Total Income',
-                    data: '\$${taxProfit.salesTotal ?? ''}',
+                    data: '$userCurrency ${taxProfit.salesTotal ?? ''}',
                   ),
                   const VerticalSpacing(8),
                   TaxProfitWidget(
                     title: 'Total Expenditure',
-                    data: '\$${taxProfit.expenseTotal ?? ''}',
+                    data: '$userCurrency ${taxProfit.expenseTotal ?? ''}',
                   ),
                   const VerticalSpacing(8),
                   TaxProfitWidget(
                     title: 'Profit',
-                    data: '\$${taxProfit.profit ?? ''}',
+                    data: '$userCurrency ${taxProfit.profit ?? ''}',
                   ),
                   const VerticalSpacing(8),
                   EntityDropdownWidget(

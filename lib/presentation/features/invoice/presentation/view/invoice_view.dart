@@ -64,7 +64,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
     final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: const LaxmiiAppBar(
-        title: 'Invoice',
+        title: 'Income',
         centerTitle: true,
       ),
       body: SafeArea(

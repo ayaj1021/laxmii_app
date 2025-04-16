@@ -29,8 +29,17 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
       await ref.read(getAllQuotesNotifierProvider.notifier).getAllQuotes();
 
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+
+      navigatePage();
     });
     super.initState();
+  }
+
+  void navigatePage() async {
+    final quotesList = ref.watch(getAllQuotesNotifierProvider
+        .select((v) => v.getAllQuotes.data?.quote ?? []));
+
+    quotesList.isEmpty ? context.pushNamed(CreateQuoteView.routeName) : null;
   }
 
   @override

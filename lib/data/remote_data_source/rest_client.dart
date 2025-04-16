@@ -21,6 +21,8 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/m
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/settings_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_response.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_request.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_request.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/forgot_password_request.dart';
@@ -136,6 +138,11 @@ abstract class RestClient {
   @POST('/auth/login/')
   Future<LoginResponse> login(
     @Body() LoginRequest loginRequest,
+  );
+
+  @POST('/auth/create-pin/')
+  Future<SetPinResponse> setPin(
+    @Body() SetPinRequest setPinRequest,
   );
 
   @POST('/api/inventory/create')

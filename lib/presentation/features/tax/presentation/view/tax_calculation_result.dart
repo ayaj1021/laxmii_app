@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/tax/data/model/optimize_tax_request.dart';
 import 'package:laxmii_app/presentation/features/tax/presentation/notifier/calculate_tax_notifier.dart';
@@ -25,6 +26,22 @@ class TaxCalculationResult extends ConsumerStatefulWidget {
 }
 
 class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
+  @override
+  void initState() {
+    super.initState();
+    getUserCurrency();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final calculatedTax = ref.watch(calculateTaxNotifier
@@ -67,32 +84,34 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'Pay from all employments',
-                        subTitle: '\$${calculatedTax?.totalIncome ?? ''}',
+                        subTitle:
+                            '$userCurrency${calculatedTax?.totalIncome ?? ''}',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Profit from Land and properties',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Total dividend income',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Interest from savings',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Total income',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'Personal allowance',
-                        subTitle: '\$${calculatedTax?.personalAllowance ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.personalAllowance ?? ''}',
                       ),
                     ],
                   ),
@@ -116,27 +135,30 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'Total income on which tax is due',
-                        subTitle: '\$${calculatedTax?.taxableIncome ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.taxableIncome ?? ''}',
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'UK income tax due',
-                        subTitle: '\$${calculatedTax?.incomeTaxDue ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.incomeTaxDue ?? ''}',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Capital Gains tax due',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
-                      const TaxCalculationWidget(
+                      TaxCalculationWidget(
                         title: 'Foreign taxes held',
-                        subTitle: '\$0.00',
+                        subTitle: '$userCurrency 0.00',
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'Total income tax due',
-                        subTitle: '\$${calculatedTax?.incomeTaxDue ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.incomeTaxDue ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
                             //   color: AppColors.primaryC4C4C4,
                             ),
@@ -160,12 +182,13 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'NI contributions',
-                        subTitle: '\$${calculatedTax?.niDue ?? ''}',
+                        subTitle: '$userCurrency ${calculatedTax?.niDue ?? ''}',
                       ),
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'Tax Due',
-                        subTitle: '\$${calculatedTax?.totalTax ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.totalTax ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
                             // color: AppColors.primaryC4C4C4,
                             ),
@@ -176,7 +199,8 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       const VerticalSpacing(8),
                       TaxCalculationWidget(
                         title: 'After-tax receipt',
-                        subTitle: '\$${calculatedTax?.afterTaxIncome ?? ''}',
+                        subTitle:
+                            '$userCurrency ${calculatedTax?.afterTaxIncome ?? ''}',
                         titleStyle: context.textTheme.s14w500.copyWith(
                             // color: AppColors.primaryC4C4C4,
                             ),
@@ -188,7 +212,7 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                       TaxCalculationWidget(
                           title: 'Effective tax rate',
                           subTitle:
-                              '\$${calculatedTax?.effectiveTaxRate ?? ''}',
+                              '$userCurrency ${calculatedTax?.effectiveTaxRate ?? ''}',
                           titleStyle: context.textTheme.s14w500.copyWith(
                               //  color: AppColors.primaryC4C4C4,
                               ),

@@ -10,6 +10,7 @@ import 'package:laxmii_app/presentation/features/inventory/presentation/notifier
 import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/custom_app_dropdown.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -78,6 +79,8 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     });
   }
 
+  String? _selectedServiceType;
+
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(createInventoryNotifier
@@ -96,53 +99,102 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
             child: Column(
               children: [
-                UpdateProductsTextField(
-                  product: _productNameController,
-                  title: 'Product',
-                ),
-                const VerticalSpacing(15),
-                UpdateProductsTextField(
-                  product: _descriptionController,
-                  title: 'Description',
-                ),
-                const VerticalSpacing(15),
-                UpdateProductsTextField(
-                  product: _quantityController,
-                  keyboardType: TextInputType.number,
-                  title: 'Quantity',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a value';
-                    }
-                    double? number = double.tryParse(value);
-                    if (number == null) {
-                      return 'Invalid number';
-                    }
-                    if (number < 0) {
-                      return 'Value cannot be less than 0';
-                    }
-                    return null;
+                CustomDropdown(
+                  label: 'Select service type',
+                  value: _selectedServiceType,
+                  items: _serviceType
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedServiceType = value;
+                    });
                   },
                 ),
-                const VerticalSpacing(15),
-                UpdateProductsTextField(
-                  product: _supplierNameController,
-                  title: 'Supplier name',
-                ),
-                const VerticalSpacing(15),
-                UpdateProductsTextField(
-                  isMoney: true,
-                  product: _sellingPriceController,
-                  keyboardType: TextInputType.number,
-                  title: 'Selling Price',
-                ),
-                const VerticalSpacing(15),
-                UpdateProductsTextField(
-                  isMoney: true,
-                  product: _costPriceController,
-                  keyboardType: TextInputType.number,
-                  title: 'Cost Price',
-                ),
+                _selectedServiceType == 'Product'
+                    ? Column(
+                        children: [
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _productNameController,
+                            title: 'Product',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _descriptionController,
+                            title: 'Description',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _quantityController,
+                            keyboardType: TextInputType.number,
+                            title: 'Quantity',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a value';
+                              }
+                              double? number = double.tryParse(value);
+                              if (number == null) {
+                                return 'Invalid number';
+                              }
+                              if (number < 0) {
+                                return 'Value cannot be less than 0';
+                              }
+                              return null;
+                            },
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _supplierNameController,
+                            title: 'Supplier name',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            isMoney: true,
+                            currency: userCurrency,
+                            product: _sellingPriceController,
+                            keyboardType: TextInputType.number,
+                            title: 'Selling Price',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            isMoney: true,
+                            currency: userCurrency,
+                            product: _costPriceController,
+                            keyboardType: TextInputType.number,
+                            title: 'Cost Price',
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _productNameController,
+                            title: 'Service',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            product: _descriptionController,
+                            title: 'Description',
+                          ),
+                          const VerticalSpacing(15),
+                          UpdateProductsTextField(
+                            isMoney: true,
+                            currency: userCurrency,
+                            product: _costPriceController,
+                            keyboardType: TextInputType.number,
+                            title: 'Service Price',
+                          ),
+                        ],
+                      ),
                 const VerticalSpacing(68),
                 ValueListenableBuilder(
                     valueListenable: _isCreateInventoryEnabled,
@@ -225,3 +277,8 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     }
   }
 }
+
+final List<String> _serviceType = [
+  'Product',
+  'Service',
+];

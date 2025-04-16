@@ -299,6 +299,40 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<SetPinResponse> setPin(SetPinRequest setPinRequest) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(setPinRequest.toJson());
+    final _options = _setStreamType<SetPinResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/auth/create-pin/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SetPinResponse _value;
+    try {
+      _value = SetPinResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<CreateInventoryResponse> createInventory(
       CreateInventoryRequest createInventoryRequest) async {
     final _extra = <String, dynamic>{};

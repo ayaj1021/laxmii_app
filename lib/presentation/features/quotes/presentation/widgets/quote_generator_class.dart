@@ -1,10 +1,21 @@
-import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 
+import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
+
 class QuoteGenerator {
-  Future<void> generateAndSharePDF() async {
+  Future<void> generateAndSharePDF({
+    required String clientName,
+    required String invoiceNo,
+    required String issueDate,
+    required String dueDate,
+    required String totalAmount,
+    required String address,
+    required String businessName,
+    required List<ProductItem> items,
+  }) async {
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -26,9 +37,8 @@ class QuoteGenerator {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text('Ellington Wood Decor'),
-                      pw.Text(
-                          '36 Terrick Rd, Ellington PE18 2NT, United Kingdom'),
+                      pw.Text(businessName),
+                      pw.Text(address),
                     ],
                   ),
                 ],
@@ -41,11 +51,11 @@ class QuoteGenerator {
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Text('FOR'),
-                  pw.Text('Your client'),
-                  pw.Text('11 Beach Dr'),
-                  pw.Text('Ellington'),
-                  pw.Text('NE51 5EU'),
-                  pw.Text('United Kingdom'),
+                  pw.Text(clientName),
+                  // pw.Text('11 Beach Dr'),
+                  // pw.Text('Ellington'),
+                  // pw.Text('NE51 5EU'),
+                  // pw.Text('United Kingdom'),
                 ],
               ),
 
@@ -67,9 +77,9 @@ class QuoteGenerator {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text('042023'),
-                      pw.Text('24/05/2023'),
-                      pw.Text('07/06/2023'),
+                      pw.Text(invoiceNo),
+                      pw.Text(issueDate),
+                      pw.Text(dueDate),
                     ],
                   ),
                 ],
@@ -99,40 +109,103 @@ class QuoteGenerator {
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('UNIT PRICE (£)'),
+                        child: pw.Text('UNIT PRICE'),
                       ),
                       pw.Padding(
                         padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('AMOUNT (£)'),
+                        child: pw.Text('AMOUNT'),
                       ),
                     ],
                   ),
-                  pw.TableRow(
-                    children: [
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
+                  pw.TableRow(children: [
+                    pw.Padding(
+                        padding: const pw.EdgeInsets.all(8.0),
                         child: pw.Column(
                           crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text('Sample service'),
-                            pw.Text('Sample wood decoration service'),
-                          ],
-                        ),
+                          children: List.generate(items.length, (index) {
+                            final item = items[index];
+                            return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(item.itemName),
+                                pw.SizedBox(height: 8)
+                              ],
+                            );
+                          }),
+                        )),
+                    pw.Padding(
+                        padding: const pw.EdgeInsets.all(8.0),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: List.generate(items.length, (index) {
+                            final item = items[index];
+                            return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(item.itemQuantity.toString()),
+                                pw.SizedBox(height: 8)
+                              ],
+                            );
+                          }),
+                        )),
+                    pw.Padding(
+                        padding: const pw.EdgeInsets.all(8.0),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: List.generate(items.length, (index) {
+                            final item = items[index];
+                            return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(item.itemPrice.toString()),
+                                pw.SizedBox(height: 8)
+                              ],
+                            );
+                          }),
+                        )),
+                    pw.Padding(
+                        padding: const pw.EdgeInsets.all(8.0),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: List.generate(items.length, (index) {
+                            final item = items[index];
+                            final total = item.itemQuantity * item.itemPrice;
+                            return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(total.toString()),
+                                pw.SizedBox(height: 8)
+                              ],
+                            );
+                          }),
+                        ))
+                  ]
+
+                      // [
+                      //   pw.Padding(
+                      //     padding: const pw.EdgeInsets.all(8),
+                      //     child: pw.Column(
+                      //       crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      //       children: [
+                      //         pw.Text('Sample service'),
+                      //         pw.Text('Sample wood decoration service'),
+                      //       ],
+                      //     ),
+                      //   ),
+                      //   pw.Padding(
+                      //     padding: const pw.EdgeInsets.all(8),
+                      //     child: pw.Text('1'),
+                      //   ),
+                      //   pw.Padding(
+                      //     padding: const pw.EdgeInsets.all(8),
+                      //     child: pw.Text('400.00'),
+                      //   ),
+                      //   pw.Padding(
+                      //     padding: const pw.EdgeInsets.all(8),
+                      //     child: pw.Text('400.00'),
+                      //   ),
+                      // ],
                       ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('1'),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('400.00'),
-                      ),
-                      pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('400.00'),
-                      ),
-                    ],
-                  ),
                 ],
               ),
 
@@ -145,16 +218,16 @@ class QuoteGenerator {
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('SUBTOTAL:'),
-                      pw.Text('TOTAL (GBP):'),
+                      //  pw.Text('SUBTOTAL:'),
+                      pw.Text('TOTAL:'),
                     ],
                   ),
                   pw.SizedBox(width: 20),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text('£600.00'),
-                      pw.Text('£600.00'),
+                      // pw.Text('£600.00'),
+                      pw.Text(totalAmount),
                     ],
                   ),
                 ],

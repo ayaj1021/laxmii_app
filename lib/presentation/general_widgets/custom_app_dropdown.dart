@@ -101,7 +101,7 @@ class CustomDropdown<T> extends StatelessWidget {
           Text(
             label!,
             style: context.textTheme.s14w400
-                .copyWith(color: AppColors.primaryC4C4C4),
+                .copyWith(color: colorScheme.colorScheme.onSurface),
           ),
         if (label != null) const VerticalSpacing(8),
         Container(
