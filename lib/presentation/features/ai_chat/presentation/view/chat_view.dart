@@ -140,10 +140,13 @@ class _ChatViewState extends ConsumerState<ChatView> {
           children: [
             Expanded(
               child: messageHistory.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text(
-                        'No chat yet',
-                        style: TextStyle(color: Colors.white),
+                        '',
+                        //'No chat yet',
+                        style: TextStyle(
+                          color: colorScheme.colorScheme.onSurface,
+                        ),
                       ),
                     )
                   : ListView.builder(

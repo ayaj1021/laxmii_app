@@ -7,15 +7,14 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/empty_todo_list_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/todo_list_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/get_all_tasks_response.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/update_task_request.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/delete_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/update_task_notifier.dart';
-import 'package:laxmii_app/presentation/features/todo/presentation/view/create_task_view.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
-import 'package:laxmii_app/presentation/general_widgets/empty_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class TodoListSection extends ConsumerStatefulWidget {
@@ -61,22 +60,25 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
         ),
         const VerticalSpacing(5),
         if (widget.tasksList == null) const SizedBox.shrink(),
+        const VerticalSpacing(10),
         widget.tasksList?.isEmpty ?? false
-            ? EmptyPage(
-                emptyMessage: 'You have no task yet',
-                hasButton: true,
-                button: InkWell(
-                  onTap: () {
-                    context.pushNamed(CreateTaskView.routeName);
-                  },
-                  child: Text(
-                    'Create Task',
-                    style: context.textTheme.s14w500.copyWith(
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                ),
-              )
+            ? const EmptyTodoListWidget()
+
+            // EmptyPage(
+            //     emptyMessage: 'You have no task yet',
+            //     hasButton: true,
+            //     button: InkWell(
+            //       onTap: () {
+            //         context.pushNamed(CreateTaskView.routeName);
+            //       },
+            //       child: Text(
+            //         'Create Task',
+            //         style: context.textTheme.s14w500.copyWith(
+            //           color: AppColors.primaryColor,
+            //         ),
+            //       ),
+            //     ),
+            //   )
             : SizedBox(
                 height: 400.h,
                 // height: MediaQuery.of(context).size.height,
