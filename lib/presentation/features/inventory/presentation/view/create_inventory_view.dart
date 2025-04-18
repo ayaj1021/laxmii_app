@@ -28,10 +28,10 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   final ValueNotifier<bool> _isCreateInventoryEnabled = ValueNotifier(false);
   late TextEditingController _productNameController;
   late TextEditingController _descriptionController;
-  late TextEditingController _sellingPriceController;
+  final _sellingPriceController = TextEditingController();
   late TextEditingController _costPriceController;
-  late TextEditingController _quantityController;
-  late TextEditingController _supplierNameController;
+  final _quantityController = TextEditingController();
+  final _supplierNameController = TextEditingController();
 
   @override
   void initState() {
@@ -40,12 +40,12 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
       ..addListener(_validateInput);
     _descriptionController = TextEditingController()
       ..addListener(_validateInput);
-    _sellingPriceController = TextEditingController()
-      ..addListener(_validateInput);
+    // _sellingPriceController = TextEditingController()
+    //   ..addListener(_validateInput);
     _costPriceController = TextEditingController()..addListener(_validateInput);
-    _quantityController = TextEditingController()..addListener(_validateInput);
-    _supplierNameController = TextEditingController()
-      ..addListener(_validateInput);
+    // _quantityController = TextEditingController()..addListener(_validateInput);
+    // _supplierNameController = TextEditingController()
+    //   ..addListener(_validateInput);
     super.initState();
   }
 
@@ -63,9 +63,9 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   void _validateInput() {
     _isCreateInventoryEnabled.value = _productNameController.text.isNotEmpty &&
         _descriptionController.text.isNotEmpty &&
-        _sellingPriceController.text.isNotEmpty &&
+        //     _sellingPriceController.text.isNotEmpty &&
         _costPriceController.text.isNotEmpty &&
-        _supplierNameController.text.isNotEmpty &&
+        //  _supplierNameController.text.isNotEmpty &&
         _quantityController.text.isNotEmpty;
   }
 
@@ -79,7 +79,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     });
   }
 
-  String? _selectedServiceType;
+  String? _selectedServiceType = _serviceType.first;
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +200,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                     valueListenable: _isCreateInventoryEnabled,
                     builder: (context, r, c) {
                       return LaxmiiOutlineSendButton(
-                        isEnabled: r,
+                        //  isEnabled: r,
                         onTap: () {
                           _validateInventoryInput();
                         },
@@ -219,14 +219,15 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(createInventoryNotifier.notifier).createInventory(
           data: CreateInventoryRequest(
+            type: '$_selectedServiceType',
             productName: _productNameController.text.trim(),
             description: _descriptionController.text.trim(),
-            quantity: int.parse(_quantityController.text.trim()),
-            sellingPrice: num.parse(_sellingPriceController.text.trim()),
+            // quantity: int.parse(_quantityController.text.trim()),
+            // sellingPrice: num.parse(_sellingPriceController.text.trim()),
             costPrice: num.parse(
               _costPriceController.text.trim(),
             ),
-            supplierName: _supplierNameController.text.trim(),
+            //  supplierName: _supplierNameController.text.trim(),
           ),
           onError: (error) {
             context.showError(message: error);
@@ -244,24 +245,26 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   }
 
   void _validateInventoryInput() {
-    String quantityText = _quantityController.text;
-    String sellingPriceText = _sellingPriceController.text;
+    // String quantityText = _quantityController.text;
+    // String sellingPriceText = _sellingPriceController.text;
     String costPriceText = _costPriceController.text;
 
     try {
-      double quantityValue = double.parse(quantityText);
-      double sellingPriceValue = double.parse(sellingPriceText);
+      // double quantityValue = double.parse(quantityText);
+      // double sellingPriceValue = double.parse(sellingPriceText);
       double costPriceValue = double.parse(costPriceText);
 
-      if (quantityValue < 1) {
-        context.showError(message: 'Quantity cannot be less than 1');
+      // if (quantityValue < 1) {
+      //   context.showError(message: 'Quantity cannot be less than 1');
 
-        _quantityController.text = '1';
-      } else if (sellingPriceValue < 1) {
-        context.showError(message: 'Selling price cannot be less than 1');
+      //   _quantityController.text = '1';
+      // } else if (sellingPriceValue < 1) {
+      //   context.showError(message: 'Selling price cannot be less than 1');
 
-        _sellingPriceController.text = '1';
-      } else if (costPriceValue < 1) {
+      //   _sellingPriceController.text = '1';
+      // } else
+
+      if (costPriceValue < 1) {
         context.showError(message: 'Cost price cannot be less than 1');
 
         _costPriceController.text = '1';

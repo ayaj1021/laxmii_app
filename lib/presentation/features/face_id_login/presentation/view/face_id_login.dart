@@ -118,52 +118,54 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // if (_supportState)
-                Text(
-                  'Enter Pin Code',
-                  style: context.textTheme.s24w400.copyWith(
-                    color: colorScheme.colorScheme.onSurface,
-                  ),
-                ),
-
-                Text(
-                  'Choose a PIN code to secure your account',
-                  style: context.textTheme.s14w400.copyWith(
-                    color: colorScheme.colorScheme.onSurface,
-                  ),
-                ),
-
-                const VerticalSpacing(60),
-                AppPinInputField(
-                  otpController: otpController,
-                  onCompleted: (pin) {
-                    if (pin.length == 6) {
-                      setLogin(pin);
-                    }
-                  },
-                ),
-                const VerticalSpacing(44),
-                CustomKeyboard(
-                  onKeyTap: _onKeyboardTap,
-                  onDelete: _onDelete,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.pushNamed(SetupPinPage.routeName);
-                  },
-                  child: Center(
-                    child: Text(
-                      'Set Passcode',
-                      style: context.textTheme.s16w500.copyWith(
-                        color: AppColors.primaryColor,
-                      ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // if (_supportState)
+                  Text(
+                    'Enter Pin Code',
+                    style: context.textTheme.s24w400.copyWith(
+                      color: colorScheme.colorScheme.onSurface,
                     ),
                   ),
-                )
-              ],
+
+                  Text(
+                    'Choose a PIN code to secure your account',
+                    style: context.textTheme.s14w400.copyWith(
+                      color: colorScheme.colorScheme.onSurface,
+                    ),
+                  ),
+
+                  const VerticalSpacing(60),
+                  AppPinInputField(
+                    otpController: otpController,
+                    onCompleted: (pin) {
+                      if (pin.length == 6) {
+                        setLogin(pin);
+                      }
+                    },
+                  ),
+                  const VerticalSpacing(44),
+                  CustomKeyboard(
+                    onKeyTap: _onKeyboardTap,
+                    onDelete: _onDelete,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(SetupPinPage.routeName);
+                    },
+                    child: Center(
+                      child: Text(
+                        'Set Passcode',
+                        style: context.textTheme.s16w500.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
