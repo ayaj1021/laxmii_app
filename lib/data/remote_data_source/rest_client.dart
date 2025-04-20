@@ -56,7 +56,6 @@ import 'package:laxmii_app/presentation/features/login/data/model/get_user_detai
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_image_profile_response.dart';
-import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_request.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/set_up_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
@@ -110,11 +109,13 @@ abstract class RestClient {
     @Body() SetupUpProfileRequest setupProfileRequest,
   );
 
-  @PUT('/auth/profile/')
-  Future<UpdateProfileResponse> updateProfile(
-    @Body() UpdateProfileRequest updtaeProfileRequest,
-  );
+  // @PUT('/auth/profile/')
+  // Future<UpdateProfileResponse> updateProfile(
+  //   @Body() UpdateProfileRequest updtaeProfileRequest,
+  // );
 
+  @PUT('/auth/profile/')
+  Future<UpdateProfileResponse> updateProfile(@Body() FormData formData);
   @POST('/auth/verify-otp/')
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
     @Body() VerifyEmailOtpRequest verifyEmailOtpRequest,

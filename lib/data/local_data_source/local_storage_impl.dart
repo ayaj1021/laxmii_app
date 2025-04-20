@@ -228,6 +228,15 @@ class AppDataStorage {
     return value;
   }
 
+  Future<void> saveUserImage(String userImage) async {
+    await _storage.write(key: 'user_image', value: userImage);
+  }
+
+  Future<String?> getUserImage() async {
+    String? value = await _storage.read(key: 'user_image');
+    return value;
+  }
+
   Future<void> deleteTransactionDataList() async {
     await _storage.delete(key: 'transaction_data_list');
   }

@@ -18,7 +18,7 @@ class EmptyTodoListWidget extends StatelessWidget {
           radius: const Radius.circular(10),
           color: colorScheme.cardColor,
           padding:
-              const EdgeInsets.only(top: 70, right: 70, left: 70, bottom: 90),
+              const EdgeInsets.only(top: 70, right: 60, left: 60, bottom: 90),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

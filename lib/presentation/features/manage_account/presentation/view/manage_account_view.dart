@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,6 +29,12 @@ class ManageAccountView extends ConsumerStatefulWidget {
 }
 
 class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
+  final _businessNameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _accountNameController = TextEditingController();
+  final _accountNumberController = TextEditingController();
+  final _bankController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -56,21 +61,21 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
   File? _pickedImage;
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? picked = await _picker.pickImage(
+    final ImagePicker picker = ImagePicker();
+    final XFile? picked = await picker.pickImage(
       source: ImageSource.gallery,
       maxWidth: 800,
       imageQuality: 85,
     );
     if (picked != null) {
       setState(() => _pickedImage = File(picked.path));
+
+      //  ref.read(updateProfileNotifier.notifier).updateProfile(data: data, onError: onError, onSuccess: onSuccess)
     }
   }
 
   Future<void> populateProfileFields() async {
     final profileResponse = await AppDataStorage().getStoredProfile();
-
-    log('This is the profile response: $profileResponse');
 
     final profile = profileResponse?.profile;
     if (profile == null) return;
@@ -83,23 +88,16 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
     _bankController.text = profile.bankName ?? '';
   }
 
-  final _businessNameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _accountNameController = TextEditingController();
-  final _accountNumberController = TextEditingController();
-  final _bankController = TextEditingController();
-
-  @override
-  void dispose() {
-    _businessNameController.dispose();
-    _phoneNumberController.dispose();
-    _addressController.dispose();
-    _accountNameController.dispose();
-    _accountNumberController.dispose();
-    _bankController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _businessNameController.dispose();
+  //   _phoneNumberController.dispose();
+  //   _addressController.dispose();
+  //   _accountNameController.dispose();
+  //   _accountNumberController.dispose();
+  //   _bankController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -124,33 +122,6 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
                         Center(
                           child: Stack(
                             children: [
-                              // GestureDetector(
-                              //   onTap: _pickImage,
-                              //   child: CircleAvatar(
-                              //     radius: 50,
-                              //     backgroundImage: userDetails
-                              //                     ?.profilePicture !=
-                              //                 null &&
-                              //             userDetails!
-                              //                 .profilePicture!.isNotEmpty
-                              //         ? CachedNetworkImageProvider(
-                              //             userDetails.profilePicture!)
-                              //         : _pickedImage != null
-                              //             ? FileImage(_pickedImage!)
-                              //             : const AssetImage(
-                              //                     'assets/images/account_image.png')
-                              //                 as ImageProvider,
-                              //     onBackgroundImageError: (_, __) {
-                              //       // Handle error if needed (e.g., logging)
-                              //     },
-                              //     child: userDetails?.profilePicture == null ||
-                              //             userDetails!.profilePicture!.isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/account_image.png') // Ensures a default image
-                              //         : null,
-                              //   ),
-                              // ),
-
                               GestureDetector(
                                 onTap: _pickImage,
                                 child: CircleAvatar(
@@ -342,7 +313,8 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
         },
         onSuccess: (message) {
           context.showSuccess(message: message);
-        });
+        },
+        imagePath: _pickedImage?.path ?? '');
   }
 }
 

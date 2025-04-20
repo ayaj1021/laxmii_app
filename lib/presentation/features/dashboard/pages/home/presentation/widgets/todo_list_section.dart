@@ -63,22 +63,6 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
         const VerticalSpacing(10),
         widget.tasksList?.isEmpty ?? false
             ? const EmptyTodoListWidget()
-
-            // EmptyPage(
-            //     emptyMessage: 'You have no task yet',
-            //     hasButton: true,
-            //     button: InkWell(
-            //       onTap: () {
-            //         context.pushNamed(CreateTaskView.routeName);
-            //       },
-            //       child: Text(
-            //         'Create Task',
-            //         style: context.textTheme.s14w500.copyWith(
-            //           color: AppColors.primaryColor,
-            //         ),
-            //       ),
-            //     ),
-            //   )
             : SizedBox(
                 height: 400.h,
                 // height: MediaQuery.of(context).size.height,

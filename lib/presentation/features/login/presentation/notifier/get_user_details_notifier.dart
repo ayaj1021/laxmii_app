@@ -31,6 +31,8 @@ class GetUserDetailsNotifier
       state = state.copyWith(state: LoadState.idle, data: value.data);
       await AppDataStorage().saveUserId('${value.data?.userId}');
       await AppDataStorage().saveUserCurrency('${value.data?.currency}');
+      await AppDataStorage().saveUserCurrency('${value.data?.currency}');
+      await AppDataStorage().saveUserImage('${value.data?.profilePicture}');
     } catch (e) {
       // onError(e.toString());
       state = state.copyWith(state: LoadState.idle);

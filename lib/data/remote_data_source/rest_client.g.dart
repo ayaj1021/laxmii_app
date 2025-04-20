@@ -91,13 +91,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UpdateProfileResponse> updateProfile(
-      UpdateProfileRequest updtaeProfileRequest) async {
+  Future<UpdateProfileResponse> updateProfile(FormData formData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(updtaeProfileRequest.toJson());
+    final _data = formData;
     final _options = _setStreamType<UpdateProfileResponse>(Options(
       method: 'PUT',
       headers: _headers,

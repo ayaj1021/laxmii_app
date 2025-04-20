@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/base_response/base_response.dart';
@@ -9,10 +12,37 @@ import 'package:laxmii_app/presentation/features/manage_account/data/model/updat
 class UpdateProfileRepository {
   UpdateProfileRepository(this._restClient);
   final RestClient _restClient;
-  Future<BaseResponse<UpdateProfileResponse>> updateProfile(
-      UpdateProfileRequest request) async {
+  // Future<BaseResponse<UpdateProfileResponse>> updateProfile(
+  //     UpdateProfileRequest request) async {
+  //   try {
+  //     final res = await _restClient.updateProfile(request);
+  //     return BaseResponse(status: true, data: res);
+  //   } on DioException catch (e) {
+  //     return AppException.handleError(e);
+  //   }
+  // }
+
+  Future<BaseResponse<UpdateProfileResponse>> updateImage(
+    UpdateProfileRequest request,
+    String imagePath,
+  ) async {
     try {
-      final res = await _restClient.updateProfile(request);
+      final formData = FormData();
+      log('This is formdata ${formData.fields}');
+
+      formData.fields.add(MapEntry('profile', jsonEncode(request.toJson())));
+
+      if (imagePath.isNotEmpty) {
+        final imageFile = await MultipartFile.fromFile(
+          imagePath,
+          filename: imagePath.split('/').last,
+        );
+        formData.files.add(MapEntry('profilePicture', imageFile));
+      }
+
+      // Make API call
+      final res = await _restClient.updateProfile(formData);
+
       return BaseResponse(status: true, data: res);
     } on DioException catch (e) {
       return AppException.handleError(e);

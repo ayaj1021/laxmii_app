@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,11 +44,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   String userName = '';
+  String userImage = '';
 
   getUserName() async {
     final name = await AppDataStorage().getUserAccountName();
+    final image = await AppDataStorage().getUserImage();
 
     setState(() {
+      userImage = image.toString();
       userName = name.toString();
     });
   }
@@ -95,6 +99,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     final isUpdateLoading = ref
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
 
+    final userDetails = ref.watch(getUserDetailsNotifier.select((v) => v.data));
+
     return PageLoader(
       isLoading: isUpdateLoading,
       child: PageLoader(
@@ -113,14 +119,44 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       child: Row(
                         children: [
                           Container(
-                            height: 42.h,
-                            width: 42.w,
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: AppColors.white)),
-                            child: Image.asset('assets/images/user_image.png'),
-                          ),
+                              height: 42.h,
+                              width: 42.w,
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: AppColors.white)),
+                              child: ClipOval(
+                                child: Image(
+                                  image: userDetails?.profilePicture != null &&
+                                          userDetails!
+                                              .profilePicture!.isNotEmpty
+                                      ? CachedNetworkImageProvider(
+                                          userDetails.profilePicture!)
+                                      : userImage.isNotEmpty
+                                          ? NetworkImage(
+                                              userImage) // Changed from Image.network
+                                          : const AssetImage(
+                                                  'assets/images/user_image.png')
+                                              as ImageProvider<Object>,
+                                  fit: BoxFit.cover,
+                                ),
+
+                                // Image(
+                                //   image: userDetails?.profilePicture != null &&
+                                //           userDetails!
+                                //               .profilePicture!.isNotEmpty
+                                //       ? CachedNetworkImageProvider(
+                                //           userDetails.profilePicture!)
+                                //       : userImage.isNotEmpty
+                                //           ? Image.network(userImage)
+                                //           : const AssetImage(
+                                //               'assets/images/user_image.png'),
+                                //   fit: BoxFit.cover,
+                                // ),
+                              )
+
+                              // Image.asset('assets/images/user_image.png'),
+                              ),
                           const HorizontalSpacing(10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
