@@ -313,6 +313,7 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
         },
         onSuccess: (message) {
           context.showSuccess(message: message);
+          ref.read(getUserDetailsNotifier.notifier).getUserDetails();
         },
         imagePath: _pickedImage?.path ?? '');
   }
