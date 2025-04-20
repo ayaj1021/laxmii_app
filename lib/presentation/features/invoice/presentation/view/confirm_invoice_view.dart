@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
@@ -54,6 +56,12 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
   double calculateFilteredTotalAmount() {
     return totalAmount = (widget.filteredInvoices ?? [])
         .fold(0, (sum, items) => sum + (items.quantity * items.price));
+  }
+
+  @override
+  initState() {
+    super.initState();
+    log('status: ${widget.invoiceStatus}');
   }
 
   @override
@@ -234,7 +242,8 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                     //   ),
                     // ),
                     const VerticalSpacing(150),
-                    widget.invoiceStatus == 'unpaid'
+                    widget.invoiceStatus == 'unpaid' ||
+                            widget.invoiceStatus == 'overdue'
                         ? LaxmiiSendButton(
                             onTap: () =>
                                 updateInvoice(invoiceId: widget.invoiceId),

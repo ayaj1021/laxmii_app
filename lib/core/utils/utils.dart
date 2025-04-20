@@ -63,9 +63,19 @@ class AppUtils {
   //   return formattedDate;
   // }
 
+  // static String formatAppDate(String date) {
+  //   // Parse the input date string with the correct format
+  //   DateTime parsedDate = DateFormat('MMM d, yyyy').parse(date);
+
+  //   // Format the parsed date into your desired format
+  //   String formattedDate = DateFormat('d MMM, yy').format(parsedDate);
+
+  //   return formattedDate;
+  // }
+
   static String formatAppDate(String date) {
-    // Parse the input date string with the correct format
-    DateTime parsedDate = DateFormat('MMM d, yyyy').parse(date);
+    // Parse ISO date string
+    DateTime parsedDate = DateTime.parse(date);
 
     // Format the parsed date into your desired format
     String formattedDate = DateFormat('d MMM, yy').format(parsedDate);

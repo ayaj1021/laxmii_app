@@ -258,7 +258,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                               isForgotPassword: false,
                             )))
                 : isAccountSetup
-                    ? context.pushReplacementNamed(Dashboard.routeName)
+                    ? context.replaceAll(Dashboard.routeName)
                     //   : context.pushReplacementNamed(Dashboard.routeName);
                     : context.pushReplacementNamed(ProfileSetupView.routeName);
             ref.read(getUserDetailsNotifier.notifier).getUserDetails();

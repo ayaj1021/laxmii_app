@@ -7,6 +7,7 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/update_inventory.dart';
@@ -27,6 +28,7 @@ class InventoryView extends ConsumerStatefulWidget {
 class _InventoryState extends ConsumerState<InventoryView> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref
           .read(getAllInventoryNotifierProvider.notifier)
@@ -35,6 +37,16 @@ class _InventoryState extends ConsumerState<InventoryView> {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency.toString();
+    });
   }
 
   @override
@@ -116,8 +128,11 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                       child: ProductServicesWidget(
                                         itemName: '${data?.productName}',
                                         itemType: '${data?.description}',
-                                        itemPrice: '\$${data?.sellingPrice}',
-                                        itemQuantity: '(${data?.quantity})',
+                                        itemPrice:
+                                            '$userCurrency ${data?.sellingPrice ?? data?.costPrice}',
+                                        itemQuantity: data?.quantity == null
+                                            ? ''
+                                            : '(${data?.quantity})',
                                       ),
                                     ),
                                     const VerticalSpacing(10)
