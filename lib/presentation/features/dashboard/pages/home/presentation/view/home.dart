@@ -140,23 +140,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                               as ImageProvider<Object>,
                                   fit: BoxFit.cover,
                                 ),
-
-                                // Image(
-                                //   image: userDetails?.profilePicture != null &&
-                                //           userDetails!
-                                //               .profilePicture!.isNotEmpty
-                                //       ? CachedNetworkImageProvider(
-                                //           userDetails.profilePicture!)
-                                //       : userImage.isNotEmpty
-                                //           ? Image.network(userImage)
-                                //           : const AssetImage(
-                                //               'assets/images/user_image.png'),
-                                //   fit: BoxFit.cover,
-                                // ),
-                              )
-
-                              // Image.asset('assets/images/user_image.png'),
-                              ),
+                              )),
                           const HorizontalSpacing(10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
