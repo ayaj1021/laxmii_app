@@ -262,10 +262,12 @@ class _TaxCalculationResultState extends ConsumerState<TaxCalculationResult> {
                           // taxableIncome: num.parse(
                           //   '${calculatedTax?.taxableIncome ?? ''}',
                           // ),
-                          incomeTaxDue: calculatedTax?.incomeTaxDue ?? '',
-                          niDue: calculatedTax?.niDue ?? '',
-                          totalTax: calculatedTax?.totalTax ?? '',
-                          afterTaxIncome: calculatedTax?.afterTaxIncome ?? '',
+                          incomeTaxDue:
+                              calculatedTax?.incomeTaxDue.toString() ?? '',
+                          niDue: calculatedTax?.niDue.toString() ?? '',
+                          totalTax: calculatedTax?.totalTax.toString() ?? '',
+                          afterTaxIncome:
+                              calculatedTax?.afterTaxIncome.toString() ?? '',
                           effectiveTaxRate:
                               calculatedTax?.effectiveTaxRate ?? '',
                         ),

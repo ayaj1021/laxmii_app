@@ -267,7 +267,10 @@ class _TaxViewState extends ConsumerState<TaxView> {
   }
 
   void _calculateTax(num profit) async {
-    final data = CalculateTaxRequest(period: '$_selectedValue', profit: profit);
+    final data = CalculateTaxRequest(
+        period: '$_selectedValue',
+        profit: profit,
+        type: _selectedEntityValue ?? '');
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     await ref.read(calculateTaxNotifier.notifier).calculateTax(
         data: data,

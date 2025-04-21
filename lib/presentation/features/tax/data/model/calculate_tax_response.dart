@@ -34,10 +34,10 @@ class TaxCalculation {
   final num? totalIncome;
   final num? personalAllowance;
   final num? taxableIncome;
-  final String? incomeTaxDue;
-  final String? niDue;
-  final String? totalTax;
-  final String? afterTaxIncome;
+  final num? incomeTaxDue;
+  final num? niDue;
+  final num? totalTax;
+  final num? afterTaxIncome;
   final String? effectiveTaxRate;
 
   TaxCalculation({
@@ -55,10 +55,10 @@ class TaxCalculation {
     num? totalIncome,
     num? personalAllowance,
     num? taxableIncome,
-    String? incomeTaxDue,
-    String? niDue,
-    String? totalTax,
-    String? afterTaxIncome,
+    num? incomeTaxDue,
+    num? niDue,
+    num? totalTax,
+    num? afterTaxIncome,
     String? effectiveTaxRate,
   }) =>
       TaxCalculation(

@@ -23,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 29, right: 29, top: 400, bottom: 30),
+                    left: 29, right: 29, top: 370, bottom: 30),
                 child: Column(
                   children: [
                     Text(
@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                         fontSize: 40,
                       ),
                     ),
-                    const VerticalSpacing(116),
+                    const VerticalSpacing(135),
                     LaxmiiSendButton(
                         onTap: () {
                           context
