@@ -7,12 +7,14 @@ class AddSalesTextField extends StatelessWidget {
       {super.key,
       // required this.title,
       required this.controller,
+      this.currency,
       this.keyboardType,
       this.isMoney,
       required this.hintText,
       this.onChanged});
   // final String title;
   final String hintText;
+  final String? currency;
   final bool? isMoney;
   final TextEditingController controller;
   final TextInputType? keyboardType;
@@ -38,7 +40,7 @@ class AddSalesTextField extends StatelessWidget {
           decoration: InputDecoration(
             prefix: isMoney == true
                 ? Text(
-                    '\$',
+                    '$currency',
                     style: context.textTheme.s12w500.copyWith(
                       color: colorScheme.colorScheme.onSurface,
                     ),

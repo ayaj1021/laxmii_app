@@ -36,6 +36,7 @@ class GetInventoryResponse {
 class Inventory {
   final String? id;
   final String? user;
+  final String? type;
   final String? productName;
   final String? description;
   final int? quantity;
@@ -47,6 +48,7 @@ class Inventory {
   Inventory({
     this.id,
     this.user,
+    this.type,
     this.productName,
     this.description,
     this.quantity,
@@ -59,6 +61,7 @@ class Inventory {
   Inventory copyWith({
     String? id,
     String? user,
+    String? type,
     String? productName,
     String? description,
     int? quantity,
@@ -70,6 +73,7 @@ class Inventory {
       Inventory(
         id: id ?? this.id,
         user: user ?? this.user,
+        type: type ?? this.type,
         productName: productName ?? this.productName,
         description: description ?? this.description,
         quantity: quantity ?? this.quantity,
@@ -82,6 +86,7 @@ class Inventory {
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
         id: json["_id"],
         user: json["user"],
+        type: json["type"],
         productName: json["productName"],
         description: json["description"],
         quantity: json["quantity"],
@@ -96,6 +101,7 @@ class Inventory {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "user": user,
+        "type": type,
         "productName": productName,
         "description": description,
         "quantity": quantity,

@@ -26,6 +26,8 @@ class UpdateInventory extends ConsumerStatefulWidget {
       required this.costPrice,
       required this.itemQuantity,
       required this.itemId,
+      required this.currency,
+      required this.serviceType,
       super.key});
   final String productName;
   final String productDescription;
@@ -33,6 +35,8 @@ class UpdateInventory extends ConsumerStatefulWidget {
   final String costPrice;
   final String itemQuantity;
   final String itemId;
+  final String currency;
+  final String serviceType;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -107,22 +111,40 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                     title: 'Description',
                   ),
                   const VerticalSpacing(15),
-                  UpdateProductsTextField(
-                    product: _quantityController,
-                    title: 'Quantity',
-                  ),
-                  const VerticalSpacing(15),
-                  UpdateProductsTextField(
-                    isMoney: true,
-                    product: _sellingPriceController,
-                    title: 'Selling Price',
-                  ),
-                  const VerticalSpacing(15),
-                  UpdateProductsTextField(
-                    isMoney: true,
-                    product: _costPriceController,
-                    title: 'Cost Price',
-                  ),
+                  widget.serviceType == 'Product'
+                      ? Column(
+                          children: [
+                            UpdateProductsTextField(
+                              product: _quantityController,
+                              title: 'Quantity',
+                            ),
+                            const VerticalSpacing(15),
+                            UpdateProductsTextField(
+                              isMoney: true,
+                              currency: widget.currency,
+                              product: _sellingPriceController,
+                              title: 'Selling Price',
+                            ),
+                            const VerticalSpacing(15),
+                            UpdateProductsTextField(
+                              isMoney: true,
+                              currency: widget.currency,
+                              product: _costPriceController,
+                              title: 'Cost Price',
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            UpdateProductsTextField(
+                              isMoney: true,
+                              currency: widget.currency,
+                              product: _costPriceController,
+                              title: 'Service Price',
+                            ),
+                          ],
+                        ),
+
                   const VerticalSpacing(60),
                   LaxmiiOutlineSendButton(
                       backgroundColor: Colors.transparent,

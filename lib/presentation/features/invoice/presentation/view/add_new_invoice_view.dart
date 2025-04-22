@@ -76,7 +76,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
     final currency = await AppDataStorage().getUserCurrency();
 
     setState(() {
-      userCurrency = currency.toString();
+      userCurrency = currency ?? '\$';
     });
   }
 

@@ -6,6 +6,7 @@ import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
@@ -36,6 +37,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
 
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref
@@ -66,6 +68,15 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
     super.dispose();
   }
 
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
+  }
   // DateTime? _selectedDate;
 
   // String _formatDate(DateTime date) {
@@ -233,6 +244,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   hintText: 'Total Amount',
                   controller: _amountController,
                   isMoney: true,
+                  currency: userCurrency,
                   keyboardType: TextInputType.number,
                 ),
                 const VerticalSpacing(20),

@@ -75,7 +75,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
     final currency = await AppDataStorage().getUserCurrency();
 
     setState(() {
-      userCurrency = currency.toString();
+      userCurrency = currency ?? '\$';
     });
   }
 

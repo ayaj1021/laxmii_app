@@ -45,7 +45,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
     final currency = await AppDataStorage().getUserCurrency();
 
     setState(() {
-      userCurrency = currency.toString();
+      userCurrency = currency ?? '\$';
     });
   }
 
@@ -108,6 +108,8 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (_) => UpdateInventory(
+                                            currency: userCurrency,
+                                            serviceType: '${data?.type}',
                                             productName: '${data?.productName}',
                                             productDescription:
                                                 '${data?.description}',
