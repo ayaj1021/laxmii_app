@@ -78,7 +78,7 @@ class _InventoryState extends ConsumerState<InventoryView> {
                   ),
                 ),
               ),
-              const VerticalSpacing(19),
+              const VerticalSpacing(15),
               inventoryList.data?.inventory == null
                   ? const SizedBox.shrink()
                   : inventoryList.data?.inventory?.isEmpty ??

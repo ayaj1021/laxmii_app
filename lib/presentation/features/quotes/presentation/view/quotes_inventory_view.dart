@@ -5,6 +5,7 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_new_product_widget.dart';
@@ -34,6 +35,7 @@ class QuoteInventoryListView extends ConsumerStatefulWidget {
 class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref
@@ -41,6 +43,16 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
           .getAllInventory();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -117,10 +129,12 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (_) => AddItemSection(
+                                            serviceType: data.type ?? '',
                                             item: data.productName ?? '',
                                             quantity: data.quantity ?? 0,
-                                            sellingPrice:
-                                                data.sellingPrice ?? 0,
+                                            sellingPrice: data.sellingPrice ??
+                                                data.costPrice ??
+                                                0,
                                           ),
                                         ),
                                       );
@@ -132,9 +146,11 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                         ];
                                         widget.addItem(item);
                                       }
+                                      //${data?.sellingPrice ?? data?.costPrice}
                                     },
                                     child: GetQuotesWidget(
-                                        quoteAmount: '\$${data.sellingPrice}',
+                                        quoteAmount:
+                                            '$userCurrency${data.sellingPrice ?? data.costPrice}',
                                         quoteTitle: '${data.productName}',
                                         quoteDate: formatDateTimeFromString(
                                             '${data.createdAt}')
@@ -148,71 +164,93 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                             },
                           ),
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 17),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: colorScheme.cardColor),
-                          child: Column(
-                            children: [
-                              ValueListenableBuilder(
-                                  valueListenable: widget.itemsNotifier,
-                                  builder: (context, items, child) {
-                                    return SizedBox(
+                        ValueListenableBuilder(
+                            valueListenable: widget.itemsNotifier,
+                            builder: (context, items, child) {
+                              return items.isEmpty
+                                  ? const SizedBox.shrink()
+                                  : Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.23,
-                                      child: ListView.builder(
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          itemCount: items.length,
-                                          itemBuilder: (_, index) {
-                                            final item = items[index];
-                                            final price = item.itemQuantity *
-                                                item.itemPrice;
-                                            return Column(
-                                              children: [
-                                                InvoiceNewProductWidget(
-                                                  itemName: item.itemName,
-                                                  itemQuantity:
-                                                      item.itemQuantity,
-                                                  itemPrice: item.itemPrice,
-                                                  totalItemPrice: double.parse(
-                                                      price.toStringAsFixed(2)),
-                                                  onItemDelete: () {
-                                                    setState(() {
-                                                      items.remove(item);
-                                                    });
-                                                    //    removeItem(item);
-                                                  },
-                                                ),
-                                                const VerticalSpacing(5),
-                                                if (index < items.length - 1)
-                                                  const Divider(
-                                                    color:
-                                                        AppColors.primary3B3522,
-                                                  )
-                                              ],
-                                            );
-                                          }),
+                                              0.3,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 17),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          color: colorScheme.cardColor),
+                                      child: Column(
+                                        children: [
+                                          ValueListenableBuilder(
+                                              valueListenable:
+                                                  widget.itemsNotifier,
+                                              builder: (context, items, child) {
+                                                return SizedBox(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.23,
+                                                  child: ListView.builder(
+                                                      physics:
+                                                          const AlwaysScrollableScrollPhysics(),
+                                                      itemCount: items.length,
+                                                      itemBuilder: (_, index) {
+                                                        final item =
+                                                            items[index];
+                                                        final price =
+                                                            item.itemQuantity *
+                                                                item.itemPrice;
+                                                        return Column(
+                                                          children: [
+                                                            InvoiceNewProductWidget(
+                                                              itemName:
+                                                                  item.itemName,
+                                                              itemQuantity: item
+                                                                  .itemQuantity,
+                                                              itemPrice: item
+                                                                  .itemPrice,
+                                                              totalItemPrice:
+                                                                  double.parse(price
+                                                                      .toStringAsFixed(
+                                                                          2)),
+                                                              onItemDelete: () {
+                                                                setState(() {
+                                                                  items.remove(
+                                                                      item);
+                                                                });
+                                                                //    removeItem(item);
+                                                              },
+                                                            ),
+                                                            const VerticalSpacing(
+                                                                5),
+                                                            if (index <
+                                                                items.length -
+                                                                    1)
+                                                              const Divider(
+                                                                color: AppColors
+                                                                    .primary3B3522,
+                                                              )
+                                                          ],
+                                                        );
+                                                      }),
+                                                );
+                                              }),
+                                          InkWell(
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              'Done',
+                                              style: context.textTheme.s14w500
+                                                  .copyWith(
+                                                color: AppColors.primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     );
-                                  }),
-                              InkWell(
-                                onTap: () async {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Done',
-                                  style: context.textTheme.s14w500.copyWith(
-                                    color: AppColors.primaryColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            }),
                       ],
                     ),
         )),

@@ -116,4 +116,111 @@ class AppUtils {
       return null;
     }
   }
+
+  static Future<void> launchWhatsApp({String? message}) async {
+    String phone = '+447984247913';
+
+    // Remove any non-digit characters from the phone number
+    phone = phone.replaceAll(RegExp(r'\D'), '');
+
+    // Add your message
+
+    // Try multiple URL formats to increase compatibility
+    List<Uri> possibleUris = [
+      // Standard web URL format (often works best)
+      Uri.parse(
+          "https://wa.me/$phone?text=${Uri.encodeComponent(message ?? 'I need help')}"),
+
+      // Direct WhatsApp scheme with phone
+      Uri.parse(
+          "whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message ?? 'I need help')}"),
+
+      // Alternative format sometimes used
+      Uri.parse(
+          "https://api.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message ?? 'I need help')}")
+    ];
+
+    bool launched = false;
+
+    // Try each URI until one works
+    for (var uri in possibleUris) {
+      try {
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+          launched = true;
+          break;
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+
+    if (!launched) {
+      // As a fallback, try just opening WhatsApp
+      try {
+        final Uri fallbackUri = Uri.parse("whatsapp://");
+        if (await canLaunchUrl(fallbackUri)) {
+          await launchUrl(fallbackUri, mode: LaunchMode.externalApplication);
+          launched = true;
+        }
+      } catch (e) {}
+    }
+
+    // If still not launched, try opening the Play Store/App Store
+    // if (!launched) {
+    //   try {
+    //     // This will open WhatsApp in the app store if not installed
+    //     final Uri storeUri = Uri.parse(
+    //         Theme.of(context).platform == TargetPlatform.iOS
+    //             ? "https://apps.apple.com/app/whatsapp-messenger/id310633997"
+    //             : "https://play.google.com/store/apps/details?id=com.whatsapp");
+
+    //     if (await canLaunchUrl(storeUri)) {
+    //       setState(() {
+    //         _errorMessage = 'Opening WhatsApp download page...';
+    //       });
+    //       await launchUrl(storeUri, mode: LaunchMode.externalApplication);
+    //     } else {
+    //       setState(() {
+    //         _errorMessage = errorMsg;
+    //       });
+    //     }
+    //   } catch (e) {
+    //     setState(() {
+    //       _errorMessage = 'Error: ${e.toString()}';
+    //     });
+    //   }
+    // }
+  }
+
+  // Future<void> _openWhatsApp() async {
+  //   // Try multiple approaches to open WhatsApp
+  //   List<Uri> possibleUris = [
+  //     Uri.parse("whatsapp://"),
+  //     Uri.parse("https://web.whatsapp.com"), // Web fallback
+  //     Uri.parse("whatsapp://send") // Alternative format
+  //   ];
+
+  //   bool launched = false;
+  //   String errorMsg = 'Could not launch WhatsApp';
+
+  //   for (var uri in possibleUris) {
+  //     try {
+  //       if (await canLaunchUrl(uri)) {
+  //         await launchUrl(uri, mode: LaunchMode.externalApplication);
+  //         launched = true;
+  //         break;
+  //       }
+  //     } catch (e) {
+  //       errorMsg = 'Error: ${e.toString()}';
+  //       continue;
+  //     }
+  //   }
+
+  //   if (!launched) {
+  //     setState(() {
+  //       _errorMessage = errorMsg;
+  //     });
+  //   }
+  // }
 }

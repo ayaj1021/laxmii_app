@@ -17,8 +17,10 @@ class AddItemSection extends ConsumerStatefulWidget {
     required this.item,
     required this.quantity,
     required this.sellingPrice,
+    required this.serviceType,
   });
   final String item;
+  final String serviceType;
   final int quantity;
   final num sellingPrice;
 
@@ -40,7 +42,10 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
 
-    _quantityController = TextEditingController()..addListener(_validateInput);
+    _quantityController = widget.quantity == 0
+        ? TextEditingController(text: '1')
+        : TextEditingController()
+      ..addListener(_validateInput);
     _sellingPriceController = widget.sellingPrice == 0
         ? TextEditingController()
         : TextEditingController(text: widget.sellingPrice.toString())
@@ -62,7 +67,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
     try {
       double quantity = double.parse(_quantityController.text);
       double sellingPrice = double.parse(_sellingPriceController.text);
-      return quantity * sellingPrice;
+      return (quantity == 0 ? 1 : quantity) * sellingPrice;
     } catch (e) {
       return 0; // Return 0 if input is invalid
     }
@@ -106,15 +111,20 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                 ],
               ),
             ),
-            const VerticalSpacing(20),
-            AddQuoteItemTextField(
-              controller: _quantityController,
-              title: 'Quantity',
-              onChanged: (v) {
-                _validateInput();
-              },
-              hintText: 'Enter item quantity',
-            ),
+            if (widget.serviceType == 'product')
+              Column(
+                children: [
+                  const VerticalSpacing(20),
+                  AddQuoteItemTextField(
+                    controller: _quantityController,
+                    title: 'Quantity',
+                    onChanged: (v) {
+                      _validateInput();
+                    },
+                    hintText: 'Enter item quantity',
+                  ),
+                ],
+              ),
             const VerticalSpacing(20),
             AddQuoteItemTextField(
               controller: _sellingPriceController,
@@ -129,33 +139,34 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
             Divider(
               color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Amount',
-                    style: context.textTheme.s12w300.copyWith(
-                      color: colorScheme.colorScheme.onSurface,
-                      fontSize: 14,
+            if (widget.serviceType == 'product')
+              Padding(
+                padding: const EdgeInsets.only(left: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Amount',
+                      style: context.textTheme.s12w300.copyWith(
+                        color: colorScheme.colorScheme.onSurface,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                  ValueListenableBuilder<double>(
-                    valueListenable: _calculateProduct,
-                    builder: (context, totalAmount, child) {
-                      return Text(
-                        '\$$totalAmount',
-                        style: context.textTheme.s12w300.copyWith(
-                          color: colorScheme.colorScheme.onSurface,
-                          fontSize: 14,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                    ValueListenableBuilder<double>(
+                      valueListenable: _calculateProduct,
+                      builder: (context, totalAmount, child) {
+                        return Text(
+                          '\$$totalAmount',
+                          style: context.textTheme.s12w300.copyWith(
+                            color: colorScheme.colorScheme.onSurface,
+                            fontSize: 14,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
             const VerticalSpacing(5),
             Divider(
               color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
@@ -163,8 +174,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
             const VerticalSpacing(29),
             GestureDetector(
               onTap: () {
-                if (_sellingPriceController.text.isEmpty ||
-                    _quantityController.text.isEmpty) {
+                if (_sellingPriceController.text.isEmpty) {
                   context.showError(message: 'All fields are required');
                 } else {
                   final item = ProductItem(

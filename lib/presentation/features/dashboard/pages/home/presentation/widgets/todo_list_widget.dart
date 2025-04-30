@@ -59,11 +59,20 @@ class TodoListWidget extends StatelessWidget {
               ),
 
               isCompleted == true
-                  ? Text(
-                      'Completed',
-                      style: context.textTheme.s12w400.copyWith(
-                        color: AppColors.primary3B3522,
-                      ),
+                  ? Row(
+                      children: [
+                        Text(
+                          'Completed',
+                          style: context.textTheme.s12w400.copyWith(
+                            color: AppColors.primary3B3522,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.check,
+                          color: Colors.green,
+                          size: 18,
+                        )
+                      ],
                     )
                   : SizedBox(
                       height: 26.h,

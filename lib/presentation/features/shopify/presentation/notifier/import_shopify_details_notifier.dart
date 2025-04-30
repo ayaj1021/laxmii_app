@@ -26,7 +26,7 @@ class ImportShopifyDetailsNotifier
       final value = await _getUserDetailsRepository.getUserDetails();
       // debugLog(data);
       if (!value.status) throw value.message.toException;
-      await AppDataStorage().saveUserId('${value.data?.userId}');
+      await AppDataStorage().saveUserId('${value.data?.profile?.id}');
 
       state = state.copyWith(state: LoadState.idle);
       // onSuccess(value.message.toString());

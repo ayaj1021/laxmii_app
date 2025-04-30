@@ -36,10 +36,14 @@ class ProductServicesWidget extends StatelessWidget {
                   color: colorScheme.colorScheme.onSurface,
                 ),
               ),
-              Text(
-                itemType.capitalize,
-                style: context.textTheme.s12w300.copyWith(
-                  color: AppColors.primary5E5E5E,
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                child: Text(
+                  itemType.capitalize,
+                  style: context.textTheme.s12w300.copyWith(
+                    color: AppColors.primary5E5E5E,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               )
             ],

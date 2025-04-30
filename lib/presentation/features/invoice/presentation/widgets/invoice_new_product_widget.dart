@@ -55,7 +55,7 @@ class InvoiceNewProductWidget extends StatelessWidget {
           ],
         ),
         Text(
-          '$itemQuantity x \$$itemPrice',
+          '${itemQuantity == 0 ? 1 : itemQuantity} x \$$itemPrice',
           style: context.textTheme.s12w400.copyWith(
             color: AppColors.primaryC4C4C4,
           ),

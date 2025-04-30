@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
@@ -11,6 +12,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presen
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_week_chart.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_year_chart.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/custom_app_dropdown.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -65,87 +67,92 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
           ),
         )
       ],
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.35,
-        padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: colorScheme.cardColor,
-            borderRadius: BorderRadius.circular(16)),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    log('This is year cash flow ${cashFlowWeekList.length}');
-                  },
-                  child: Text(
-                    'Cashflow',
-                    style: context.textTheme.s14w400.copyWith(
-                      color: colorScheme.colorScheme.onSurface,
+      child: GestureDetector(
+        onTap: () {
+          context.pushNamed(TransactionsView.routeName);
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.35,
+          padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: colorScheme.cardColor,
+              borderRadius: BorderRadius.circular(16)),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      log('This is year cash flow ${cashFlowWeekList.length}');
+                    },
+                    child: Text(
+                      'Cashflow',
+                      style: context.textTheme.s14w400.copyWith(
+                        color: colorScheme.colorScheme.onSurface,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.23,
-                  child: CustomDropdown(
-                    value: _selectedType,
-                    items: cashFlowOptions
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.capitalize),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedType = value ?? '';
-                      });
+                  SizedBox(
+                    width: MediaQuery.sizeOf(context).width * 0.23,
+                    child: CustomDropdown(
+                      value: _selectedType,
+                      items: cashFlowOptions
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.capitalize),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedType = value ?? '';
+                        });
 
-                      ref
-                          .read(getCashFlowNotifierProvider.notifier)
-                          .getCashFlow(query: value.toString());
-                    },
-                  ),
-                )
-              ],
-            ),
-            const VerticalSpacing(30),
-            isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
+                        ref
+                            .read(getCashFlowNotifierProvider.notifier)
+                            .getCashFlow(query: value.toString());
+                      },
                     ),
                   )
-                : cashFlowList.isEmpty
-                    ? Column(
-                        children: [
-                          Text(
-                            'No Activity yet',
-                            style: context.textTheme.s16w400.copyWith(
-                              color: AppColors.primary5E5E5E,
+                ],
+              ),
+              const VerticalSpacing(30),
+              isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      ),
+                    )
+                  : cashFlowList.isEmpty
+                      ? Column(
+                          children: [
+                            Text(
+                              'No Activity yet',
+                              style: context.textTheme.s16w400.copyWith(
+                                color: AppColors.primary5E5E5E,
+                              ),
                             ),
-                          ),
-                          const VerticalSpacing(9),
-                          Text(
-                            'Create sales and expenses to see activities',
-                            style: context.textTheme.s14w400.copyWith(
-                              color: AppColors.primary5E5E5E,
+                            const VerticalSpacing(9),
+                            Text(
+                              'Create sales and expenses to see activities',
+                              style: context.textTheme.s14w400.copyWith(
+                                color: AppColors.primary5E5E5E,
+                              ),
                             ),
-                          ),
-                        ],
-                      )
-                    : _selectedType == 'week'
-                        ? CashFlowWeekChart(
-                            cashWeekFlow: cashFlowWeekList,
-                          )
-                        : CashFlowYearChart(
-                            cashflow: cashFlowList,
-                          ),
-          ],
+                          ],
+                        )
+                      : _selectedType == 'week'
+                          ? CashFlowWeekChart(
+                              cashWeekFlow: cashFlowWeekList,
+                            )
+                          : CashFlowYearChart(
+                              cashflow: cashFlowList,
+                            ),
+            ],
+          ),
         ),
       ),
     );

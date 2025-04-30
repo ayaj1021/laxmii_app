@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -62,13 +65,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
         _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
   }
 
-  // getUserEmail() async {
-  //   final email = await AppDataStorage().getUserEmail();
-  // setState(() {
-  //   userEmail = email ?? '';
-  // });
-  // }
-
   void getUserEmail() async {
     await Future.delayed(const Duration(milliseconds: 500));
     final email = await AppDataStorage().getUserEmail();
@@ -78,6 +74,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
     });
 
     _emailController.text = userEmail;
+  }
+
+  GoogleSignIn signIn = GoogleSignIn(
+    serverClientId:
+        '538188324651-2gt9uf174mlo5pqdpsc9ubuhe5tf29j3.apps.googleusercontent.com',
+  );
+
+  void _googleSignIn() async {
+    try {
+      final GoogleSignInAccount? account = await signIn.signIn();
+      if (account != null) {
+        log('User signed in: ${account.displayName}, ${account.email}');
+        // You can now use account.id, account.email, etc.
+      }
+    } catch (error) {
+      log(error.toString());
+    }
   }
 
   @override
@@ -199,7 +212,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                   const VerticalSpacing(20),
                   LaxmiiOutlineSendButton(
-                    onTap: () {},
+                    onTap: () {
+                      _googleSignIn();
+                    },
                     title: 'Continue with Google',
                     hasBorder: true,
                     icon: 'assets/icons/google.svg',

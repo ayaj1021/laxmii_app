@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 
 class AppDataStorage {
@@ -145,6 +146,20 @@ class AppDataStorage {
 
     final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
     return UpdateProfileResponse.fromJson(jsonMap);
+  }
+
+  Future<void> storUserDetails(GetUserDetailsResponse profileResponse) async {
+    final String jsonString = jsonEncode(profileResponse.toJson());
+    await _storage.write(key: 'user_details', value: jsonString);
+  }
+
+  Future<GetUserDetailsResponse?> getUserDetails() async {
+    final String? jsonString = await _storage.read(key: 'user_details');
+
+    if (jsonString == null) return null;
+
+    final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    return GetUserDetailsResponse.fromJson(jsonMap);
   }
 
   Future<void> clearToken() async {

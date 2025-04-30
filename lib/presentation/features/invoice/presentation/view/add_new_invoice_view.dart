@@ -21,8 +21,12 @@ class AddNewInvoiceView extends ConsumerStatefulWidget {
     required this.item,
     required this.quantity,
     required this.sellingPrice,
+    required this.serviceType,
   });
   final String item;
+
+  final String serviceType;
+
   final int quantity;
   final num sellingPrice;
   static const routeName = '/addNewInvoiceView';
@@ -35,7 +39,7 @@ class AddNewInvoiceView extends ConsumerStatefulWidget {
 class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
   final ValueNotifier<bool> isAddProductEnabled = ValueNotifier(false);
 
-  late TextEditingController _quantityController;
+  final _quantityController = TextEditingController();
   late TextEditingController _sellingPriceController;
 
   @override
@@ -43,12 +47,14 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
     getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+
+      if (!mounted) return;
       await ref
           .read(getAllInventoryNotifierProvider.notifier)
           .getAllInventory();
     });
 
-    _quantityController = TextEditingController()..addListener(_validateInput);
+    //_quantityController = TextEditingController()..addListener(_validateInput);
     _sellingPriceController = widget.sellingPrice == 0
         ? TextEditingController()
         : TextEditingController(text: widget.sellingPrice.toString())
@@ -58,7 +64,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
   }
 
   void _validateInput() {
-    isAddProductEnabled.value = _quantityController.text.isNotEmpty &&
+    isAddProductEnabled.value = // _quantityController.text.isNotEmpty &&
         _sellingPriceController.text.isNotEmpty;
   }
 
@@ -112,18 +118,24 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                   ),
                 ),
               ),
-              const VerticalSpacing(15),
-              UpdateProductsTextField(
-                product: _quantityController,
-                title: 'Quantity  ${widget.quantity}',
-                keyboardType: TextInputType.number,
-              ),
+              if (widget.serviceType == 'product')
+                Column(
+                  children: [
+                    const VerticalSpacing(15),
+                    UpdateProductsTextField(
+                      product: _quantityController,
+                      title: 'Quantity  ${widget.quantity}',
+                      keyboardType: TextInputType.number,
+                    ),
+                  ],
+                ),
               const VerticalSpacing(15),
               UpdateProductsTextField(
                 isMoney: true,
                 currency: userCurrency,
                 product: _sellingPriceController,
-                title: 'Selling Price',
+                title:
+                    widget.serviceType == 'product' ? 'Selling Price' : 'Price',
                 keyboardType: TextInputType.number,
               ),
               const VerticalSpacing(150),
@@ -133,7 +145,18 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                     return LaxmiiOutlineSendButton(
                       isEnabled: r,
                       onTap: () {
-                        if (int.parse(_quantityController.text) >
+                        if (_quantityController.text.isEmpty) {
+                          final item = ProductItems(
+                            itemName: widget.item,
+                            itemPrice: double.parse(
+                                _sellingPriceController.text.trim()),
+                            itemQuantity: int.parse('0'),
+                          );
+
+                          Navigator.pop(context, item);
+                          context.showSuccess(message: 'Product added');
+                          // return;
+                        } else if (int.parse(_quantityController.text) >
                             (widget.quantity)) {
                           context.showError(
                               message:

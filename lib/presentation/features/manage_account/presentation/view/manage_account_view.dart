@@ -75,7 +75,8 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
   }
 
   Future<void> populateProfileFields() async {
-    final profileResponse = await AppDataStorage().getStoredProfile();
+    // final profileResponse = await AppDataStorage().getStoredProfile();
+    final profileResponse = await AppDataStorage().getUserDetails();
 
     final profile = profileResponse?.profile;
     if (profile == null) return;
@@ -129,20 +130,23 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
                                   backgroundImage: _pickedImage != null
                                       ? FileImage(_pickedImage!)
                                           as ImageProvider
-                                      : (userDetails?.profilePicture != null &&
-                                              userDetails!
+                                      : (userDetails?.profile?.profilePicture !=
+                                                  null &&
+                                              userDetails!.profile!
                                                   .profilePicture!.isNotEmpty
                                           ? CachedNetworkImageProvider(
-                                              userDetails.profilePicture!)
+                                              userDetails
+                                                  .profile!.profilePicture!)
                                           : const AssetImage(
                                               'assets/images/account_image.png')),
                                   onBackgroundImageError: (_, __) {
                                     // Handle error if needed
                                   },
                                   child: _pickedImage == null &&
-                                          (userDetails?.profilePicture ==
+                                          (userDetails?.profile
+                                                      ?.profilePicture ==
                                                   null ||
-                                              userDetails!
+                                              userDetails!.profile!
                                                   .profilePicture!.isEmpty)
                                       ? Image.asset(
                                           'assets/images/account_image.png')

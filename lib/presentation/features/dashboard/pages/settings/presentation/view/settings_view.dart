@@ -6,6 +6,7 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/theme/theme_provider.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/core/utils/utils.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/notifications_model.dart';
@@ -55,8 +56,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     final isLoading =
         ref.watch(logOutNotifer.select((v) => v.logOut.isLoading));
     final settings = ref.watch(settingsNotifer.select((v) => v.data));
-    final userId =
-        ref.watch(getUserDetailsNotifier.select((v) => v.data?.userId ?? ''));
+    final userId = ref
+        .watch(getUserDetailsNotifier.select((v) => v.data?.profile?.id ?? ''));
     final isLightTheme = ref.watch(themeProvider);
     final colorScheme = Theme.of(context);
     return PageLoader(
@@ -71,6 +72,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
               'Settings',
               style: context.textTheme.s20w500.copyWith(
                 color: colorScheme.colorScheme.onSurface,
+                //+447984247913
               ),
             ),
           ),
@@ -229,6 +231,33 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                   //     textColor: AppColors.primary5E5E5E,
                   //   ),
                   // ),
+                  GestureDetector(
+                    onTap: () => AppUtils.launchWhatsApp(
+                        message: 'Hello, I need assistance!'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: colorScheme.cardColor),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Contact Support',
+                            style: context.textTheme.s14w500.copyWith(
+                              color: AppColors.primary5E5E5E,
+                            ),
+                          ),
+                          Icon(
+                            Icons.support_agent,
+                            color: colorScheme.iconTheme.color,
+                            size: 18,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   const VerticalSpacing(20),
                   GestureDetector(
                     onTap: () => _logout(),

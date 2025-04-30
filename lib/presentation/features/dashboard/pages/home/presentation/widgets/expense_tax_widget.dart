@@ -56,17 +56,25 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        data,
-                        style: context.textTheme.s16w500.copyWith(
-                          color: colorScheme.colorScheme.onSurface,
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.7,
+                        child: Text(
+                          data,
+                          style: context.textTheme.s16w500.copyWith(
+                            color: colorScheme.colorScheme.onSurface,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const VerticalSpacing(5),
-                      Text(
-                        widget.subTitle,
-                        style: context.textTheme.s10w300.copyWith(
-                          color: AppColors.primary5E5E5E,
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.7,
+                        child: Text(
+                          widget.subTitle,
+                          style: context.textTheme.s10w300.copyWith(
+                            color: AppColors.primary5E5E5E,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const VerticalSpacing(10),

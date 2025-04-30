@@ -303,8 +303,10 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                 itemCount: items.length,
                                 itemBuilder: (_, index) {
                                   final item = items[index];
-                                  final price =
-                                      item.itemQuantity * item.itemPrice;
+                                  final price = (item.itemQuantity == 0
+                                          ? 1
+                                          : item.itemQuantity) *
+                                      item.itemPrice;
                                   return Column(
                                     children: [
                                       InvoiceNewProductWidget(

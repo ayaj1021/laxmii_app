@@ -124,7 +124,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                           const VerticalSpacing(15),
                           UpdateProductsTextField(
                             product: _productNameController,
-                            title: 'Product',
+                            title: 'Product Name',
                           ),
                           const VerticalSpacing(15),
                           UpdateProductsTextField(
@@ -178,7 +178,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                           const VerticalSpacing(15),
                           UpdateProductsTextField(
                             product: _productNameController,
-                            title: 'Service',
+                            title: 'Service Name',
                           ),
                           const VerticalSpacing(15),
                           UpdateProductsTextField(

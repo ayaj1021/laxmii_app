@@ -45,7 +45,7 @@ class InventoryTableSection extends StatelessWidget {
                         '${reportData.productName}',
                         '${reportData.quantity}',
                         '${reportData.costPrice}',
-                        '${reportData.sellingPrice}',
+                        '${reportData.sellingPrice ?? reportData.costPrice}',
                       ];
 
                       return Table(

@@ -32,6 +32,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllInvoiceNotifierProvider.notifier).getAllInvoices();
 
+      if (!mounted) return;
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();

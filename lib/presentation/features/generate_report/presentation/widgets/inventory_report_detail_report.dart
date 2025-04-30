@@ -37,10 +37,16 @@ class _InventoryReportDetailReportState
     final reports = ref.watch(getAllInventoryNotifierProvider
         .select((v) => v.getAllInventory.data?.inventory ?? []));
 
+    // final totalAmount = reports.fold<double>(
+    //     initialValue,
+    //     (previousValue, element) =>
+    //         previousValue + element.sellingPrice ?? 1   );
+
     final totalAmount = reports.fold<double>(
-        initialValue,
-        (previousValue, element) =>
-            previousValue + element.sellingPrice!.toDouble());
+      initialValue,
+      (previousValue, element) =>
+          previousValue + (element.sellingPrice ?? element.costPrice ?? 0),
+    );
     return Scaffold(
       appBar: LaxmiiAppBar(
         centerTitle: true,

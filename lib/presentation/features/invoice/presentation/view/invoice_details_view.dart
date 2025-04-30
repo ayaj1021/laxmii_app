@@ -205,25 +205,18 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                         ),
                       ),
                       const VerticalSpacing(200),
-                      LaxmiiOutlineSendButton(
+                      LaxmiiSendButton(
                           onTap: () {
                             markInvoiceAsPaid();
                           },
                           title: 'Mark as paid'),
                       const VerticalSpacing(20),
-                      LaxmiiSendButton(
+                      LaxmiiOutlineSendButton(
                         onTap: () {
                           createInvoice();
                         },
-
-                        // shareInvoice(
-                        //     context: context,
-                        //     screenshotController: screenshotController,
-                        //     invoiceNumber: widget.invoiceNumber,
-                        //     dueDate: widget.dueDate,
-                        //     issueDate: widget.issueDate),
                         title: 'Save',
-                        textColor: AppColors.black,
+                        // textColor: AppColors.black,
                       ),
                     ],
                   ),

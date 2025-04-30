@@ -8,6 +8,8 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/presentation/notifier/get_ai_insights_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/expense_tax_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/laxmi_ai_tab_widget.dart';
@@ -30,6 +32,7 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  final data = AiInsightsRequest(insightType: 'sales');
   final _pageController = PageController();
   @override
   void initState() {
@@ -39,6 +42,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref.read(getUserDetailsNotifier.notifier).getUserDetails();
       ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+      await ref
+          .read(getAiIsightsNotifierProvider.notifier)
+          .getAiInsights(request: data);
     });
     super.initState();
   }
@@ -100,6 +106,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
         .watch(deleteTaskNotifier.select((v) => v.deleteTaskState.isLoading));
 
     final userDetails = ref.watch(getUserDetailsNotifier.select((v) => v.data));
+    final aiInsights = ref.watch(getAiIsightsNotifierProvider
+        .select((v) => v.getAiInsights.data?.aiInsights));
+
+    Map<String, dynamic> optimizedAiInsights = (aiInsights)?.toJson() ?? {};
 
     return PageLoader(
       isLoading: isUpdateLoading,
@@ -127,11 +137,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   border: Border.all(color: AppColors.white)),
                               child: ClipOval(
                                 child: Image(
-                                  image: userDetails?.profilePicture != null &&
-                                          userDetails!
-                                              .profilePicture!.isNotEmpty
+                                  image: userDetails?.profile?.profilePicture !=
+                                              null &&
+                                          userDetails!.profile!.profilePicture!
+                                              .isNotEmpty
                                       ? CachedNetworkImageProvider(
-                                          userDetails.profilePicture!)
+                                          userDetails.profile!.profilePicture!)
                                       : userImage.isNotEmpty
                                           ? NetworkImage(
                                               userImage) // Changed from Image.network
@@ -190,11 +201,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     SizedBox(
                         height: MediaQuery.of(context).size.height * 0.2,
                         child: ExpensesTaxWidget(
-                          aiInsights: aiInsights,
-                          subTitle:
-                              'Your utility bills were 30% higher this month due to increased energy use',
+                          aiInsights: aiInsights?.insights ?? [],
+                          subTitle: optimizedAiInsights.entries.map((entry) {
+                            return Text(entry.value[0]);
+                          }).toString(),
+                          // 'Your utility bills were 30% higher this month due to increased energy use',
                           controller: _pageController,
-                          length: aiInsights.length,
+                          length: aiInsights?.insights?.length,
                         )),
                     const VerticalSpacing(14),
                     const LaxmiAiTabWidget(),

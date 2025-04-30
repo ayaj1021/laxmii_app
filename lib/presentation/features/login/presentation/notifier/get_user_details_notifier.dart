@@ -29,10 +29,13 @@ class GetUserDetailsNotifier
       if (!value.status) throw value.message.toException;
       // onSuccess(value.message.toString());
       state = state.copyWith(state: LoadState.idle, data: value.data);
-      await AppDataStorage().saveUserId('${value.data?.userId}');
-      await AppDataStorage().saveUserCurrency('${value.data?.currency}');
+      await AppDataStorage().saveUserId('${value.data?.profile?.id}');
+      await AppDataStorage()
+          .saveUserCurrency('${value.data?.profile?.currency}');
 
-      await AppDataStorage().saveUserImage('${value.data?.profilePicture}');
+      await AppDataStorage()
+          .saveUserImage('${value.data?.profile?.profilePicture}');
+      await AppDataStorage().storUserDetails(value.data!);
     } catch (e) {
       // onError(e.toString());
       state = state.copyWith(state: LoadState.idle);
