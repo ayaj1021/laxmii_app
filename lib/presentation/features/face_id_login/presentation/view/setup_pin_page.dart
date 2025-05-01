@@ -103,8 +103,8 @@ class _SetupPinPageState extends ConsumerState<SetupPinPage> {
                         onTap: () {
                           if (otpController.text.isEmpty) {
                             context.showError(message: 'Pls enter pin');
-                          } else if (otpController.text.length < 6) {
-                            context.showError(message: 'Pin must be 6 digits');
+                          } else if (otpController.text.length < 4) {
+                            context.showError(message: 'Pin must be 4 digits');
                           } else {
                             setPin();
                           }
@@ -131,7 +131,7 @@ class _SetupPinPageState extends ConsumerState<SetupPinPage> {
         },
         onSuccess: (message) {
           context.showSuccess(message: message);
-          _login();
+          //   _login();
         });
   }
 

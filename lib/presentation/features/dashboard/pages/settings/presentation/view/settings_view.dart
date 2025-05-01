@@ -17,6 +17,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presen
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/connect_spotify_button_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
@@ -49,6 +50,12 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     setState(() {
       useruId = id ?? '';
     });
+  }
+
+  bool enablePinSignIn = false;
+
+  void storePinValue(bool val) async {
+    await AppDataStorage().setEnablePin(val);
   }
 
   @override
@@ -202,6 +209,27 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                         settings?.settings?.notifications?.performanceInsight ??
                             false,
                   ),
+                  const VerticalSpacing(10),
+                  NotificationsOptionsWidget(
+                      title: 'Enable Pin Sign in',
+                      onChanged: (v) {
+                        setState(() {
+                          enablePinSignIn = v;
+                        });
+                        storePinValue(v);
+                      },
+                      value: enablePinSignIn),
+                  const VerticalSpacing(6),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(SetupPinPage.routeName);
+                    },
+                    child: const SettingsOptionsButton(
+                      title: 'Set App Pin',
+                      icon: Icons.lock_outlined,
+                      textColor: AppColors.primary5E5E5E,
+                    ),
+                  ),
                   const VerticalSpacing(24),
                   const Divider(
                     color: AppColors.primary5E5E5E,
@@ -215,22 +243,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                   const Divider(
                     color: AppColors.primary5E5E5E,
                   ),
-                  // const VerticalSpacing(30),
-                  // Text(
-                  //   'Currency',
-                  //   style: context.textTheme.s14w500.copyWith(
-                  //       color: colorScheme.colorScheme.tertiary,
-                  //       fontWeight: FontWeight.w300),
-                  // ),
-                  // const VerticalSpacing(6),
-                  // GestureDetector(
-                  //   onTap: () {},
-                  //   child: const SettingsOptionsButton(
-                  //     title: 'US Dollar (\$)',
-                  //     icon: Icons.keyboard_arrow_down,
-                  //     textColor: AppColors.primary5E5E5E,
-                  //   ),
-                  // ),
+                  const VerticalSpacing(10),
                   GestureDetector(
                     onTap: () => AppUtils.launchWhatsApp(
                         message: 'Hello, I need assistance!'),

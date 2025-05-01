@@ -141,7 +141,7 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
                   AppPinInputField(
                     otpController: otpController,
                     onCompleted: (pin) {
-                      if (pin.length == 6) {
+                      if (pin.length == 4) {
                         setLogin(pin);
                       }
                     },
@@ -157,7 +157,7 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
                     },
                     child: Center(
                       child: Text(
-                        'Set Passcode',
+                        'Forgot Passcode?',
                         style: context.textTheme.s16w500.copyWith(
                           color: AppColors.primaryColor,
                         ),

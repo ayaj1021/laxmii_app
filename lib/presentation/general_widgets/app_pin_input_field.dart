@@ -21,7 +21,7 @@ class AppPinInputField extends StatelessWidget {
       child: Center(
         child: PinCodeTextField(
           appContext: context,
-          length: 6,
+          length: 4,
           controller: otpController,
           keyboardType: TextInputType.number, // Disable system keyboard
           pinTheme: PinTheme(

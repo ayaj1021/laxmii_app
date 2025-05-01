@@ -11,6 +11,7 @@ import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/notifier/get_ai_insights_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/empty_insights_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/expense_tax_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/laxmi_ai_tab_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/todo_list_section.dart';
@@ -198,17 +199,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           ),
                         ]),
                     const VerticalSpacing(10),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: ExpensesTaxWidget(
-                          aiInsights: aiInsights?.insights ?? [],
-                          subTitle: optimizedAiInsights.entries.map((entry) {
-                            return Text(entry.value[0]);
-                          }).toString(),
-                          // 'Your utility bills were 30% higher this month due to increased energy use',
-                          controller: _pageController,
-                          length: aiInsights?.insights?.length,
-                        )),
+                    (aiInsights?.insights?.isEmpty ?? true)
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            child: const EmptyInsightsWidget(),
+                          )
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            child: ExpensesTaxWidget(
+                              aiInsights: aiInsights?.insights ?? [],
+                              subTitle:
+                                  optimizedAiInsights.entries.map((entry) {
+                                return Text(entry.value[0]);
+                              }).toString(),
+                              controller: _pageController,
+                              length: aiInsights?.insights?.length,
+                            )),
                     const VerticalSpacing(14),
                     const LaxmiAiTabWidget(),
                     const VerticalSpacing(12),

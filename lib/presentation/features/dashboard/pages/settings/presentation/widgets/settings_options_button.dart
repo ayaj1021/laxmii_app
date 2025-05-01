@@ -17,7 +17,7 @@ class SettingsOptionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8), color: colorScheme.cardColor),
       child: Row(

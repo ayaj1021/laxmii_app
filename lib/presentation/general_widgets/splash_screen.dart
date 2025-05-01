@@ -34,11 +34,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     Future.delayed(const Duration(seconds: 4), () async {
       final data = await secureStorage.loadCurrentState();
       final isProfileSetup = await secureStorage.getProfileSetup();
+      final isPinEnabled = await secureStorage.getEnablePin();
       return switch (data) {
         CurrentState.onboarded => context.replaceNamed(LoginView.routeName),
         CurrentState.loggedIn => isProfileSetup
             //  ? context.replaceNamed(Dashboard.routeName)
-            ? context.replaceNamed(FaceIdLogin.routeName)
+            ? context.replaceNamed(
+                isPinEnabled ? FaceIdLogin.routeName : LoginView.routeName)
             : context.replaceNamed(ProfileSetupView.routeName),
         _ => context.replaceNamed(WelcomeScreen.routeName)
         // _ => context.replaceNamed(SignUpView.routeName),

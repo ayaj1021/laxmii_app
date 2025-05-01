@@ -6,13 +6,13 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/empty_todo_list_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/home/presentation/widgets/todo_list_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/get_all_tasks_response.dart';
 import 'package:laxmii_app/presentation/features/todo/data/model/update_task_request.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/delete_task_notifier.dart';
+import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/update_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/todo_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -130,7 +130,8 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.pushReplacementNamed(Dashboard.routeName);
+            ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
+            //context.pushReplacementNamed(Dashboard.routeName);
           },
         );
   }
@@ -150,7 +151,8 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            context.popAndPushNamed(Dashboard.routeName);
+            ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
+            //  context.popAndPushNamed(Dashboard.routeName);
           },
         );
   }
