@@ -217,9 +217,20 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
 
   void _createInventory() async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
-    ref.read(createInventoryNotifier.notifier).createInventory(
-          data: CreateInventoryRequest(
-            type: '$_selectedServiceType',
+    final data = _selectedServiceType == 'Product'
+        ? CreateInventoryRequest(
+            type: '${_selectedServiceType?.toLowerCase()}',
+            productName: _productNameController.text.trim(),
+            description: _descriptionController.text.trim(),
+            quantity: int.parse(_quantityController.text.trim()),
+            sellingPrice: num.parse(_sellingPriceController.text.trim()),
+            costPrice: num.parse(
+              _costPriceController.text.trim(),
+            ),
+            supplierName: _supplierNameController.text.trim(),
+          )
+        : CreateInventoryRequest(
+            type: '${_selectedServiceType?.toLowerCase()}',
             productName: _productNameController.text.trim(),
             description: _descriptionController.text.trim(),
             // quantity: int.parse(_quantityController.text.trim()),
@@ -228,7 +239,9 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
               _costPriceController.text.trim(),
             ),
             //  supplierName: _supplierNameController.text.trim(),
-          ),
+          );
+    ref.read(createInventoryNotifier.notifier).createInventory(
+          data: data,
           onError: (error) {
             context.showError(message: error);
           },

@@ -74,17 +74,6 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
                         Text('Shopify'),
                       ]),
                 ),
-                // const HorizontalSpacing(50),
-                // GestureDetector(
-                //   onTap: () => context.pushNamed(CreateExpenseView.routeName),
-                //   child: const Align(
-                //     alignment: Alignment.centerRight,
-                //     child: Icon(
-                //       Icons.add_circle,
-                //       color: AppColors.primaryColor,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
             const VerticalSpacing(15),
