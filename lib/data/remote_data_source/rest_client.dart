@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:laxmii_app/core/config/env/base_env.dart';
 import 'package:laxmii_app/core/config/env/prod_env.dart';
 import 'package:laxmii_app/core/config/interceptors/header_interceptor.dart';
@@ -15,7 +16,7 @@ import 'package:laxmii_app/presentation/features/ai_chat/data/model/start_new_ch
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_request.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/settings_response.dart';
@@ -56,7 +57,6 @@ import 'package:laxmii_app/presentation/features/login/data/model/get_user_detai
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_image_profile_response.dart';
-import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/set_up_profile_response.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/data/model/setup_profile_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
@@ -95,6 +95,20 @@ import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
 
+class MultipartFileConverter implements JsonConverter<MultipartFile?, dynamic> {
+  const MultipartFileConverter();
+
+  @override
+  MultipartFile? fromJson(dynamic json) {
+    return null; // We typically don't need to convert JSON to MultipartFile
+  }
+
+  @override
+  dynamic toJson(MultipartFile? data) {
+    return data; // Return the MultipartFile directly
+  }
+}
+
 @RestApi()
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
@@ -114,8 +128,22 @@ abstract class RestClient {
   //   @Body() UpdateProfileRequest updtaeProfileRequest,
   // );
 
-  @PUT('/auth/profile/')
-  Future<UpdateProfileResponse> updateProfile(@Body() FormData formData);
+  // @MultiPart()
+  // @POST("/auth/profile/")
+  // Future<UpdateProfileResponse> updateProfile({
+  //   @Part(name: "businessName") required String businessName,
+  //   @Part(name: "phoneNumber") required String phoneNumber,
+  //   @Part(name: "address") required String address,
+  //   @Part(name: "accountName") required String accountName,
+  //   @Part(name: "accountNumber") required String accountNumber,
+  //   @Part(name: "bankName") required String bankName,
+  //   @Part(name: "profilePicture") MultipartFile? profilePicture,
+  // });
+
+  // @PUT('/auth/profile/')
+  // Future<UpdateProfileResponse> updateProfile(
+  //   @Body() FormData formData,
+  // );
   @POST('/auth/verify-otp/')
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
     @Body() VerifyEmailOtpRequest verifyEmailOtpRequest,

@@ -5,6 +5,8 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/utils/date_picker.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/create_quotes_notifier.dart';
@@ -27,8 +29,10 @@ class CreateQuoteView extends ConsumerStatefulWidget {
 }
 
 class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
+  GetUserDetailsResponse? profileResponse;
   @override
   void initState() {
+    getProfile();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getQuoteNoNotifierProvider.notifier).getQuoteNo();
 
@@ -40,6 +44,13 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
   final nameController = TextEditingController();
 
   DateTime? _quoteStartDate;
+
+  void getProfile() async {
+    final profile = await AppDataStorage().getUserDetails();
+    setState(() {
+      profileResponse = profile;
+    });
+  }
 
   Future<void> _quoteStartSelectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -172,6 +183,8 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
         context,
         MaterialPageRoute(
             builder: (_) => QuotePage(
+                  businessName: profileResponse?.profile?.businessName ?? '',
+                  businessAddress: profileResponse?.profile?.address ?? '',
                   clientName: nameController.text.trim(),
                   quoteNo: quotesNo,
                   issueDate: _formatQuoteSelectDate(_quoteStartDate!),

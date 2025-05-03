@@ -34,6 +34,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   late TextEditingController _amountController;
   late TextEditingController _quantityController;
   late TextEditingController _supplierNameController;
+  final _otherExpenseController = TextEditingController();
 
   @override
   void initState() {
@@ -232,6 +233,16 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                 _selectedGeneralExpense = v;
                               });
                             }),
+                if (_selectedGeneralExpense == 'Others')
+                  Column(
+                    children: [
+                      const VerticalSpacing(20),
+                      AddSalesTextField(
+                        hintText: 'Enter other expense',
+                        controller: _otherExpenseController,
+                      ),
+                    ],
+                  ),
                 if (_selectedValue == expenseType[0]) const VerticalSpacing(20),
                 if (_selectedValue == expenseType[0])
                   AddSalesTextField(
@@ -252,30 +263,6 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   hintText: 'Supplier Name',
                   controller: _supplierNameController,
                 ),
-                // const VerticalSpacing(20),
-                // GestureDetector(
-                //   onTap: () => _pickDate(),
-                //   child: Container(
-                //     width: MediaQuery.of(context).size.width,
-                //     padding: const EdgeInsets.symmetric(
-                //         horizontal: 10, vertical: 15),
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(8),
-                //       border: Border.all(
-                //         width: 1.5,
-                //         color: AppColors.primary5E5E5E.withValues(alpha: 0.5),
-                //       ),
-                //     ),
-                //     child: Text(
-                //       _selectedDate == null
-                //           ? 'Select Date'
-                //           : _formatDate(_selectedDate!),
-                //       style: context.textTheme.s12w400.copyWith(
-                //         color: AppColors.primary5E5E5E,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const VerticalSpacing(24),
                 ValueListenableBuilder(
                     valueListenable: _isAddSalesEnabled,
@@ -306,7 +293,9 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
             expenseType: '${_selectedValue?.toLowerCase()}',
             expense: _selectedValue == expenseType[0]
                 ? '${_selectedExpense?.productName}'
-                : '$_selectedGeneralExpense',
+                : _selectedGeneralExpense == 'Others'
+                    ? _otherExpenseController.text.trim()
+                    : '$_selectedGeneralExpense',
             supplierName: _supplierNameController.text.trim(),
             quantity: _selectedValue == expenseType[0]
                 ? int.parse(_quantityController.text.trim())

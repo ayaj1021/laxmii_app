@@ -226,7 +226,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CashFlowYearChart extends StatelessWidget {

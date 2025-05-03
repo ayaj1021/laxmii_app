@@ -89,17 +89,6 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
     _bankController.text = profile.bankName ?? '';
   }
 
-  // @override
-  // void dispose() {
-  //   _businessNameController.dispose();
-  //   _phoneNumberController.dispose();
-  //   _addressController.dispose();
-  //   _accountNameController.dispose();
-  //   _accountNumberController.dispose();
-  //   _bankController.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final userDetails = ref.watch(getUserDetailsNotifier.select((v) => v.data));

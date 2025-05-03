@@ -6,7 +6,7 @@ import 'package:laxmii_app/core/config/base_response/base_response.dart';
 import 'package:laxmii_app/core/config/exception/app_exception.dart';
 import 'package:laxmii_app/data/remote_data_source/rest_client.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_request.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
 
 class GetCashFlowRepository {
   GetCashFlowRepository(this._restClient);

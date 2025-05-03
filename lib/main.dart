@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laxmii_app/core/navigation/router.dart';
 import 'package:laxmii_app/core/theme/app_theme.dart';
 import 'package:laxmii_app/core/theme/theme_provider.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_overlay.dart';
 
 void main() {
@@ -19,6 +20,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _controller = OverLayController();
+
+  bool? appTheme;
+
+  @override
+  void initState() {
+    getAppTheme();
+    super.initState();
+  }
+
+  getAppTheme() async {
+    final theme = await AppDataStorage().getAppTheme();
+    setState(() {
+      appTheme = theme;
+    });
+  }
 
   @override
   void dispose() {
@@ -45,7 +61,7 @@ class _MyAppState extends State<MyApp> {
                 child: AppOverLay(
                   controller: _controller,
                   child: MaterialApp(
-                    theme: isLightTheme
+                    theme: appTheme ?? isLightTheme
                         ? AppThemes.lightTheme()
                         : AppThemes.darkTheme(),
                     //  darkTheme: AppThemes.darkTheme(),

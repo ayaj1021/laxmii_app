@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/presentation/features/ai_insights/presentation/pages/ai_expense_view.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/pages/ai_sales_insights.dart';
-import 'package:laxmii_app/presentation/features/ai_insights/presentation/pages/all_expense_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 

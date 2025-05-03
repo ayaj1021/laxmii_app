@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
-import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
@@ -38,14 +36,6 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
   void initState() {
     super.initState();
     getUserName();
-    // Automatically trigger authentication when the screen is loaded
-    // _authenticate();
-    //  auth = LocalAuthentication();
-    // auth.isDeviceSupported().then((bool isSupported) {
-    //   setState(() {
-    //     // _supportState = isSupported;
-    //   });
-    // });
   }
 
   String userName = '';
@@ -78,27 +68,6 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
     }
   }
 
-  // Future<void> _authenticate() async {
-  //   try {
-  //     bool authenticated = await auth.authenticate(
-  //         localizedReason: 'Please scan to authenticate',
-  //         options: const AuthenticationOptions(
-  //           stickyAuth: true,
-  //           biometricOnly: false,
-  //           useErrorDialogs: true,
-  //         ));
-
-  //     if (mounted) {
-  //       authenticated
-  //           ? _login()
-  //           : context.pushReplacementNamed(LoginView.routeName);
-  //     }
-
-  //     //context.pushReplacementNamed(LoginView.routeName);
-  //   } on PlatformException catch (e) {
-  //     log(e.toString());
-  //   }
-  // }
   void setLogin(String pin) {
     if (userPin == pin) {
       _login();
@@ -151,19 +120,20 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
                     onKeyTap: _onKeyboardTap,
                     onDelete: _onDelete,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(SetupPinPage.routeName);
-                    },
-                    child: Center(
-                      child: Text(
-                        'Forgot Passcode?',
-                        style: context.textTheme.s16w500.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                  )
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     clearPin();
+                  //     context.pushNamed(SetupPinPage.routeName);
+                  //   },
+                  //   child: Center(
+                  //     child: Text(
+                  //       'Forgot Passcode?',
+                  //       style: context.textTheme.s16w500.copyWith(
+                  //         color: AppColors.primaryColor,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             ),
@@ -171,6 +141,10 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
         ),
       ),
     );
+  }
+
+  clearPin() async {
+    await AppDataStorage().clearStoredPin();
   }
 
   void _login() async {

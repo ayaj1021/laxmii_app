@@ -1,6 +1,6 @@
 import 'package:laxmii_app/core/config/network_utils/async_response.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
 
 class GetCashFlowState {
   final LoadState loadState;

@@ -163,7 +163,9 @@ class AppUtils {
           await launchUrl(fallbackUri, mode: LaunchMode.externalApplication);
           launched = true;
         }
-      } catch (e) {}
+      } catch (e) {
+        log(e.toString());
+      }
     }
 
     // If still not launched, try opening the Play Store/App Store

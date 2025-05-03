@@ -8,8 +8,10 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_new_product_widget.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_widget.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/delete_quotes_notifier.dart';
@@ -35,8 +37,10 @@ class QuoteDetailsView extends ConsumerStatefulWidget {
 }
 
 class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
+  GetUserDetailsResponse? profileResponse;
   @override
   void initState() {
+    getProfile();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref
           .read(getSingleQuoteNotifierProvider.notifier)
@@ -47,6 +51,13 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
       calculateAmounts();
     });
     super.initState();
+  }
+
+  void getProfile() async {
+    final profile = await AppDataStorage().getUserDetails();
+    setState(() {
+      profileResponse = profile;
+    });
   }
 
   num totalAmount = 0.0; // Total amount
@@ -246,6 +257,10 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                       LaxmiiSendButton(
                           onTap: () {
                             generateQuotePdf(
+                              businessName:
+                                  profileResponse?.profile?.businessName ?? '',
+                              businessAddress:
+                                  profileResponse?.profile?.address ?? '',
                               clientName:
                                   quoteDetails?.customerName?.capitalize ?? '',
                               quotesNo: quoteDetails?.quoteNumber ?? '',
@@ -276,12 +291,16 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
       {required String quotesNo,
       required String clientName,
       required String quoteIssueDate,
+      required String businessName,
+      required String businessAddress,
       required String quoteDueDate,
       required List<ProductItem> items}) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (_) => QuotePage(
+                  businessName: businessName,
+                  businessAddress: businessAddress,
                   clientName: clientName,
                   quoteNo: quotesNo,
                   issueDate: quoteIssueDate,

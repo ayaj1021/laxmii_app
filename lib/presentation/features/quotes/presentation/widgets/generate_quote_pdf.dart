@@ -15,11 +15,15 @@ class QuotePage extends StatefulWidget {
       required this.quoteNo,
       required this.issueDate,
       required this.dueDate,
-      required this.items});
+      required this.items,
+      required this.businessName,
+      required this.businessAddress});
   final String clientName;
   final String quoteNo;
   final String issueDate;
   final String dueDate;
+  final String businessName;
+  final String businessAddress;
   final List<ProductItem> items;
 
   @override
@@ -83,23 +87,35 @@ class _QuotePageState extends State<QuotePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header with logo and company details
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'QUOTE',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.end,
-                //   children: [
-                //     Text('Ellington Wood Decor'),
-                //     Text('36 Terrick Rd, Ellington PE18 2NT, United Kingdom'),
-                //   ],
-                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Company Name: ${widget.businessName}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      'Address: ${widget.businessAddress}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class AppPinInputField extends StatelessWidget {
@@ -15,12 +14,13 @@ class AppPinInputField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
-        color: colorScheme.cardColor,
+        // color: colorScheme.cardColor,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
         child: PinCodeTextField(
           appContext: context,
+          backgroundColor: Colors.transparent,
           length: 4,
           controller: otpController,
           keyboardType: TextInputType.number, // Disable system keyboard
@@ -29,12 +29,12 @@ class AppPinInputField extends StatelessWidget {
             borderRadius: BorderRadius.circular(13),
             // fieldHeight: 50,
             fieldWidth: 45,
-            activeFillColor: Colors.white,
-            selectedFillColor: Colors.white,
+            activeFillColor: colorScheme.cardColor,
+            selectedFillColor: colorScheme.cardColor,
             inactiveFillColor: Colors.grey[200]!,
-            activeColor: Colors.black,
-            selectedColor: Colors.black,
-            inactiveColor: AppColors.black,
+            activeColor: colorScheme.cardColor,
+            selectedColor: colorScheme.cardColor,
+            inactiveColor: colorScheme.cardColor,
           ),
           onChanged: (value) {},
 

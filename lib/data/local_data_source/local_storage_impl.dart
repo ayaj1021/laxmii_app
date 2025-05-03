@@ -96,13 +96,13 @@ class AppDataStorage {
     return value == 'true'; // Convert the string back to a boolean
   }
 
-  Future<void> setAppTheme(String key, bool value) async {
-    await _storage.write(key: key, value: value.toString());
+  Future<void> setAppTheme(bool value) async {
+    await _storage.write(key: 'app_theme', value: value.toString());
   }
 
 // Retrieve the boolean value
-  Future<bool> getAppTheme(String key) async {
-    final value = await _storage.read(key: key);
+  Future<bool> getAppTheme() async {
+    final value = await _storage.read(key: 'app_theme');
     return value == 'true'; // Convert the string back to a boolean
   }
 
@@ -168,6 +168,10 @@ class AppDataStorage {
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'refresh_token');
     await _storage.delete(key: 'remember_me');
+  }
+
+  Future<void> clearStoredPin() async {
+    await _storage.delete(key: 'user_pin');
   }
 
   Future<void> saveResetPasswordToken(String token) async {

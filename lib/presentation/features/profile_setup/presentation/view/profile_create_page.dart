@@ -46,13 +46,14 @@ class _ProfileSetupPageState extends ConsumerState<ProfileSetupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Profile Setup',
           style: context.textTheme.s24w400.copyWith(
-            color: AppColors.white,
+            color: colorScheme.colorScheme.onSurface,
           ),
         ),
         Text(

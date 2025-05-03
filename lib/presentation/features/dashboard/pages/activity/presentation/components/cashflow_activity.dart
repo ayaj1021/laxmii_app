@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,9 +82,7 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      log('This is year cash flow ${cashFlowWeekList.length}');
-                    },
+                    onTap: () {},
                     child: Text(
                       'Cashflow',
                       style: context.textTheme.s14w400.copyWith(

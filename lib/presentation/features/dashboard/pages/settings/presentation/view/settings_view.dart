@@ -44,18 +44,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     super.initState();
   }
 
-  getUserId() async {
-    final id = await AppDataStorage().getUserId();
-
-    setState(() {
-      useruId = id ?? '';
-    });
-  }
-
-  bool enablePinSignIn = false;
-
-  void storePinValue(bool val) async {
-    await AppDataStorage().setEnablePin(val);
+  getAppTheme(bool value) async {
+    await AppDataStorage().setAppTheme(value);
   }
 
   @override
@@ -132,6 +122,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     title: 'Change Theme',
                     onChanged: (v) {
                       ref.read(themeProvider.notifier).state = v;
+                      getAppTheme(isLightTheme);
                     },
                     value: isLightTheme,
                   ),
@@ -209,16 +200,6 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                         settings?.settings?.notifications?.performanceInsight ??
                             false,
                   ),
-                  const VerticalSpacing(10),
-                  NotificationsOptionsWidget(
-                      title: 'Enable Pin Sign in',
-                      onChanged: (v) {
-                        setState(() {
-                          enablePinSignIn = v;
-                        });
-                        storePinValue(v);
-                      },
-                      value: enablePinSignIn),
                   const VerticalSpacing(6),
                   GestureDetector(
                     onTap: () {

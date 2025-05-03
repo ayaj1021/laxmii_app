@@ -8,45 +8,6 @@ import 'package:laxmii_app/presentation/features/manage_account/data/model/updat
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_profile_response.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/repository/update_profile_repository.dart';
 
-// class SetupProfileNotifier
-//     extends AutoDisposeNotifier<BaseState<UpdateProfileResponse>> {
-//   SetupProfileNotifier();
-
-//   late UpdateProfileRepository _updateProfileRepository;
-
-//   @override
-//   BaseState<UpdateProfileResponse> build() {
-//     _updateProfileRepository = ref.read(updateProfileRepositoryProvider);
-
-//     return BaseState<UpdateProfileResponse>.initial();
-//   }
-
-//   Future<void> updateProfile({
-//     required UpdateProfileRequest data,
-//     required void Function(String error) onError,
-//     required void Function(String message) onSuccess,
-//   }) async {
-//     state = state.copyWith(state: LoadState.loading);
-
-//     try {
-//       final value = await _updateProfileRepository.updateProfile(data);
-//       debugLog(data);
-//       if (!value.status) throw value.message.toException;
-
-//       state = state.copyWith(state: LoadState.idle, data: value.data);
-
-//       await AppDataStorage().storeProfile(value.data!);
-
-//       onSuccess(
-//         value.message ?? 'Profile updated successfully',
-//       );
-//     } catch (e) {
-//       onError(e.toString());
-//       state = state.copyWith(state: LoadState.idle);
-//     }
-//   }
-// }
-
 class SetupProfileNotifier
     extends AutoDisposeNotifier<BaseState<UpdateProfileResponse>> {
   SetupProfileNotifier();
@@ -61,15 +22,15 @@ class SetupProfileNotifier
 
   Future<void> updateProfile({
     required UpdateProfileRequest data,
-    required String imagePath, // 👈 Accept image path here
+    required String imagePath,
     required void Function(String error) onError,
     required void Function(String message) onSuccess,
   }) async {
     state = state.copyWith(state: LoadState.loading);
 
     try {
-      final value = await _updateProfileRepository.updateImage(
-          data, imagePath); // 👈 Pass imagePath
+      // This will now use our manually implemented update image method
+      final value = await _updateProfileRepository.updateImage(data, imagePath);
       debugLog(data);
 
       if (!value.status) throw value.message.toException;

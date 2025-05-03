@@ -192,6 +192,8 @@
 //
 //     final getCashFlowResponse = getCashFlowResponseFromJson(jsonString);
 
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/cashflow_response.dart';
+
 class CashflowResponse {
   final bool? status;
   final List<MonthlyCashflow>? cashflow;
@@ -231,9 +233,9 @@ class MonthlyCashflow {
 }
 
 class MonthlyData {
-  final int? invoice;
-  final int? expense;
-  final int? shopify;
+  final num? invoice;
+  final num? expense;
+  final num? shopify;
 
   MonthlyData({this.invoice, this.expense, this.shopify});
 
@@ -257,7 +259,7 @@ class MonthlyData {
 class GetCashFlowResponse {
   final bool? status;
   final List<MonthlyCashflow>? cashflow;
-  final List<CashFlowWeekData>? cashWeekflow;
+  final List<WeeklyCashflowData>? cashWeekflow;
 
   GetCashFlowResponse({
     this.status,
@@ -268,7 +270,7 @@ class GetCashFlowResponse {
   GetCashFlowResponse copyWith(
           {bool? status,
           List<MonthlyCashflow>? cashflow,
-          List<CashFlowWeekData>? cashWeekflow}) =>
+          List<WeeklyCashflowData>? cashWeekflow}) =>
       GetCashFlowResponse(
         status: status ?? this.status,
         cashflow: cashflow ?? this.cashflow,
@@ -288,7 +290,7 @@ class GetCashFlowResponse {
             .toList(),
 
         cashWeekflow: (json['cashflow'] as List<dynamic>?)
-            ?.map((e) => CashFlowWeekData.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => WeeklyCashflowData.fromJson(e as Map<String, dynamic>))
             .toList(),
         // cashWeekflow: json["cashflow"] == null
         //     ? []

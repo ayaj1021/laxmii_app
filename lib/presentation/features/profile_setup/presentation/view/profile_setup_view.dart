@@ -61,6 +61,7 @@ class _ProfileSetupViewState extends ConsumerState<ProfileSetupView> {
     );
     // final countryList =
     //     ref.watch(getCountriesNotifier.select((v) => v.data ?? []));
+
     return Scaffold(
       body: PageLoader(
         isLoading: isLoading,

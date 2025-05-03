@@ -1,28 +1,28 @@
-class GetCashFlowResponse {
+class GetWeekCashFlowResponse {
   final bool? status;
-  final List<CashflowResponseData>? cashflow;
+  final List<WeeklyCashflowData>? cashflow;
 
-  GetCashFlowResponse({
+  GetWeekCashFlowResponse({
     this.status,
     this.cashflow,
   });
 
-  GetCashFlowResponse copyWith({
+  GetWeekCashFlowResponse copyWith({
     bool? status,
-    List<CashflowResponseData>? cashflow,
+    List<WeeklyCashflowData>? cashflow,
   }) =>
-      GetCashFlowResponse(
+      GetWeekCashFlowResponse(
         status: status ?? this.status,
         cashflow: cashflow ?? this.cashflow,
       );
 
-  factory GetCashFlowResponse.fromJson(Map<String, dynamic> json) =>
-      GetCashFlowResponse(
+  factory GetWeekCashFlowResponse.fromJson(Map<String, dynamic> json) =>
+      GetWeekCashFlowResponse(
         status: json["status"],
         cashflow: json["cashflow"] == null
             ? []
-            : List<CashflowResponseData>.from(
-                json["cashflow"]!.map((x) => CashflowResponseData.fromJson(x))),
+            : List<WeeklyCashflowData>.from(
+                json["cashflow"]!.map((x) => WeeklyCashflowData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,126 +33,139 @@ class GetCashFlowResponse {
       };
 }
 
-class CashflowResponseData {
-  final April? may;
-  final April? june;
-  final April? july;
-  final April? august;
-  final April? september;
-  final April? october;
-  final April? november;
-  final April? december;
-  final April? january;
-  final April? february;
-  final April? march;
-  final April? april;
+class WeeklyCashflowData {
+  final Week? week1;
+  final Week? week2;
+  final Week? week3;
+  final Week? week4;
+  final Week? week5;
 
-  CashflowResponseData({
-    this.may,
-    this.june,
-    this.july,
-    this.august,
-    this.september,
-    this.october,
-    this.november,
-    this.december,
-    this.january,
-    this.february,
-    this.march,
-    this.april,
+  WeeklyCashflowData({
+    this.week1,
+    this.week2,
+    this.week3,
+    this.week4,
+    this.week5,
   });
 
-  CashflowResponseData copyWith({
-    April? may,
-    April? june,
-    April? july,
-    April? august,
-    April? september,
-    April? october,
-    April? november,
-    April? december,
-    April? january,
-    April? february,
-    April? march,
-    April? april,
+  WeeklyCashflowData copyWith({
+    Week? week1,
+    Week? week2,
+    Week? week3,
+    Week? week4,
+    Week? week5,
   }) =>
-      CashflowResponseData(
-        may: may ?? this.may,
-        june: june ?? this.june,
-        july: july ?? this.july,
-        august: august ?? this.august,
-        september: september ?? this.september,
-        october: october ?? this.october,
-        november: november ?? this.november,
-        december: december ?? this.december,
-        january: january ?? this.january,
-        february: february ?? this.february,
-        march: march ?? this.march,
-        april: april ?? this.april,
+      WeeklyCashflowData(
+        week1: week1 ?? this.week1,
+        week2: week2 ?? this.week2,
+        week3: week3 ?? this.week3,
+        week4: week4 ?? this.week4,
+        week5: week5 ?? this.week5,
       );
 
-  factory CashflowResponseData.fromJson(Map<String, dynamic> json) =>
-      CashflowResponseData(
-        may: json["May"] == null ? null : April.fromJson(json["May"]),
-        june: json["June"] == null ? null : April.fromJson(json["June"]),
-        july: json["July"] == null ? null : April.fromJson(json["July"]),
-        august: json["August"] == null ? null : April.fromJson(json["August"]),
-        september: json["September"] == null
-            ? null
-            : April.fromJson(json["September"]),
-        october:
-            json["October"] == null ? null : April.fromJson(json["October"]),
-        november:
-            json["November"] == null ? null : April.fromJson(json["November"]),
-        december:
-            json["December"] == null ? null : April.fromJson(json["December"]),
-        january:
-            json["January"] == null ? null : April.fromJson(json["January"]),
-        february:
-            json["February"] == null ? null : April.fromJson(json["February"]),
-        march: json["March"] == null ? null : April.fromJson(json["March"]),
-        april: json["April"] == null ? null : April.fromJson(json["April"]),
+  factory WeeklyCashflowData.fromJson(Map<String, dynamic> json) =>
+      WeeklyCashflowData(
+        week1: json["Week 1"] == null ? null : Week.fromJson(json["Week 1"]),
+        week2: json["Week 2"] == null ? null : Week.fromJson(json["Week 2"]),
+        week3: json["Week 3"] == null ? null : Week.fromJson(json["Week 3"]),
+        week4: json["Week 4"] == null ? null : Week.fromJson(json["Week 4"]),
+        week5: json["Week 5"] == null ? null : Week.fromJson(json["Week 5"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "May": may?.toJson(),
-        "June": june?.toJson(),
-        "July": july?.toJson(),
-        "August": august?.toJson(),
-        "September": september?.toJson(),
-        "October": october?.toJson(),
-        "November": november?.toJson(),
-        "December": december?.toJson(),
-        "January": january?.toJson(),
-        "February": february?.toJson(),
-        "March": march?.toJson(),
-        "April": april?.toJson(),
+        "Week 1": week1?.toJson(),
+        "Week 2": week2?.toJson(),
+        "Week 3": week3?.toJson(),
+        "Week 4": week4?.toJson(),
+        "Week 5": week5?.toJson(),
       };
 }
 
-class April {
+class Week {
+  final Day? monday;
+  final Day? tuesday;
+  final Day? wednesday;
+  final Day? thursday;
+  final Day? friday;
+  final Day? saturday;
+  final Day? sunday;
+
+  Week({
+    this.monday,
+    this.tuesday,
+    this.wednesday,
+    this.thursday,
+    this.friday,
+    this.saturday,
+    this.sunday,
+  });
+
+  Week copyWith({
+    Day? monday,
+    Day? tuesday,
+    Day? wednesday,
+    Day? thursday,
+    Day? friday,
+    Day? saturday,
+    Day? sunday,
+  }) =>
+      Week(
+        monday: monday ?? this.monday,
+        tuesday: tuesday ?? this.tuesday,
+        wednesday: wednesday ?? this.wednesday,
+        thursday: thursday ?? this.thursday,
+        friday: friday ?? this.friday,
+        saturday: saturday ?? this.saturday,
+        sunday: sunday ?? this.sunday,
+      );
+
+  factory Week.fromJson(Map<String, dynamic> json) => Week(
+        monday: json["Monday"] == null ? null : Day.fromJson(json["Monday"]),
+        tuesday: json["Tuesday"] == null ? null : Day.fromJson(json["Tuesday"]),
+        wednesday:
+            json["Wednesday"] == null ? null : Day.fromJson(json["Wednesday"]),
+        thursday:
+            json["Thursday"] == null ? null : Day.fromJson(json["Thursday"]),
+        friday: json["Friday"] == null ? null : Day.fromJson(json["Friday"]),
+        saturday:
+            json["Saturday"] == null ? null : Day.fromJson(json["Saturday"]),
+        sunday: json["Sunday"] == null ? null : Day.fromJson(json["Sunday"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Monday": monday?.toJson(),
+        "Tuesday": tuesday?.toJson(),
+        "Wednesday": wednesday?.toJson(),
+        "Thursday": thursday?.toJson(),
+        "Friday": friday?.toJson(),
+        "Saturday": saturday?.toJson(),
+        "Sunday": sunday?.toJson(),
+      };
+}
+
+class Day {
   final int? invoice;
   final int? expense;
   final int? shopify;
 
-  April({
+  Day({
     this.invoice,
     this.expense,
     this.shopify,
   });
 
-  April copyWith({
+  Day copyWith({
     int? invoice,
     int? expense,
     int? shopify,
   }) =>
-      April(
+      Day(
         invoice: invoice ?? this.invoice,
         expense: expense ?? this.expense,
         shopify: shopify ?? this.shopify,
       );
 
-  factory April.fromJson(Map<String, dynamic> json) => April(
+  factory Day.fromJson(Map<String, dynamic> json) => Day(
         invoice: json["invoice"],
         expense: json["expense"],
         shopify: json["shopify"],
