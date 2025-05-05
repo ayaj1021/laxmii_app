@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
                 child: AppOverLay(
                   controller: _controller,
                   child: MaterialApp(
-                    theme: appTheme ?? isLightTheme
+                    theme: isLightTheme
                         ? AppThemes.lightTheme()
                         : AppThemes.darkTheme(),
                     //  darkTheme: AppThemes.darkTheme(),

@@ -45,8 +45,10 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
 
   double totalAmount = 0.0;
   double calculateTotalAmount() {
-    return totalAmount =
-        widget.items.fold(0, (sum, item) => sum + (item.quantity * item.price));
+    return totalAmount = widget.items.fold(
+        0,
+        (sum, item) =>
+            sum + ((item.quantity == 0 ? 1 : item.quantity) * item.price));
   }
 
   @override
@@ -154,10 +156,10 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                                   List.generate(widget.items.length, (index) {
                                 final reportData = widget.items[index];
                                 final total =
-                                    '${reportData.quantity * reportData.price}';
+                                    '${(reportData.quantity == 0 ? 1 : reportData.quantity) * reportData.price}';
                                 final rowData = [
                                   (reportData.description),
-                                  '${reportData.quantity}',
+                                  '${reportData.quantity == 0 ? '' : reportData.quantity}',
                                   '${reportData.price}',
                                   ' ${num.parse(total).toStringAsFixed(2)}',
                                 ];

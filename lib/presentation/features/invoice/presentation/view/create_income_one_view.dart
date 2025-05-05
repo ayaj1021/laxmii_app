@@ -118,7 +118,11 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
 
   double calculateTotalAmount() {
     return totalAmount = items.fold(
-        0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
+        0,
+        (sum, item) =>
+            sum +
+            ((item.itemQuantity == 0 ? 1 : item.itemQuantity) *
+                item.itemPrice));
   }
 
   double balanceDue() {
