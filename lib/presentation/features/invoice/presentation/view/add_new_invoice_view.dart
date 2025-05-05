@@ -21,11 +21,11 @@ class AddNewInvoiceView extends ConsumerStatefulWidget {
     required this.item,
     required this.quantity,
     required this.sellingPrice,
-    required this.serviceType,
+    required this.type,
   });
   final String item;
 
-  final String serviceType;
+  final String type;
 
   final int quantity;
   final num sellingPrice;
@@ -118,7 +118,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                   ),
                 ),
               ),
-              if (widget.serviceType == 'product')
+              if (widget.type == 'product')
                 Column(
                   children: [
                     const VerticalSpacing(15),
@@ -134,8 +134,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                 isMoney: true,
                 currency: userCurrency,
                 product: _sellingPriceController,
-                title:
-                    widget.serviceType == 'product' ? 'Selling Price' : 'Price',
+                title: widget.type == 'product' ? 'Selling Price' : 'Price',
                 keyboardType: TextInputType.number,
               ),
               const VerticalSpacing(150),
@@ -147,6 +146,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                       onTap: () {
                         if (_quantityController.text.isEmpty) {
                           final item = ProductItems(
+                            type: widget.type,
                             itemName: widget.item,
                             itemPrice: double.parse(
                                 _sellingPriceController.text.trim()),
@@ -163,6 +163,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                                   'Quantity cannot be higher than existing quantity');
                         } else {
                           final item = ProductItems(
+                            type: widget.type,
                             itemName: widget.item,
                             itemPrice: double.parse(
                                 _sellingPriceController.text.trim()),

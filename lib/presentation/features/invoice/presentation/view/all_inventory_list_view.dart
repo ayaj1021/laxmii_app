@@ -117,7 +117,7 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (_) => AddNewInvoiceView(
-                                              serviceType: data.type ?? '',
+                                              type: data.type ?? '',
                                               item: data.productName ?? '',
                                               quantity: data.quantity ?? 0,
                                               sellingPrice:

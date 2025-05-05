@@ -2,11 +2,13 @@ import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoi
 
 class ProductItems {
   final String itemName;
+  final String type;
   final int itemQuantity;
   final double itemPrice;
 
   ProductItems({
     required this.itemName,
+    required this.type,
     required this.itemPrice,
     required this.itemQuantity,
   });
@@ -15,7 +17,10 @@ class ProductItems {
 extension ProductItemsConverter on ProductItems {
   CreateInvoiceItem toItem() {
     return CreateInvoiceItem(
-        description: itemName, quantity: itemQuantity, price: itemPrice);
+        type: type,
+        description: itemName,
+        quantity: itemQuantity,
+        price: itemPrice);
   }
 }
 

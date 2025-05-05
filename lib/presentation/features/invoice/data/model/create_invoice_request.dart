@@ -61,22 +61,26 @@ class CreateInvoiceRequest {
 
 class CreateInvoiceItem {
   final String description;
+  final String type;
   final num quantity;
   final num price;
 
   CreateInvoiceItem({
     required this.description,
+    required this.type,
     required this.quantity,
     required this.price,
   });
 
   CreateInvoiceItem copyWith({
     String? description,
+    String? type,
     int? quantity,
     double? price,
   }) =>
       CreateInvoiceItem(
         description: description ?? this.description,
+        type: type ?? this.type,
         quantity: quantity ?? this.quantity,
         price: price ?? this.price,
       );
@@ -84,12 +88,14 @@ class CreateInvoiceItem {
   factory CreateInvoiceItem.fromJson(Map<String, dynamic> json) =>
       CreateInvoiceItem(
         description: json["description"],
+        type: json["type"],
         quantity: json["quantity"],
         price: json["price"],
       );
 
   Map<String, dynamic> toJson() => {
         "description": description,
+        "type": type,
         "quantity": quantity,
         "price": price,
       };
