@@ -32,7 +32,8 @@ android {
         applicationId = "com.laxmii.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21
+        minSdk = flutter.minSdkVersion
+        minSdkVersion 23   
         //flutter.minSdkVersion
         targetSdk = 33
         //flutter.targetSdkVersion
@@ -59,6 +60,12 @@ android {
     }
 }
 
+dependencies {
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+}
+
 flutter {
     source = "../.."
 }
+
+apply plugin: 'com.google.gms.google-services'

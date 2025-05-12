@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +13,10 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/google_sign_in_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/google_sign_in_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/remember_me_provider.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/widgets/login_header_section.dart';
@@ -81,15 +84,52 @@ class _LoginViewState extends ConsumerState<LoginView> {
         '538188324651-2gt9uf174mlo5pqdpsc9ubuhe5tf29j3.apps.googleusercontent.com',
   );
 
-  void _googleSignIn() async {
+  Future<void> signInAndSendToken() async {
     try {
-      final GoogleSignInAccount? account = await signIn.signIn();
-      if (account != null) {
-        log('User signed in: ${account.displayName}, ${account.email}');
-        // You can now use account.id, account.email, etc.
-      }
-    } catch (error) {
-      log(error.toString());
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Step 3: Get ID token
+      final idToken = await userCredential.user?.getIdToken();
+      final data = GoogleSignInRequest(idToken: idToken ?? '');
+
+      ref.read(googleSignInNotifier.notifier).googleSignIn(
+            data: data,
+            onError: (error) {
+              context.showError(message: error);
+            },
+            onSuccess: (message, isVerified, isAccountSetup) {
+              context.hideOverLay();
+              context.showSuccess(message: 'Login Successful');
+
+              isVerified == false
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => VerifyEmail(
+                                email: _emailController.text.trim(),
+                                isForgotPassword: false,
+                              )))
+                  : isAccountSetup
+                      ? context.replaceAll(Dashboard.routeName)
+                      //   : context.pushReplacementNamed(Dashboard.routeName);
+                      : context
+                          .pushReplacementNamed(ProfileSetupView.routeName);
+              ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+            },
+          );
+    } catch (e) {
+      log('Error: $e');
     }
   }
 
@@ -99,150 +139,157 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final rememberMe = ref.watch(rememberMeProvider);
     final isLoading =
         ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
-    return PageLoader(
-      isLoading: isLoading,
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 53),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const LoginHeaderSection(),
-                  const VerticalSpacing(50),
-                  LaxmiiEmailField(
-                    controller: _emailController,
-                    backgroundColor: Colors.transparent,
-                    bordercolor: AppColors.primary212121,
-                    hintText: 'Email',
-                    hintStyle: context.textTheme.s14w400.copyWith(
-                        color: AppColors.primary212121,
-                        fontWeight: FontWeight.w300),
-                  ),
-                  const VerticalSpacing(26),
-                  LaxmiiPasswordField(
-                    controller: _passwordController,
-                    hintText: 'Password',
-                    hintStyle: context.textTheme.s14w400.copyWith(
-                        color: colorScheme.colorScheme.onSurface,
-                        fontWeight: FontWeight.w300),
-                    backgroundColor: Colors.transparent,
-                    bordercolor: AppColors.primary212121,
-                  ),
-                  const VerticalSpacing(16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          LaxmiiCheckbox(
-                              isChecked: rememberMe,
-                              onChecked: (value) async {
-                                if (value != null) {
-                                  ref.read(rememberMeProvider.notifier).state =
-                                      !rememberMe;
-                                  await AppDataStorage().saveRememberMe(
-                                      'remember_me', rememberMe);
-                                }
-                              }),
-                          const HorizontalSpacing(10),
-                          Text(
-                            'Remember me',
-                            style: context.textTheme.s14w400.copyWith(
-                              color: colorScheme.colorScheme.onSurface,
+    final isGoogleSignInLoading =
+        ref.watch(googleSignInNotifier.select((v) => v.state.isLoading));
+    return Scaffold(
+      body: PageLoader(
+        isLoading: isLoading,
+        child: PageLoader(
+          isLoading: isGoogleSignInLoading,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 53),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const LoginHeaderSection(),
+                    const VerticalSpacing(50),
+                    LaxmiiEmailField(
+                      controller: _emailController,
+                      backgroundColor: Colors.transparent,
+                      bordercolor: AppColors.primary212121,
+                      hintText: 'Email',
+                      hintStyle: context.textTheme.s14w400.copyWith(
+                          color: AppColors.primary212121,
+                          fontWeight: FontWeight.w300),
+                    ),
+                    const VerticalSpacing(26),
+                    LaxmiiPasswordField(
+                      controller: _passwordController,
+                      hintText: 'Password',
+                      hintStyle: context.textTheme.s14w400.copyWith(
+                          color: colorScheme.colorScheme.onSurface,
+                          fontWeight: FontWeight.w300),
+                      backgroundColor: Colors.transparent,
+                      bordercolor: AppColors.primary212121,
+                    ),
+                    const VerticalSpacing(16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            LaxmiiCheckbox(
+                                isChecked: rememberMe,
+                                onChecked: (value) async {
+                                  if (value != null) {
+                                    ref
+                                        .read(rememberMeProvider.notifier)
+                                        .state = !rememberMe;
+                                    await AppDataStorage().saveRememberMe(
+                                        'remember_me', rememberMe);
+                                  }
+                                }),
+                            const HorizontalSpacing(10),
+                            Text(
+                              'Remember me',
+                              style: context.textTheme.s14w400.copyWith(
+                                color: colorScheme.colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () =>
+                                context.pushNamed(ForgotPassword.routeName),
+                            child: Text(
+                              'Forgot Password?',
+                              style: context.textTheme.s14w400.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () =>
-                              context.pushNamed(ForgotPassword.routeName),
+                        ),
+                      ],
+                    ),
+                    const VerticalSpacing(37),
+                    ValueListenableBuilder(
+                        valueListenable: _isLoginEnabled,
+                        builder: (context, r, c) {
+                          return LaxmiiSendButton(
+                            isEnabled: r,
+                            onTap: () async {
+                              await AppDataStorage().saveUserPassword(
+                                  _passwordController.text.trim());
+                              _login();
+                            },
+                            title: 'Sign In',
+                          );
+                        }),
+                    const VerticalSpacing(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 135.w,
+                          child: Divider(
+                            color: colorScheme.colorScheme.onSurface,
+                          ),
+                        ),
+                        const HorizontalSpacing(7),
+                        Text(
+                          'Or',
+                          style: context.textTheme.s14w400.copyWith(
+                              color: colorScheme.colorScheme.onSurface,
+                              fontWeight: FontWeight.w300),
+                        ),
+                        const HorizontalSpacing(7),
+                        SizedBox(
+                          width: 135.w,
+                          child: Divider(
+                            color: colorScheme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const VerticalSpacing(20),
+                    LaxmiiOutlineSendButton(
+                      onTap: () {
+                        signInAndSendToken();
+                      },
+                      title: 'Continue with Google',
+                      hasBorder: true,
+                      icon: 'assets/icons/google.svg',
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.primary212121,
+                    ),
+                    const VerticalSpacing(150),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don\'t have an account? ',
+                          style: context.textTheme.s14w400.copyWith(
+                              color: colorScheme.colorScheme.onSurface,
+                              fontWeight: FontWeight.w300),
+                        ),
+                        GestureDetector(
+                          onTap: () => context.pushNamed(SignUpView.routeName),
                           child: Text(
-                            'Forgot Password?',
-                            style: context.textTheme.s14w400.copyWith(
+                            'Sign Up',
+                            style: context.textTheme.s14w500.copyWith(
                               color: AppColors.primaryColor,
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const VerticalSpacing(37),
-                  ValueListenableBuilder(
-                      valueListenable: _isLoginEnabled,
-                      builder: (context, r, c) {
-                        return LaxmiiSendButton(
-                          isEnabled: r,
-                          onTap: () async {
-                            await AppDataStorage().saveUserPassword(
-                                _passwordController.text.trim());
-                            _login();
-                          },
-                          title: 'Sign In',
-                        );
-                      }),
-                  const VerticalSpacing(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 135.w,
-                        child: Divider(
-                          color: colorScheme.colorScheme.onSurface,
-                        ),
-                      ),
-                      const HorizontalSpacing(7),
-                      Text(
-                        'Or',
-                        style: context.textTheme.s14w400.copyWith(
-                            color: colorScheme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w300),
-                      ),
-                      const HorizontalSpacing(7),
-                      SizedBox(
-                        width: 135.w,
-                        child: Divider(
-                          color: colorScheme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const VerticalSpacing(20),
-                  LaxmiiOutlineSendButton(
-                    onTap: () {
-                      _googleSignIn();
-                    },
-                    title: 'Continue with Google',
-                    hasBorder: true,
-                    icon: 'assets/icons/google.svg',
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.primary212121,
-                  ),
-                  const VerticalSpacing(150),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don\'t have an account? ',
-                        style: context.textTheme.s14w400.copyWith(
-                            color: colorScheme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w300),
-                      ),
-                      GestureDetector(
-                        onTap: () => context.pushNamed(SignUpView.routeName),
-                        child: Text(
-                          'Sign Up',
-                          style: context.textTheme.s14w500.copyWith(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

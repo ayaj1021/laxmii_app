@@ -91,6 +91,40 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<LoginResponse> googleAuth(GoogleSignInRequest googleRequest) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(googleRequest.toJson());
+    final _options = _setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/auth/google',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LoginResponse _value;
+    try {
+      _value = LoginResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
       VerifyEmailOtpRequest verifyEmailOtpRequest) async {
     final _extra = <String, dynamic>{};
@@ -1810,7 +1844,7 @@ class _RestClient implements RestClient {
       MultipartFile.fromFileSync(
         picture.path,
         filename: picture.path.split(Platform.pathSeparator).last,
-        //    contentType: MediaType.parse('image/jpeg'),
+        // contentType: MediaType.parse('image/jpeg'),
       ),
     ));
     final _options = _setStreamType<UpdateImageProfileResponse>(Options(

@@ -80,6 +80,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   }
 
   String? _selectedServiceType = _serviceType.first;
+  bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +201,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                     valueListenable: _isCreateInventoryEnabled,
                     builder: (context, r, c) {
                       return LaxmiiOutlineSendButton(
-                        //  isEnabled: r,
+                        isEnabled: !_isSubmitting,
                         onTap: () {
                           _validateInventoryInput();
                         },
@@ -216,72 +217,73 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
   }
 
   void _createInventory() async {
-    await ref.read(getAccessTokenNotifier.notifier).accessToken();
-    final data = _selectedServiceType == 'Product'
-        ? CreateInventoryRequest(
-            type: '${_selectedServiceType?.toLowerCase()}',
-            productName: _productNameController.text.trim(),
-            description: _descriptionController.text.trim(),
-            quantity: int.parse(_quantityController.text.trim()),
-            sellingPrice: num.parse(_sellingPriceController.text.trim()),
-            costPrice: num.parse(
-              _costPriceController.text.trim(),
-            ),
-            supplierName: _supplierNameController.text.trim(),
-          )
-        : CreateInventoryRequest(
-            type: '${_selectedServiceType?.toLowerCase()}',
-            productName: _productNameController.text.trim(),
-            description: _descriptionController.text.trim(),
-            // quantity: int.parse(_quantityController.text.trim()),
-            // sellingPrice: num.parse(_sellingPriceController.text.trim()),
-            costPrice: num.parse(
-              _costPriceController.text.trim(),
-            ),
-            //  supplierName: _supplierNameController.text.trim(),
+    try {
+      await ref.read(getAccessTokenNotifier.notifier).accessToken();
+      final data = _selectedServiceType == 'Product'
+          ? CreateInventoryRequest(
+              type: '${_selectedServiceType?.toLowerCase()}',
+              productName: _productNameController.text.trim(),
+              description: _descriptionController.text.trim(),
+              quantity: int.parse(_quantityController.text.trim()),
+              sellingPrice: num.parse(_sellingPriceController.text.trim()),
+              costPrice: num.parse(
+                _costPriceController.text.trim(),
+              ),
+              supplierName: _supplierNameController.text.trim(),
+            )
+          : CreateInventoryRequest(
+              type: '${_selectedServiceType?.toLowerCase()}',
+              productName: _productNameController.text.trim(),
+              description: _descriptionController.text.trim(),
+              // quantity: int.parse(_quantityController.text.trim()),
+              // sellingPrice: num.parse(_sellingPriceController.text.trim()),
+              costPrice: num.parse(
+                _costPriceController.text.trim(),
+              ),
+              //  supplierName: _supplierNameController.text.trim(),
+            );
+      ref.read(createInventoryNotifier.notifier).createInventory(
+            data: data,
+            onError: (error) {
+              context.showError(message: error);
+              _isSubmitting = false;
+              setState(() {});
+            },
+            onSuccess: (message) {
+              context.hideOverLay();
+              context.showSuccess(message: message);
+              ref
+                  .read(getAllInventoryNotifierProvider.notifier)
+                  .getAllInventory();
+
+              context.pop();
+              _isSubmitting = false;
+              setState(() {});
+            },
           );
-    ref.read(createInventoryNotifier.notifier).createInventory(
-          data: data,
-          onError: (error) {
-            context.showError(message: error);
-          },
-          onSuccess: (message) {
-            context.hideOverLay();
-            context.showSuccess(message: message);
-            ref
-                .read(getAllInventoryNotifierProvider.notifier)
-                .getAllInventory();
-            // context.popUntil(ModalRoute.withName(InventoryView.routeName));
-            context.pop();
-          },
-        );
+    } catch (e) {
+      _isSubmitting = false;
+      setState(() {});
+      if (mounted) {
+        context.showError(message: 'Unexpected error');
+      }
+    }
   }
 
   void _validateInventoryInput() {
-    // String quantityText = _quantityController.text;
-    // String sellingPriceText = _sellingPriceController.text;
+    if (_isSubmitting) return;
     String costPriceText = _costPriceController.text;
 
     try {
-      // double quantityValue = double.parse(quantityText);
-      // double sellingPriceValue = double.parse(sellingPriceText);
       double costPriceValue = double.parse(costPriceText);
-
-      // if (quantityValue < 1) {
-      //   context.showError(message: 'Quantity cannot be less than 1');
-
-      //   _quantityController.text = '1';
-      // } else if (sellingPriceValue < 1) {
-      //   context.showError(message: 'Selling price cannot be less than 1');
-
-      //   _sellingPriceController.text = '1';
-      // } else
 
       if (costPriceValue < 1) {
         context.showError(message: 'Cost price cannot be less than 1');
 
         _costPriceController.text = '1';
       } else {
+        _isSubmitting = true;
+        setState(() {});
         _createInventory();
       }
     } catch (e) {

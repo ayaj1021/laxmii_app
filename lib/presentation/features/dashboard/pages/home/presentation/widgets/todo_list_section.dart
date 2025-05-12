@@ -91,10 +91,10 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
                                 child: Column(
                                   children: [
                                     TodoListWidget(
-                                      time: '${data?.time}',
-                                      todoTask: '${data?.title}',
+                                      time: data?.time ?? '',
+                                      todoTask: data?.title ?? '',
                                       taskPriority:
-                                          '${data?.priority} Priority',
+                                          '${data?.priority ?? ''} Priority',
                                       taskPriorityColor: data?.priority == 'Low'
                                           ? AppColors.primaryF94D4D
                                           : AppColors.primary5E5E5E,
@@ -103,7 +103,7 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
                                       isCompleted: data?.completed,
                                       onMarkCompletedTapped: () => updateTask(
                                         taskId: '${data?.id}',
-                                        priority: '${data?.priority}',
+                                        priority: data?.priority ?? '',
                                         completed: true,
                                       ),
                                     ),

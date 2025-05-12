@@ -177,11 +177,12 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                 if (_sellingPriceController.text.isEmpty) {
                   context.showError(message: 'All fields are required');
                 } else {
+                  final quantityText = _quantityController.text.trim();
                   final item = ProductItem(
                     itemName: widget.item,
                     itemPrice:
                         double.parse(_sellingPriceController.text.trim()),
-                    itemQuantity: num.parse(_quantityController.text.trim()),
+                    itemQuantity: num.tryParse(quantityText) ?? 1,
                   );
 
                   Navigator.pop(context, item);

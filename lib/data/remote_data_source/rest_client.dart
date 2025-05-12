@@ -54,6 +54,7 @@ import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoi
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/get_access_token_response.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/get_user_details_response.dart';
+import 'package:laxmii_app/presentation/features/login/data/model/google_sign_in_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_response.dart';
 import 'package:laxmii_app/presentation/features/manage_account/data/model/update_image_profile_response.dart';
@@ -123,27 +124,11 @@ abstract class RestClient {
     @Body() SetupUpProfileRequest setupProfileRequest,
   );
 
-  // @PUT('/auth/profile/')
-  // Future<UpdateProfileResponse> updateProfile(
-  //   @Body() UpdateProfileRequest updtaeProfileRequest,
-  // );
+  @POST('/auth/google')
+  Future<LoginResponse> googleAuth(
+    @Body() GoogleSignInRequest googleRequest,
+  );
 
-  // @MultiPart()
-  // @POST("/auth/profile/")
-  // Future<UpdateProfileResponse> updateProfile({
-  //   @Part(name: "businessName") required String businessName,
-  //   @Part(name: "phoneNumber") required String phoneNumber,
-  //   @Part(name: "address") required String address,
-  //   @Part(name: "accountName") required String accountName,
-  //   @Part(name: "accountNumber") required String accountNumber,
-  //   @Part(name: "bankName") required String bankName,
-  //   @Part(name: "profilePicture") MultipartFile? profilePicture,
-  // });
-
-  // @PUT('/auth/profile/')
-  // Future<UpdateProfileResponse> updateProfile(
-  //   @Body() FormData formData,
-  // );
   @POST('/auth/verify-otp/')
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
     @Body() VerifyEmailOtpRequest verifyEmailOtpRequest,

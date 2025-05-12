@@ -102,7 +102,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
       totalAmount +=
           newItem.itemQuantity * newItem.itemPrice; // Update the total amount
 
-      taxAmount = totalAmount * 0.08;
+      taxAmount = totalAmount * 0.0;
 
       balanceAmount = totalAmount + taxAmount;
     });

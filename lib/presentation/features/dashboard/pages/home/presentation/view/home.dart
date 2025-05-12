@@ -138,18 +138,28 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   border: Border.all(color: AppColors.white)),
                               child: ClipOval(
                                 child: Image(
-                                  image: userDetails?.profile?.profilePicture !=
+                                  image: (userDetails
+                                                  ?.profile?.profilePicture !=
                                               null &&
                                           userDetails!.profile!.profilePicture!
                                               .isNotEmpty
                                       ? CachedNetworkImageProvider(
                                           userDetails.profile!.profilePicture!)
-                                      : userImage.isNotEmpty
-                                          ? NetworkImage(
-                                              userImage) // Changed from Image.network
-                                          : const AssetImage(
-                                                  'assets/images/user_image.png')
-                                              as ImageProvider<Object>,
+                                      : const AssetImage(
+                                          'assets/images/account_image.png')),
+
+                                  // userDetails?.profile?.profilePicture !=
+                                  //             null &&
+                                  //         userDetails!.profile!.profilePicture!
+                                  //             .isNotEmpty
+                                  //     ? CachedNetworkImageProvider(
+                                  //         userDetails.profile!.profilePicture!)
+                                  //     : userImage.isNotEmpty
+                                  //         ? NetworkImage(
+                                  //             userImage) // Changed from Image.network
+                                  //         : const AssetImage(
+                                  //                 'assets/images/user_image.png')
+                                  //             as ImageProvider<Object>,
                                   fit: BoxFit.cover,
                                 ),
                               )),
@@ -208,10 +218,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                             height: MediaQuery.of(context).size.height * 0.2,
                             child: ExpensesTaxWidget(
                               aiInsights: aiInsights?.insights ?? [],
-                              subTitle:
-                                  optimizedAiInsights.entries.map((entry) {
-                                return Text(entry.value[0]);
-                              }).toString(),
+                              subTitle: optimizedAiInsights.entries
+                                  .map((entry) => entry.value.join(', '))
+                                  .join(' | '),
                               controller: _pageController,
                               length: aiInsights?.insights?.length,
                             )),

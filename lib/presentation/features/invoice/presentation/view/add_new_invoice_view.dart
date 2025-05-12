@@ -142,9 +142,11 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                   valueListenable: isAddProductEnabled,
                   builder: (context, r, c) {
                     return LaxmiiOutlineSendButton(
-                      isEnabled: r,
+                      //   isEnabled: r,
                       onTap: () {
-                        if (_quantityController.text.isEmpty) {
+                        if (_sellingPriceController.text.isEmpty) {
+                          context.showError(message: 'Price is required');
+                        } else if (_quantityController.text.isEmpty) {
                           final item = ProductItems(
                             type: widget.type,
                             itemName: widget.item,

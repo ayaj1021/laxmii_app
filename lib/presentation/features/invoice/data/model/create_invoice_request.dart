@@ -75,8 +75,8 @@ class CreateInvoiceItem {
   CreateInvoiceItem copyWith({
     String? description,
     String? type,
-    int? quantity,
-    double? price,
+    num? quantity,
+    num? price,
   }) =>
       CreateInvoiceItem(
         description: description ?? this.description,

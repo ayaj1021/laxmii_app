@@ -217,7 +217,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                         onTap: () {
                           createInvoice();
                         },
-                        title: 'Save',
+                        title: 'Mark as unpaid',
                         // textColor: AppColors.black,
                       ),
                     ],
@@ -240,7 +240,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
               dueDate: widget.dueDate.toString(),
               invoiceNumber: widget.invoiceNumber,
               items: widget.items,
-              totalAmount: widget.totalAmount,
+              totalAmount: totalAmount,
               status: "paid"),
           onError: (error) {
             context.showError(message: error);
@@ -276,7 +276,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
               dueDate: widget.dueDate.toString(),
               invoiceNumber: widget.invoiceNumber,
               items: widget.items,
-              totalAmount: widget.totalAmount,
+              totalAmount: totalAmount,
               status: "unpaid"),
           onError: (error) {
             context.showError(message: error);

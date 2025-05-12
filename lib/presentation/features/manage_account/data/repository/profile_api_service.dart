@@ -73,7 +73,7 @@ final profileApiServiceProvider = Provider<ProfileApiService>((ref) {
 /// You can move this to a separate file
 final dioProvider = Provider<Dio>((ref) {
   // You may want to get these values from your configuration
-  final baseUrl =
+  const baseUrl =
       'https://laxmii.onrender.com'; // Replace with your actual base URL
 
   final dio = Dio(BaseOptions(
