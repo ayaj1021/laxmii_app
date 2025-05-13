@@ -13,6 +13,7 @@ class CreateExpensesRepository {
       CreateExpenseRequest request) async {
     try {
       final res = await _restClient.createExpenses(request);
+
       return BaseResponse(status: true, data: res);
     } on DioException catch (e) {
       return AppException.handleError(e);

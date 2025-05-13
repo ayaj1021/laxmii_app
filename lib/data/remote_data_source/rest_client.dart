@@ -16,6 +16,8 @@ import 'package:laxmii_app/presentation/features/ai_chat/data/model/start_new_ch
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_cashflow_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_graph_details_request.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_graph_details_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_response.dart';
@@ -352,6 +354,11 @@ abstract class RestClient {
   @GET('/api/cashflow/')
   Future<GetCashFlowResponse> getCashFlow(
     @Body() GetCashFlowRequest request,
+  );
+
+  @GET('/api/cashflow/get-cashflow-details')
+  Future<GetIncomeGraphDetailsResponse> getCashFlowDetails(
+    @Body() GetGraphDetailsRequest request,
   );
 
   @GET('/api/inventory/product/detail')

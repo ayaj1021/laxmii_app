@@ -1,8 +1,180 @@
+// import 'dart:developer';
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_animate/flutter_animate.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
+// import 'package:laxmii_app/core/theme/app_colors.dart';
+// import 'package:laxmii_app/core/utils/enums.dart';
+// import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
+// import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_week_chart.dart';
+// import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_year_chart.dart';
+// import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+// import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+
+// class CashFlowActivity extends ConsumerStatefulWidget {
+//   const CashFlowActivity({
+//     super.key,
+//     // required this.cashFlow,
+//   });
+// //  final List<CashFlowData> cashFlow;
+
+//   @override
+//   ConsumerState<ConsumerStatefulWidget> createState() =>
+//       _CashFlowActivityState();
+// }
+
+// class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
+//   @override
+//   void initState() {
+//     WidgetsBinding.instance.addPostFrameCallback((_) async {
+//       await ref
+//           .read(getCashFlowNotifierProvider.notifier)
+//           .getCashFlow(query: 'week');
+
+//       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+//     });
+//     super.initState();
+//   }
+
+//   int _selectedIndex = 0;
+
+//   final String _selectedType = cashFlowOptions.first;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final cashFlowYearList = ref.watch(getCashFlowNotifierProvider
+//         .select((v) => v.getCashFlow.data?.cashflow ?? []));
+
+//     final cashFlowWeekList = ref.watch(getCashFlowNotifierProvider
+//         .select((v) => v.getCashFlow.data?.cashWeekflow ?? []));
+
+//     final isLoading = ref.watch(
+//         getCashFlowNotifierProvider.select((v) => v.loadState.isLoading));
+//     final colorScheme = Theme.of(context);
+//     return Animate(
+//       effects: const [
+//         FadeEffect(
+//           duration: Duration(milliseconds: 500),
+//           begin: 0.5,
+//         ),
+//         ScaleEffect(
+//           begin: Offset(0, 5),
+//           duration: Duration(
+//             milliseconds: 500,
+//           ),
+//         )
+//       ],
+//       child: GestureDetector(
+//         onTap: () {
+//           //  context.pushNamed(TransactionsView.routeName);
+//         },
+//         child: Container(
+//           height: MediaQuery.of(context).size.height * 0.35,
+//           padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
+//           width: double.infinity,
+//           decoration: BoxDecoration(
+//               color: colorScheme.cardColor,
+//               borderRadius: BorderRadius.circular(16)),
+//           child: Column(
+//             children: [
+//               SizedBox(
+//                   width: MediaQuery.sizeOf(context).width * 0.23,
+//                   child: Container(
+//                     padding: const EdgeInsets.symmetric(vertical: 2),
+//                     decoration: BoxDecoration(
+//                         color: const Color(0xFF1B1A1F),
+//                         borderRadius: BorderRadius.circular(8)),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: List.generate(cashFlowOptions.length, (index) {
+//                         return GestureDetector(
+//                           onTap: () {
+//                             setState(() {
+//                               _selectedIndex = index;
+//                             });
+//                             ref
+//                                 .read(getCashFlowNotifierProvider.notifier)
+//                                 .getCashFlow(query: cashFlowOptions[index]);
+//                           },
+//                           child: Container(
+//                             padding: const EdgeInsets.symmetric(
+//                                 vertical: 4, horizontal: 10),
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(6),
+//                               color: _selectedIndex == index
+//                                   ? const Color(0xFF525158)
+//                                   : Colors.transparent,
+//                             ),
+//                             child: Center(
+//                               child: Text(
+//                                 cashFlow[index].toUpperCase(),
+//                                 style: const TextStyle(color: Colors.white
+//                                     //colorScheme.colorScheme.onSurface,
+//                                     ),
+//                               ),
+//                             ),
+//                           ),
+//                         );
+//                       }),
+//                     ),
+//                   )),
+//               const VerticalSpacing(30),
+//               TextButton(
+//                   onPressed: () {
+//                     // log('This is month data ${cashFlowList.map((e) => e).first.monthData.length}');
+//                     log('This empty is month data ${cashFlowYearList.isNotEmpty}');
+
+//                     cashFlowYearList.first.monthData.forEach((month, data) {
+//                       log('Month key: "$month"');
+//                     });
+//                   },
+//                   child: Text('data')),
+//               isLoading
+//                   ? const Center(
+//                       child: CircularProgressIndicator(
+//                         color: AppColors.primaryColor,
+//                       ),
+//                     )
+//                   : cashFlowYearList.isEmpty
+//                       ? Column(
+//                           children: [
+//                             Text(
+//                               'No Activity yet',
+//                               style: context.textTheme.s16w400.copyWith(
+//                                 color: AppColors.primary5E5E5E,
+//                               ),
+//                             ),
+//                             const VerticalSpacing(9),
+//                             Text(
+//                               'Create sales and expenses to see activities',
+//                               style: context.textTheme.s14w400.copyWith(
+//                                 color: AppColors.primary5E5E5E,
+//                               ),
+//                             ),
+//                           ],
+//                         )
+//                       : _selectedType == 'week'
+//                           ? CashFlowWeekChart(
+//                               cashWeekFlow: cashFlowWeekList,
+//                             )
+//                           : CashFlowYearChart(
+//                               cashflow: cashFlowYearList,
+//                             ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// final List<String> cashFlowOptions = ['week', 'year'];
+// final List<String> cashFlow = ['w', 'y'];
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:laxmii_app/core/extensions/build_context_extension.dart';
-import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
@@ -10,16 +182,12 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presen
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_week_chart.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_year_chart.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
-import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
-import 'package:laxmii_app/presentation/general_widgets/custom_app_dropdown.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class CashFlowActivity extends ConsumerStatefulWidget {
   const CashFlowActivity({
     super.key,
-    // required this.cashFlow,
   });
-//  final List<CashFlowData> cashFlow;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -30,6 +198,7 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // First load with week data
       await ref
           .read(getCashFlowNotifierProvider.notifier)
           .getCashFlow(query: 'week');
@@ -39,11 +208,12 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
     super.initState();
   }
 
-  String _selectedType = cashFlowOptions.first;
+  int _selectedIndex = 0; // Default to 'week' (index 0)
 
   @override
   Widget build(BuildContext context) {
-    final cashFlowList = ref.watch(getCashFlowNotifierProvider
+    // Get data from providers
+    final cashFlowYearList = ref.watch(getCashFlowNotifierProvider
         .select((v) => v.getCashFlow.data?.cashflow ?? []));
 
     final cashFlowWeekList = ref.watch(getCashFlowNotifierProvider
@@ -51,7 +221,12 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
 
     final isLoading = ref.watch(
         getCashFlowNotifierProvider.select((v) => v.loadState.isLoading));
+
+    // Get current selected type
+    final selectedType = cashFlowOptions[_selectedIndex];
+
     final colorScheme = Theme.of(context);
+
     return Animate(
       effects: const [
         FadeEffect(
@@ -65,94 +240,106 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
           ),
         )
       ],
-      child: GestureDetector(
-        onTap: () {
-          context.pushNamed(TransactionsView.routeName);
-        },
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.35,
-          padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: colorScheme.cardColor,
-              borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'Cashflow',
-                      style: context.textTheme.s14w400.copyWith(
-                        color: colorScheme.colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.23,
-                    child: CustomDropdown(
-                      value: _selectedType,
-                      items: cashFlowOptions
-                          .map(
-                            (e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e.capitalize),
+      child: Container(
+        height: MediaQuery.of(context).size.height *
+            0.4, // Increased height for better chart visibility
+        padding: const EdgeInsets.symmetric(vertical: 19, horizontal: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: colorScheme.cardColor,
+            borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Toggle control for week/year
+            SizedBox(
+                width: MediaQuery.sizeOf(context).width * 0.23,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF1B1A1F),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(cashFlowOptions.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedIndex = index;
+                          });
+                          ref
+                              .read(getCashFlowNotifierProvider.notifier)
+                              .getCashFlow(query: cashFlowOptions[index]);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: _selectedIndex == index
+                                ? const Color(0xFF525158)
+                                : Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              cashFlow[index].toUpperCase(),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedType = value ?? '';
-                        });
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                )),
+            const VerticalSpacing(20), // Reduced spacing
 
-                        ref
-                            .read(getCashFlowNotifierProvider.notifier)
-                            .getCashFlow(query: value.toString());
-                      },
-                    ),
-                  )
-                ],
-              ),
-              const VerticalSpacing(30),
-              isLoading
+            // Main content area - Loading, empty state, or chart
+            Expanded(
+              child: isLoading
                   ? const Center(
                       child: CircularProgressIndicator(
                         color: AppColors.primaryColor,
                       ),
                     )
-                  : cashFlowList.isEmpty
-                      ? Column(
-                          children: [
-                            Text(
-                              'No Activity yet',
-                              style: context.textTheme.s16w400.copyWith(
-                                color: AppColors.primary5E5E5E,
-                              ),
-                            ),
-                            const VerticalSpacing(9),
-                            Text(
-                              'Create sales and expenses to see activities',
-                              style: context.textTheme.s14w400.copyWith(
-                                color: AppColors.primary5E5E5E,
-                              ),
-                            ),
-                          ],
-                        )
-                      : _selectedType == 'week'
-                          ? CashFlowWeekChart(
+                  : selectedType == 'week'
+                      ? cashFlowWeekList.isEmpty
+                          ? _buildEmptyState(context)
+                          : CashFlowWeekChart(
                               cashWeekFlow: cashFlowWeekList,
                             )
+                      : cashFlowYearList.isEmpty
+                          ? _buildEmptyState(context)
                           : CashFlowYearChart(
-                              cashflow: cashFlowList,
+                              cashflow: cashFlowYearList,
                             ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'No Activity yet',
+          style: context.textTheme.s16w400.copyWith(
+            color: AppColors.primary5E5E5E,
+          ),
+        ),
+        const VerticalSpacing(9),
+        Text(
+          'Create sales and expenses to see activities',
+          style: context.textTheme.s14w400.copyWith(
+            color: AppColors.primary5E5E5E,
+          ),
+        ),
+      ],
     );
   }
 }
 
 final List<String> cashFlowOptions = ['week', 'year'];
+final List<String> cashFlow = ['w', 'y'];

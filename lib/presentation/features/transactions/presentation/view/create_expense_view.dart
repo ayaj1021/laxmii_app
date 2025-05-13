@@ -34,7 +34,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   late TextEditingController _amountController;
   late TextEditingController _quantityController;
   late TextEditingController _supplierNameController;
-  final _otherExpenseController = TextEditingController();
+  late TextEditingController _expenseNameController;
 
   @override
   void initState() {
@@ -47,6 +47,8 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
     });
     _amountController = TextEditingController()..addListener(_validateInput);
     _quantityController = TextEditingController()..addListener(_validateInput);
+    _expenseNameController = TextEditingController()
+      ..addListener(_validateInput);
     _supplierNameController = TextEditingController()
       ..addListener(_validateInput);
     super.initState();
@@ -55,16 +57,22 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   String? _selectedValue;
   Inventory? _selectedExpense;
   String? _selectedGeneralExpense;
+  String? _selectedRecurringType;
+  String? _selectedYear;
+  String? _selectedMonth;
+  String? _selectedDay;
 
   void _validateInput() {
     _isAddSalesEnabled.value = _selectedValue != null &&
         _amountController.text.isNotEmpty &&
+        _expenseNameController.text.isNotEmpty &&
         _supplierNameController.text.isNotEmpty;
   }
 
   @override
   void dispose() {
     _amountController.dispose();
+    _expenseNameController.dispose();
     _supplierNameController.dispose();
     super.dispose();
   }
@@ -78,44 +86,39 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
       userCurrency = currency ?? '\$';
     });
   }
-  // DateTime? _selectedDate;
 
-  // String _formatDate(DateTime date) {
-  //   return DateFormat('MMM d, yyyy').format(date);
-  // }
-
-  // void _pickDate() async {
-  //   final DateTime? picked = await selectDate(
-  //     context: context,
-  //     selectedDate: _selectedDate,
-  //   );
-
-  //   if (picked != null) {
-  //     setState(() {
-  //       _selectedDate = picked;
-  //     });
-  //   }
-  // }
-
-  final List<String> expensesTypeList = const {
-    'Rent',
-    'Electricity',
-    'Utilities',
-    'Advertising',
-    'Maintenance',
-    'Transportation',
-    'Salary',
-    'Water',
-    'Office Supplies',
-    'Fuel',
-    'Marketing',
-    'Others',
-  }.toList();
+  final List<String> expensesTypeList = const [
+    'One TIme',
+    'Recurring',
+  ];
 
   final List<String> expenseType = [
     'Inventory',
     'General Expenses',
   ];
+
+  final List<String> recurringType = [
+    'Monthly',
+    'Yearly',
+  ];
+
+  final List<String> years =
+      List.generate(10, (index) => '${DateTime.now().year + index}');
+  final List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  final List<String> days = List.generate(31, (index) => '${index + 1}');
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +219,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                           )
                         : CustomDropdown(
                             value: _selectedGeneralExpense,
-                            hintText: 'Select Expense',
+                            hintText: 'Expense Type',
                             items: expensesTypeList.map((item) {
                               return DropdownMenuItem(
                                 value: item,
@@ -233,14 +236,133 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                 _selectedGeneralExpense = v;
                               });
                             }),
-                if (_selectedGeneralExpense == 'Others')
+                if (_selectedGeneralExpense == 'Recurring')
                   Column(
                     children: [
                       const VerticalSpacing(20),
-                      AddSalesTextField(
-                        hintText: 'Enter other expense',
-                        controller: _otherExpenseController,
-                      ),
+                      CustomDropdown(
+                          value: _selectedRecurringType,
+                          hintText: 'Recurring Type',
+                          items: recurringType.map((item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: context.textTheme.s12w400.copyWith(
+                                  color: AppColors.primary5E5E5E,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (v) {
+                            setState(() {
+                              _selectedRecurringType = v;
+
+                              _selectedYear = null;
+                              _selectedMonth = null;
+                              _selectedDay = null;
+                            });
+                          }),
+                      const VerticalSpacing(20),
+                      if (_selectedRecurringType != null)
+                        _selectedRecurringType == 'Monthly'
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.3,
+                                    child: CustomDropdown(
+                                      value: _selectedMonth,
+                                      hintText: 'Month',
+                                      items: months
+                                          .map((month) => DropdownMenuItem(
+                                              value: month, child: Text(month)))
+                                          .toList(),
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _selectedMonth = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.3,
+                                    child: CustomDropdown(
+                                      value: _selectedDay,
+                                      hintText: 'Day',
+                                      items: days
+                                          .map((day) => DropdownMenuItem(
+                                              value: day, child: Text(day)))
+                                          .toList(),
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _selectedDay = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.3,
+                                    child: CustomDropdown(
+                                      value: _selectedYear,
+                                      hintText: 'Year',
+                                      items: years
+                                          .map((year) => DropdownMenuItem(
+                                              value: year, child: Text(year)))
+                                          .toList(),
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _selectedYear = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.3,
+                                    child: CustomDropdown(
+                                      value: _selectedMonth,
+                                      hintText: 'Month',
+                                      items: months
+                                          .map((month) => DropdownMenuItem(
+                                              value: month, child: Text(month)))
+                                          .toList(),
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _selectedMonth = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.3,
+                                    child: CustomDropdown(
+                                      value: _selectedDay,
+                                      hintText: 'Day',
+                                      items: days
+                                          .map((day) => DropdownMenuItem(
+                                              value: day, child: Text(day)))
+                                          .toList(),
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _selectedDay = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
                     ],
                   ),
                 if (_selectedValue == expenseType[0]) const VerticalSpacing(20),
@@ -250,6 +372,11 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                     controller: _quantityController,
                     keyboardType: TextInputType.number,
                   ),
+                const VerticalSpacing(20),
+                AddSalesTextField(
+                  hintText: 'Expense name',
+                  controller: _expenseNameController,
+                ),
                 const VerticalSpacing(20),
                 AddSalesTextField(
                   hintText: 'Total Amount',
@@ -293,14 +420,18 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
             expenseType: '${_selectedValue?.toLowerCase()}',
             expense: _selectedValue == expenseType[0]
                 ? '${_selectedExpense?.productName}'
-                : _selectedGeneralExpense == 'Others'
-                    ? _otherExpenseController.text.trim()
-                    : '$_selectedGeneralExpense',
+                : _expenseNameController.text.trim(),
+            generalType: _selectedGeneralExpense?.toLowerCase() ?? '',
+            frequency: _selectedRecurringType?.toLowerCase(),
+            day: int.tryParse(_selectedDay ?? ''),
+            month: int.tryParse(_selectedMonth!),
+
+            // _selectedGeneralExpense == 'Others'
+            //     ? _expenseNameController.text.trim()
+            //     : '$_selectedGeneralExpense',
             supplierName: _supplierNameController.text.trim(),
-            quantity: _selectedValue == expenseType[0]
-                ? int.parse(_quantityController.text.trim())
-                : 0,
-            amount: _amountController.text.trim(),
+
+            amount: int.tryParse(_amountController.text.trim()),
           ),
           onError: (error) {
             context.showError(message: error);

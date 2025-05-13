@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
@@ -61,15 +59,13 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
   @override
   initState() {
     super.initState();
-    log('status: ${widget.invoiceStatus}');
   }
 
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(
         updateInvoiceNotifier.select((v) => v.updateInvoiceState.isLoading));
-    // final invoiceId = ref.watch(createInvoiceNotifier
-    //     .select((v) => v.createInvoiceResponse.invoice?.id));
+
     return Scaffold(
       appBar: const LaxmiiAppBar(
         title: 'Invoice Details',

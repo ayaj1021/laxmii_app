@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/base_response/base_response.dart';
@@ -16,7 +14,7 @@ class GetCashFlowRepository {
       GetCashFlowRequest request) async {
     try {
       final res = await _restClient.getCashFlow(request);
-      log('This is cashflow response $res');
+
       return BaseResponse(status: true, data: res);
     } on DioException catch (e) {
       return AppException.handleError(e);

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/invoice_activity.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_details_notifier.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/expense_details_widget.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/income_details_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -16,20 +19,32 @@ class ActivityView extends ConsumerStatefulWidget {
 class _ActivityViewState extends ConsumerState<ActivityView> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await ref
-      //     .read(getCashFlowNotifierProvider.notifier)
-      //     .getCashFlow(query: 'year');
-
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // final cashFlowList = ref.watch(getCashFlowNotifierProvider
     //     .select((v) => v.getCashFlow.data?.cashflow ?? []));
+    final incomeDetails = ref.watch(
+        getCashFlowDetailsNotifierProvider.select((v) => v.data?.income ?? []));
+
+    final expenseDetails = ref.watch(getCashFlowDetailsNotifierProvider
+        .select((v) => v.data?.expenses ?? []));
     final colorScheme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -44,16 +59,26 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
           ),
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             children: [
-              CashFlowActivity(
-                  //   cashFlow: cashFlowList,
-                  ),
-              VerticalSpacing(20),
-              InvoiceActivity()
+              const CashFlowActivity(),
+              const VerticalSpacing(20),
+
+              //  InvoiceActivity()
+              if (incomeDetails.isNotEmpty)
+                IncomeDetailsWidget(
+                  currency: userCurrency,
+                  incomeDetails: incomeDetails,
+                ),
+
+              if (expenseDetails.isNotEmpty)
+                ExpenseDetailsWidget(
+                  currency: userCurrency,
+                  expenseDetails: expenseDetails,
+                )
             ],
           ),
         ),
