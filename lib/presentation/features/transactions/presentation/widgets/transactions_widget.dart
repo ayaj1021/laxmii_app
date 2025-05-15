@@ -10,12 +10,14 @@ class TransactionsWidget extends StatelessWidget {
       required this.expenseName,
       required this.expenseType,
       required this.expenseAmount,
+      this.frequency,
       required this.expenseDate,
       this.amountColor});
   final String expenseName;
   final String expenseType;
   final String expenseAmount;
   final String expenseDate;
+  final String? frequency;
   final Color? amountColor;
 
   @override
@@ -28,6 +30,7 @@ class TransactionsWidget extends StatelessWidget {
         color: colorScheme.cardColor,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
@@ -39,6 +42,18 @@ class TransactionsWidget extends StatelessWidget {
                   color: colorScheme.colorScheme.onSurface,
                 ),
               ),
+              if (frequency != null)
+                Column(
+                  children: [
+                    const VerticalSpacing(5),
+                    Text(
+                      frequency?.capitalize ?? '',
+                      style: context.textTheme.s12w300.copyWith(
+                        color: AppColors.primary5E5E5E,
+                      ),
+                    ),
+                  ],
+                ),
               const VerticalSpacing(5),
               Text(
                 expenseType,

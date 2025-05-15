@@ -96,7 +96,8 @@ class _ConnectSpotifyButtonWidgetState
                                     .trim()
                                     .replaceAll(' ', '-');
                                 final url =
-                                    'https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
+                                    'https://laxmii-latest.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
+                                //     'https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
                                 log('https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}');
                                 // Navigator.push(
                                 //   context,

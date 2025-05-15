@@ -72,7 +72,8 @@ Page resource error:
               debugPrint('blocking navigation to ${request.url}');
               return NavigationDecision.prevent;
             } else if (request.url.contains(
-                'https://laxmii.onrender.com/auth/shopify/callback?')) {
+                'https://laxmii-latest.onrender.com/auth/shopify/callback?')) {
+              //  'https://laxmii.onrender.com/auth/shopify/callback?')) {
               context.pushReplacementNamed(Dashboard.routeName);
             } else {
               debugPrint('allowing navigation to ${request.url}');

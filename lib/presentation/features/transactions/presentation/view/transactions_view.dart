@@ -5,6 +5,7 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/all_transactions_page.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_in_view.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/money_out_page.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/pages/recurring_page.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/pages/spotify_transaction_page.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -24,7 +25,7 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
 
@@ -72,6 +73,7 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
                         Text('Money In'),
                         Text('Money Out'),
                         Text('Shopify'),
+                        Text('Recurring'),
                       ]),
                 ),
               ],
@@ -84,7 +86,8 @@ class _TransactionsViewState extends ConsumerState<TransactionsView>
                   AllTransactionsPage(),
                   MoneyInPage(),
                   MoneyOutPage(),
-                  SpotifyPage()
+                  SpotifyPage(),
+                  RecurringPage(),
                 ],
               ),
             )

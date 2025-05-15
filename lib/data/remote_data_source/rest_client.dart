@@ -87,9 +87,11 @@ import 'package:laxmii_app/presentation/features/transactions/data/model/create_
 import 'package:laxmii_app/presentation/features/transactions/data/model/create_expense_response.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/create_sales_request.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/create_sales_response.dart';
+import 'package:laxmii_app/presentation/features/transactions/data/model/delete_recurring_expense_response.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/get_all_expenses_response.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/get_all_sales_response.dart';
 import 'package:laxmii_app/presentation/features/transactions/data/model/get_all_transactions_response.dart';
+import 'package:laxmii_app/presentation/features/transactions/data/model/get_recurring_expense_response.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/resend_otp_request.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/resend_otp_response.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/verify_email_otp_request.dart';
@@ -291,6 +293,14 @@ abstract class RestClient {
   @GET('/api/sales')
   Future<GetAllSalesResponse> getAllSales();
 
+  @GET('/api/recurring-expense')
+  Future<GetRecurringExpensesResponse> getAllRecurring();
+
+  @DELETE('/api/recurring-expense/{itemId}')
+  Future<DeleteRecurringExpensesResponse> deleteRecurring({
+    @Path() required String itemId,
+  });
+
   @GET('/api/get-quote-no')
   Future<GetQuoteNoResponse> getQuoteNo();
 
@@ -382,7 +392,9 @@ ProviderFamily<Dio, BaseEnv> _dio = Provider.family<Dio, BaseEnv>(
   (ref, env) {
     final dio = Dio();
     // dio.options.baseUrl = 'http://10.0.2.2';
-    dio.options.baseUrl = 'https://laxmii.onrender.com';
+    //This is new url
+    dio.options.baseUrl = 'https://laxmii-latest.onrender.com';
+    //  dio.options.baseUrl = 'https://laxmii.onrender.com';
     // dio.options.baseUrl = 'http://localhost:3000';
     // dio.options.baseUrl = 'https://abakon.onrender.com/api/users';
 
