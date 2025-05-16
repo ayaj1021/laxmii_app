@@ -183,14 +183,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           children: [
                             LaxmiiCheckbox(
                                 isChecked: rememberMe,
-                                onChecked: (value) async {
-                                  if (value != null) {
-                                    ref
-                                        .read(rememberMeProvider.notifier)
-                                        .state = !rememberMe;
-                                    await AppDataStorage().saveRememberMe(
-                                        'remember_me', rememberMe);
-                                  }
+                                onChecked: () async {
+                                  ref.read(rememberMeProvider.notifier).state =
+                                      !rememberMe;
+                                  await AppDataStorage()
+                                      .saveRememberMe(!rememberMe);
                                 }),
                             const HorizontalSpacing(10),
                             Text(

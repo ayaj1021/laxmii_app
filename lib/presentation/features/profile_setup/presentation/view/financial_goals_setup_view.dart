@@ -122,7 +122,7 @@ class FinancialGoalsListWidget extends StatelessWidget {
               )
             ],
           ),
-          LaxmiiCheckbox(isChecked: isChecked, onChecked: onChecked),
+          OnboardLaxmiiCheckbox(isChecked: isChecked, onChecked: onChecked),
         ],
       ),
     );

@@ -204,6 +204,37 @@ class AppUtils {
     // }
   }
 
+  static Future<void> openPdf(String url) async {
+    try {
+      final Uri pdfUrl = Uri.parse(url);
+
+      // Try to launch with external application mode first
+      if (await canLaunchUrl(pdfUrl)) {
+        final bool launched = await launchUrl(
+          pdfUrl,
+          mode: LaunchMode.externalApplication,
+        );
+
+        if (!launched) {
+          // If external launch fails, try with in-app browser
+          final bool inAppLaunched = await launchUrl(
+            pdfUrl,
+            mode: LaunchMode.inAppWebView,
+          );
+
+          if (!inAppLaunched) {
+            throw 'Could not launch $url with any method';
+          }
+        }
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error opening PDF: $e');
+      // Handle the error in UI
+    }
+  }
+
   // Future<void> _openWhatsApp() async {
   //   // Try multiple approaches to open WhatsApp
   //   List<Uri> possibleUris = [

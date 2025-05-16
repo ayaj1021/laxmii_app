@@ -86,13 +86,13 @@ class AppDataStorage {
   }
 
   // Store a boolean value
-  Future<void> saveRememberMe(String key, bool value) async {
-    await _storage.write(key: key, value: value.toString());
+  Future<void> saveRememberMe(bool value) async {
+    await _storage.write(key: 'remember_me', value: value.toString());
   }
 
 // Retrieve the boolean value
-  Future<bool> getRememberMe(String key) async {
-    final value = await _storage.read(key: key);
+  Future<bool> getRememberMe() async {
+    final value = await _storage.read(key: 'remember_me');
     return value == 'true'; // Convert the string back to a boolean
   }
 
@@ -308,6 +308,7 @@ class AppDataStorage {
     bool partialLogout = false,
   }) async {
     if (partialLogout) {
+      await clearToken();
       await clearToken();
       return;
     }

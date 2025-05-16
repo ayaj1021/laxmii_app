@@ -19,6 +19,7 @@ import 'package:laxmii_app/presentation/features/login/presentation/notifier/goo
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
 import 'package:laxmii_app/presentation/features/sign_up/data/model/sign_up_request.dart';
 import 'package:laxmii_app/presentation/features/sign_up/notifier/sign_up_notifier.dart';
+import 'package:laxmii_app/presentation/features/sign_up/presentation/view/privacy_policy_view.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/sign_up_header_section.dart';
 import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/sign_up_input_section.dart';
 import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
@@ -150,7 +151,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                     children: [
                       LaxmiiCheckbox(
                         isChecked: _isChecked,
-                        onChecked: (val) {
+                        onChecked: () {
                           setState(() {
                             _isChecked = !_isChecked;
                           });
@@ -170,6 +171,13 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                                       .copyWith(color: AppColors.primaryColor),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const PdfViewerPage()));
+                                      // AppUtils.openPdf(
+                                      //     'https://www.laxmiiapp.com/t&c.pdf');
                                       // LauncherHelpers.openDSUrl(
                                       //       path: '/terms.html',
                                       //     );
@@ -185,6 +193,11 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                                       .copyWith(color: AppColors.primaryColor),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const PdfViewerPage()));
                                       // LauncherHelpers.openDSUrl(
                                       //                                       path: '/policy.html',
                                       //                                     ),

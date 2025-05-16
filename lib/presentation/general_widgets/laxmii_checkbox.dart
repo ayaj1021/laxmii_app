@@ -8,6 +8,50 @@ class LaxmiiCheckbox extends StatelessWidget {
     super.key,
   });
   final bool isChecked;
+  final void Function() onChecked;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onChecked,
+      child: Container(
+        alignment: Alignment.center,
+        height: isChecked ? 20 : 20,
+        width: isChecked ? 20 : 20,
+
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.primaryColor, // Border color
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(2), // Rounded corners
+        ),
+        child: isChecked == true
+            ? const Center(
+                child: Icon(
+                  Icons.check,
+                  size: 18,
+                  color: AppColors.primaryColor,
+                ),
+              )
+            : const SizedBox.shrink(),
+
+        // Checkbox(
+        //     checkColor: AppColors.primary212121,
+        //     value: isChecked,
+        //     onChanged: onChecked),
+      ),
+    );
+  }
+}
+
+class OnboardLaxmiiCheckbox extends StatelessWidget {
+  const OnboardLaxmiiCheckbox({
+    required this.isChecked,
+    required this.onChecked,
+    super.key,
+  });
+  final bool isChecked;
   final void Function(bool?) onChecked;
 
   @override
@@ -25,10 +69,14 @@ class LaxmiiCheckbox extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(2), // Rounded corners
       ),
-      child: Checkbox(
-          checkColor: AppColors.primary212121,
-          value: isChecked,
-          onChanged: onChecked),
+      child:
+
+          //isChecked ? const Icon(Icons.check) : const SizedBox.shrink(),
+
+          Checkbox(
+              checkColor: AppColors.primary212121,
+              value: isChecked,
+              onChanged: onChecked),
     );
   }
 }
