@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/notifier/get_all_quotes_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/create_quote_view.dart';
@@ -25,6 +26,7 @@ class QuoteView extends ConsumerStatefulWidget {
 class _QuoteViewState extends ConsumerState<QuoteView> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllQuotesNotifierProvider.notifier).getAllQuotes();
 
@@ -33,6 +35,16 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
       navigatePage();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   void navigatePage() async {
@@ -90,7 +102,7 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
                           children: [
                             GetQuotesWidget(
                               quoteTitle: '${data.customerName}',
-                              quoteAmount: '\$${data.totalAmount}',
+                              quoteAmount: '$userCurrency${data.totalAmount}',
                               quoteDate:
                                   formatDateTimeFromString('${data.issueDate}'),
                             ),

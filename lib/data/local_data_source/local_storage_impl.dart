@@ -168,6 +168,11 @@ class AppDataStorage {
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'refresh_token');
     await _storage.delete(key: 'remember_me');
+    // await _storage.delete(key: 'user_email');
+  }
+
+  Future<void> deleteData() async {
+    await _storage.deleteAll();
   }
 
   Future<void> clearStoredPin() async {

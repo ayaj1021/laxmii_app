@@ -18,6 +18,7 @@ class ProductServicesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
       decoration: BoxDecoration(
@@ -45,7 +46,7 @@ class ProductServicesWidget extends StatelessWidget {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-              )
+              ),
             ],
           ),
           Column(
@@ -62,7 +63,7 @@ class ProductServicesWidget extends StatelessWidget {
                 style: context.textTheme.s12w300.copyWith(
                   color: AppColors.primary5E5E5E,
                 ),
-              )
+              ),
             ],
           ),
         ],

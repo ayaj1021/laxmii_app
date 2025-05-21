@@ -1,6 +1,7 @@
 class LoginResponse {
   final bool? status;
   final String? name;
+  final String? message;
   final String? email;
   final bool? isVerified;
   final String? accessToken;
@@ -10,6 +11,7 @@ class LoginResponse {
   LoginResponse({
     this.status,
     this.name,
+    this.message,
     this.email,
     this.isVerified,
     this.accessToken,
@@ -20,6 +22,7 @@ class LoginResponse {
   LoginResponse copyWith({
     bool? status,
     String? name,
+    String? message,
     String? email,
     bool? isVerified,
     String? accessToken,
@@ -29,6 +32,7 @@ class LoginResponse {
       LoginResponse(
         status: status ?? this.status,
         name: name ?? this.name,
+        message: message ?? this.message,
         email: email ?? this.email,
         isVerified: isVerified ?? this.isVerified,
         accessToken: accessToken ?? this.accessToken,
@@ -39,6 +43,7 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         status: json["status"],
         name: json["name"],
+        message: json['message'],
         email: json["email"],
         isVerified: json["isVerified"],
         accessToken: json["accessToken"],

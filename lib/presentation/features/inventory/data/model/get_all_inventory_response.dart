@@ -39,6 +39,7 @@ class Inventory {
   final String? type;
   final String? productName;
   final String? description;
+  final String? supplierName;
   final int? quantity;
   final num? sellingPrice;
   final num? costPrice;
@@ -51,6 +52,7 @@ class Inventory {
     this.type,
     this.productName,
     this.description,
+    this.supplierName,
     this.quantity,
     this.sellingPrice,
     this.costPrice,
@@ -64,6 +66,7 @@ class Inventory {
     String? type,
     String? productName,
     String? description,
+    String? supplierName,
     int? quantity,
     num? sellingPrice,
     num? costPrice,
@@ -76,6 +79,7 @@ class Inventory {
         type: type ?? this.type,
         productName: productName ?? this.productName,
         description: description ?? this.description,
+        supplierName: supplierName ?? this.supplierName,
         quantity: quantity ?? this.quantity,
         sellingPrice: sellingPrice ?? this.sellingPrice,
         costPrice: costPrice ?? this.costPrice,
@@ -89,6 +93,7 @@ class Inventory {
         type: json["type"],
         productName: json["productName"],
         description: json["description"],
+        supplierName: json["supplierName"],
         quantity: json["quantity"],
         sellingPrice: json["sellingPrice"],
         costPrice: json["costPrice"],
@@ -104,6 +109,7 @@ class Inventory {
         "type": type,
         "productName": productName,
         "description": description,
+        "supplierName": supplierName,
         "quantity": quantity,
         "sellingPrice": sellingPrice,
         "costPrice": costPrice,

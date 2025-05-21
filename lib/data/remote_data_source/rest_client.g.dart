@@ -748,6 +748,39 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<DeleteAccountResponse> deleteAccount() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<DeleteAccountResponse>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/auth/delete-user',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DeleteAccountResponse _value;
+    try {
+      _value = DeleteAccountResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<UpdateInvoiceResponse> updateInvoice(
     UpdateInvoiceRequest request, {
     required String invoiceId,
@@ -1946,7 +1979,7 @@ class _RestClient implements RestClient {
       MultipartFile.fromFileSync(
         picture.path,
         filename: picture.path.split(Platform.pathSeparator).last,
-        //   contentType: MediaType.parse('image/jpeg'),
+        // contentType: MediaType.parse('image/jpeg'),
       ),
     ));
     final _options = _setStreamType<UpdateImageProfileResponse>(Options(

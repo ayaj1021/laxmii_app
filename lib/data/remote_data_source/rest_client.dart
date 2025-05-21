@@ -19,6 +19,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/m
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_graph_details_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_graph_details_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/data/model/get_monthly_cashflow_response.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/delete_account_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/logout_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/settings_response.dart';
@@ -221,6 +222,9 @@ abstract class RestClient {
     @Body() LogoutRequest request,
     // @Queries() Map<String, dynamic> queries,
   );
+
+  @DELETE('/auth/delete-user')
+  Future<DeleteAccountResponse> deleteAccount();
 
   @PUT('/api/invoices/{invoiceId}/status')
   Future<UpdateInvoiceResponse> updateInvoice(

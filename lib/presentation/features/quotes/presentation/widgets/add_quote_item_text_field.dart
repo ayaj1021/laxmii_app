@@ -9,9 +9,11 @@ class AddQuoteItemTextField extends StatelessWidget {
       this.isMoney,
       required this.controller,
       this.onChanged,
-      required this.hintText});
+      required this.hintText,
+      required this.currency});
   final String title;
   final String hintText;
+  final String currency;
   final bool? isMoney;
   final TextEditingController controller;
   final Function(String)? onChanged;
@@ -44,7 +46,7 @@ class AddQuoteItemTextField extends StatelessWidget {
             decoration: InputDecoration(
                 prefix: isMoney == true
                     ? Text(
-                        '\$',
+                        currency,
                         style: context.textTheme.s12w500.copyWith(
                           color: colorScheme.colorScheme.onSurface,
                         ),

@@ -28,6 +28,7 @@ class UpdateInventory extends ConsumerStatefulWidget {
       required this.itemId,
       required this.currency,
       required this.serviceType,
+      required this.supplierName,
       super.key});
   final String productName;
   final String productDescription;
@@ -37,6 +38,7 @@ class UpdateInventory extends ConsumerStatefulWidget {
   final String itemId;
   final String currency;
   final String serviceType;
+  final String supplierName;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -49,6 +51,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   late TextEditingController _sellingPriceController;
   late TextEditingController _costPriceController;
   late TextEditingController _quantityController;
+  late TextEditingController _supplierNameController;
 
   @override
   void initState() {
@@ -64,6 +67,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
     _sellingPriceController = TextEditingController(text: widget.sellingPrice);
     _costPriceController = TextEditingController(text: widget.costPrice);
     _quantityController = TextEditingController(text: widget.itemQuantity);
+    _supplierNameController = TextEditingController(text: widget.supplierName);
     _descriptionController =
         TextEditingController(text: widget.productDescription.capitalize);
     super.initState();
@@ -76,6 +80,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
     _sellingPriceController.dispose();
     _costPriceController.dispose();
     _quantityController.dispose();
+    _supplierNameController.dispose();
     super.dispose();
   }
 
@@ -111,12 +116,18 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                     title: 'Description',
                   ),
                   const VerticalSpacing(15),
-                  widget.serviceType == 'Product'
+
+                  widget.serviceType.toLowerCase() == 'product'
                       ? Column(
                           children: [
                             UpdateProductsTextField(
                               product: _quantityController,
                               title: 'Quantity',
+                            ),
+                            const VerticalSpacing(15),
+                            UpdateProductsTextField(
+                              product: _supplierNameController,
+                              title: 'Supplier name',
                             ),
                             const VerticalSpacing(15),
                             UpdateProductsTextField(

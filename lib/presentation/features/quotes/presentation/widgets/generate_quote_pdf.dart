@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
@@ -24,6 +26,7 @@ class QuotePage extends StatefulWidget {
   final String dueDate;
   final String businessName;
   final String businessAddress;
+
   final List<ProductItem> items;
 
   @override
@@ -33,11 +36,22 @@ class QuotePage extends StatefulWidget {
 class _QuotePageState extends State<QuotePage> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       calculateTotalAmount();
     });
     getAddress();
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   double totalAmount = 0.0;
@@ -264,7 +278,12 @@ class _QuotePageState extends State<QuotePage> {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(item.itemQuantity.toString()),
+                                  GestureDetector(
+                                      onTap: () {
+                                        log(item.itemQuantity.toString());
+                                      },
+                                      child:
+                                          Text(item.itemQuantity.toString())),
                                   const VerticalSpacing(8)
                                 ],
                               );
@@ -335,7 +354,7 @@ class _QuotePageState extends State<QuotePage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     //  Text('\$$totalAmount'),
-                    Text('\$$totalAmount'),
+                    Text('$userCurrency$totalAmount'),
                   ],
                 ),
               ],

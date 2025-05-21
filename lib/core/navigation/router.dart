@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/ai_assistant.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/expenses/presentation/view/expense_view.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/face_id_login.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
@@ -39,6 +40,7 @@ class AppRouter {
     TransactionsView.routeName: (context) => const TransactionsView(),
     CreateExpenseView.routeName: (context) => const CreateExpenseView(),
     InvoiceView.routeName: (context) => const InvoiceView(),
+    ExpenseView.routeName: (context) => const ExpenseView(),
     CreateIncomeOneView.routeName: (context) => const CreateIncomeOneView(),
     TodoView.routeName: (context) => const TodoView(),
     CreateTaskView.routeName: (context) => const CreateTaskView(),

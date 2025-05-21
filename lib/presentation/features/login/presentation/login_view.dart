@@ -53,7 +53,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
   }
 
-  String userEmail = '';
+  String? userEmail;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       userEmail = email ?? '';
     });
 
-    _emailController.text = userEmail;
+    _emailController.text = userEmail ?? '';
   }
 
   GoogleSignIn signIn = GoogleSignIn(
@@ -137,8 +137,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context);
     final rememberMe = ref.watch(rememberMeProvider);
-    final isLoading =
-        ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
+    final isLoading = ref.watch(loginNotifier.select((v) => v.state.isLoading));
     final isGoogleSignInLoading =
         ref.watch(googleSignInNotifier.select((v) => v.state.isLoading));
     return Scaffold(
@@ -184,10 +183,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             LaxmiiCheckbox(
                                 isChecked: rememberMe,
                                 onChecked: () async {
-                                  ref.read(rememberMeProvider.notifier).state =
-                                      !rememberMe;
-                                  await AppDataStorage()
-                                      .saveRememberMe(!rememberMe);
+                                  await ref
+                                      .read(rememberMeProvider.notifier)
+                                      .toggle();
                                 }),
                             const HorizontalSpacing(10),
                             Text(
@@ -313,7 +311,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => VerifyEmail(
-                              email: _emailController.text.trim(),
+                              email: _emailController.text.toLowerCase().trim(),
                               isForgotPassword: false,
                             )))
                 : isAccountSetup

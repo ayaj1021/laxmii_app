@@ -63,14 +63,10 @@ class ProfileApiService {
 
 /// Provider for ProfileApiService
 final profileApiServiceProvider = Provider<ProfileApiService>((ref) {
-  // This assumes you have a dioProvider defined elsewhere
-  // If you don't, you'll need to create one
   final dio = ref.read(dioProvider);
   return ProfileApiService(dio);
 });
 
-/// If you don't have a dioProvider yet, here's a simple implementation
-/// You can move this to a separate file
 final dioProvider = Provider<Dio>((ref) {
   // You may want to get these values from your configuration
   const baseUrl =
@@ -85,9 +81,6 @@ final dioProvider = Provider<Dio>((ref) {
       'Accept': 'application/json',
     },
   ));
-
-  // Add any interceptors you need
-  // dio.interceptors.add(YourInterceptor());
 
   return dio;
 });

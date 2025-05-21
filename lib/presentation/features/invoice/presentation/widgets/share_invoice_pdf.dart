@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:laxmii_app/core/utils/utils.dart';
+import 'package:intl/intl.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:path_provider/path_provider.dart';
@@ -76,7 +76,7 @@ class InvoicePdfGenerator {
                           ),
                           pw.SizedBox(width: 3),
                           pw.Text(
-                            AppUtils.formatAppDate(dueDate),
+                            formatAppDate(dueDate),
                             style: pw.TextStyle(
                               fontSize: 15, // Match font size
                               fontWeight:
@@ -232,5 +232,17 @@ class InvoicePdfGenerator {
       text: 'Report',
       subject: 'Report PDF',
     );
+  }
+
+  static String formatAppDate(String date) {
+    DateTime parsedDate;
+
+    try {
+      parsedDate = DateTime.parse(date); // Try ISO format
+    } catch (_) {
+      parsedDate = DateFormat('MMMM d, yyyy').parse(date); // Try custom format
+    }
+
+    return DateFormat('d MMM, yy').format(parsedDate);
   }
 }

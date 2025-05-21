@@ -58,7 +58,6 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   Inventory? _selectedExpense;
   String? _selectedGeneralExpense;
   String? _selectedRecurringType;
-  String? _selectedYear;
   String? _selectedMonth;
   String? _selectedDay;
 
@@ -258,7 +257,6 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                             setState(() {
                               _selectedRecurringType = v;
 
-                              _selectedYear = null;
                               _selectedMonth = null;
                               _selectedDay = null;
                             });
@@ -270,29 +268,29 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+                                  // SizedBox(
+                                  //   width:
+                                  //       MediaQuery.sizeOf(context).width * 0.3,
+                                  //   child: CustomDropdown(
+                                  //     value: _selectedMonth,
+                                  //     hintText: 'Month',
+                                  //     items: months
+                                  //         .map((month) => DropdownMenuItem(
+                                  //             value: month, child: Text(month)))
+                                  //         .toList(),
+                                  //     onChanged: (v) {
+                                  //       setState(() {
+                                  //         _selectedMonth = v;
+                                  //       });
+                                  //     },
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
-                                    child: CustomDropdown(
-                                      value: _selectedMonth,
-                                      hintText: 'Month',
-                                      items: months
-                                          .map((month) => DropdownMenuItem(
-                                              value: month, child: Text(month)))
-                                          .toList(),
-                                      onChanged: (v) {
-                                        setState(() {
-                                          _selectedMonth = v;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
+                                        MediaQuery.sizeOf(context).width * 0.9,
                                     child: CustomDropdown(
                                       value: _selectedDay,
-                                      hintText: 'Day',
+                                      hintText: 'Choose Day',
                                       items: days
                                           .map((day) => DropdownMenuItem(
                                               value: day, child: Text(day)))
@@ -310,23 +308,23 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
-                                    child: CustomDropdown(
-                                      value: _selectedYear,
-                                      hintText: 'Year',
-                                      items: years
-                                          .map((year) => DropdownMenuItem(
-                                              value: year, child: Text(year)))
-                                          .toList(),
-                                      onChanged: (v) {
-                                        setState(() {
-                                          _selectedYear = v;
-                                        });
-                                      },
-                                    ),
-                                  ),
+                                  // SizedBox(
+                                  //   width:
+                                  //       MediaQuery.sizeOf(context).width * 0.3,
+                                  //   child: CustomDropdown(
+                                  //     value: _selectedYear,
+                                  //     hintText: 'Year',
+                                  //     items: years
+                                  //         .map((year) => DropdownMenuItem(
+                                  //             value: year, child: Text(year)))
+                                  //         .toList(),
+                                  //     onChanged: (v) {
+                                  //       setState(() {
+                                  //         _selectedYear = v;
+                                  //       });
+                                  //     },
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     width:
                                         MediaQuery.sizeOf(context).width * 0.3,
@@ -416,7 +414,25 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   void createSales() async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(createExpensesNotifier.notifier).createExpenses(
-          data: CreateExpenseRequest(
+          data:
+
+              // _selectedValue == expenseType[0]
+              //     ? CreateExpenseRequest(
+              //         expenseType: '${_selectedValue?.toLowerCase()}',
+              //         expense: '${_selectedExpense?.productName}',
+              //         amount: int.tryParse(
+              //           _amountController.text.trim(),
+              //         ),
+              //       )
+              //     :
+//           {
+//     "expenseType": "general",
+//     "expense": "electricity",
+//     "amount": 1600,
+//     "supplierName": "nepa"
+// }
+
+              CreateExpenseRequest(
             expenseType: '${_selectedValue?.toLowerCase()}',
             expense: _selectedValue == expenseType[0]
                 ? '${_selectedExpense?.productName}'
@@ -424,14 +440,16 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
             generalType: _selectedGeneralExpense?.toLowerCase() ?? '',
             frequency: _selectedRecurringType?.toLowerCase(),
             day: int.tryParse(_selectedDay ?? ''),
-            month: int.tryParse(_selectedMonth!),
+            month: int.tryParse(_selectedMonth ?? ''),
 
             // _selectedGeneralExpense == 'Others'
             //     ? _expenseNameController.text.trim()
             //     : '$_selectedGeneralExpense',
             supplierName: _supplierNameController.text.trim(),
 
-            amount: int.tryParse(_amountController.text.trim()),
+            amount: int.tryParse(
+              _amountController.text.trim(),
+            ),
           ),
           onError: (error) {
             context.showError(message: error);

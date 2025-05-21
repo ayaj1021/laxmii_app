@@ -78,8 +78,7 @@ class _FaceIdLoginState extends ConsumerState<FaceIdLogin> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
+    final isLoading = ref.watch(loginNotifier.select((v) => v.state.isLoading));
     final colorScheme = Theme.of(context);
     return Scaffold(
       body: PageLoader(

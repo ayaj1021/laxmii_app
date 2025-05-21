@@ -8,9 +8,12 @@ class SettingsOptionsButton extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.textColor,
+    this.prefixIcon,
   });
   final String title;
   final IconData icon;
+  final IconData? prefixIcon;
+
   final Color textColor;
 
   @override
@@ -23,11 +26,18 @@ class SettingsOptionsButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: context.textTheme.s14w500.copyWith(
-              color: textColor,
-            ),
+          Row(
+            children: [
+              if (prefixIcon != null)
+                Icon(prefixIcon, color: AppColors.primaryFF5733),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: context.textTheme.s14w500.copyWith(
+                  color: textColor,
+                ),
+              ),
+            ],
           ),
           Icon(
             icon,

@@ -178,6 +178,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_week_chart.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/cash_flow_year_chart.dart';
@@ -197,6 +198,7 @@ class CashFlowActivity extends ConsumerStatefulWidget {
 class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // First load with week data
       await ref
@@ -209,6 +211,16 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
   }
 
   int _selectedIndex = 0; // Default to 'week' (index 0)
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +305,6 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
                 )),
             const VerticalSpacing(20), // Reduced spacing
 
-            // Main content area - Loading, empty state, or chart
             Expanded(
               child: isLoading
                   ? const Center(
@@ -310,6 +321,7 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
                       : cashFlowYearList.isEmpty
                           ? _buildEmptyState(context)
                           : CashFlowYearChart(
+                              currency: userCurrency,
                               cashflow: cashFlowYearList,
                             ),
             ),

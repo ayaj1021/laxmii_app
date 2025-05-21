@@ -127,7 +127,7 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
                                               userDetails
                                                   .profile!.profilePicture!)
                                           : const AssetImage(
-                                              'assets/images/account_image.png')),
+                                              'assets/logo/laxmii_image_logo.png')),
                                   onBackgroundImageError: (_, __) {
                                     // Handle error if needed
                                   },
@@ -138,7 +138,7 @@ class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
                                               userDetails!.profile!
                                                   .profilePicture!.isEmpty)
                                       ? Image.asset(
-                                          'assets/images/account_image.png')
+                                          'assets/logo/laxmii_image_logo.png')
                                       : null,
                                 ),
                               )

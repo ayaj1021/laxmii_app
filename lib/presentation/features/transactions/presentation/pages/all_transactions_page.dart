@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_transactions_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/widgets/transactions_widget.dart';
@@ -23,6 +24,7 @@ class AllTransactionsPage extends ConsumerStatefulWidget {
 class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref
           .read(getAllTransactionsNotifierProvider.notifier)
@@ -31,6 +33,16 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -85,7 +97,7 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
                                 expenseName: '$expenseName',
                                 expenseType:
                                     '${expense?.toUpperCase()} | $supplierName',
-                                expenseAmount: '\$${data.amount}',
+                                expenseAmount: '$userCurrency${data.amount}',
                                 expenseDate: formattedDate,
                                 amountColor: data.type == 'expense'
                                     ? AppColors.primaryF94D4D

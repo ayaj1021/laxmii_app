@@ -104,37 +104,42 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                 return Column(
                                   children: [
                                     GestureDetector(
-                                      onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => UpdateInventory(
-                                            currency: userCurrency,
-                                            serviceType: '${data?.type}',
-                                            productName: '${data?.productName}',
-                                            productDescription:
-                                                '${data?.description}',
-                                            sellingPrice:
-                                                '${data?.sellingPrice}',
-                                            costPrice: '${data?.costPrice}',
-                                            itemQuantity: '${data?.quantity}',
-                                            itemId: '${data?.id}',
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => UpdateInventory(
+                                              supplierName:
+                                                  data?.supplierName ?? '',
+                                              currency: userCurrency,
+                                              serviceType: data?.type ?? '',
+                                              productName:
+                                                  data?.productName ?? '',
+                                              productDescription:
+                                                  data?.description ?? '',
+                                              sellingPrice:
+                                                  '${data?.sellingPrice}',
+                                              costPrice: '${data?.costPrice}',
+                                              itemQuantity: '${data?.quantity}',
+                                              itemId: '${data?.id}',
+                                            ),
                                           ),
-                                        ),
-                                      ).then((_) {
-                                        ref
-                                            .read(
-                                                getAllInventoryNotifierProvider
-                                                    .notifier)
-                                            .getAllInventory();
-                                      }),
+                                        ).then((_) {
+                                          ref
+                                              .read(
+                                                  getAllInventoryNotifierProvider
+                                                      .notifier)
+                                              .getAllInventory();
+                                        });
+                                      },
                                       child: ProductServicesWidget(
-                                        itemName: '${data?.productName}',
-                                        itemType: '${data?.description}',
+                                        itemName: data?.productName ?? '',
+                                        itemType: data?.description ?? '',
                                         itemPrice:
                                             '$userCurrency ${data?.sellingPrice ?? data?.costPrice}',
                                         itemQuantity: data?.quantity == null
                                             ? ''
-                                            : '(${data?.quantity})',
+                                            : '${data?.quantity}',
                                       ),
                                     ),
                                     const VerticalSpacing(10)

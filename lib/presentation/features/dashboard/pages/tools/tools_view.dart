@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/tools/widgets/tabs_selection_widget.dart';
+import 'package:laxmii_app/presentation/features/expenses/presentation/view/expense_view.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/invoice_view.dart';
@@ -53,6 +54,12 @@ class ToolsView extends ConsumerWidget {
                   onTap: () => context.pushNamed(InvoiceView.routeName),
                   icon: 'assets/icons/invoice.svg',
                   title: 'Income',
+                ),
+                const VerticalSpacing(20),
+                TabsSelectionWidget(
+                  onTap: () => context.pushNamed(ExpenseView.routeName),
+                  icon: 'assets/icons/invoice.svg',
+                  title: 'Expense',
                 ),
                 // const VerticalSpacing(20),
                 // const TabsSelectionWidget(

@@ -5,6 +5,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/change_password.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/verify_email/data/model/resend_otp_request.dart';
@@ -113,15 +114,16 @@ class _VerifyEmailState extends ConsumerState<VerifyEmail> {
   void _verifyOtp(bool isForgotPassword) {
     ref.read(verifyEmailOtpNotifier.notifier).verifyEmailOtp(
           data: VerifyEmailOtpRequest(
-            email: widget.email,
+            email: widget.email.toLowerCase(),
             otp: _otpController.text.trim(),
           ),
           onError: (error) {
             context.showError(message: error);
           },
-          onSuccess: (message) {
+          onSuccess: (message) async {
             context.hideOverLay();
             context.showSuccess(message: message);
+
             isForgotPassword == true
                 ? Navigator.push(
                     context,
@@ -133,6 +135,7 @@ class _VerifyEmailState extends ConsumerState<VerifyEmail> {
 
                 //context.pushNamed(ChangePassword.routeName)
                 : context.pushReplacementNamed(LoginView.routeName);
+            await AppDataStorage().saveUserEmail(widget.email.toLowerCase());
           },
         );
   }

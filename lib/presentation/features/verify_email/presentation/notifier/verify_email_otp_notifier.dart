@@ -31,7 +31,7 @@ class VerifyEmailOtpNotifier
       debugLog(data);
       if (!value.status) throw value.message.toException;
 
-      state = state.copyWith(verifyEmailOtpState: LoadState.idle);
+      state = state.copyWith(verifyEmailOtpState: LoadState.success);
       onSuccess(value.data.message.toString());
     } catch (e) {
       onError(e.toString());

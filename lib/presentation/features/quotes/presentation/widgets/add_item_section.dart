@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/data/model/get_all_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
@@ -38,6 +39,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
 
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
@@ -54,6 +56,16 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
     // TextEditingController()
     //   ..addListener(_validateInput);
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   void _validateInput() {
@@ -122,6 +134,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                       _validateInput();
                     },
                     hintText: 'Enter item quantity',
+                    currency: userCurrency,
                   ),
                 ],
               ),
@@ -134,6 +147,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                 _validateInput();
               },
               hintText: 'Enter item price',
+              currency: userCurrency,
             ),
             const VerticalSpacing(20),
             Divider(
@@ -156,7 +170,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                       valueListenable: _calculateProduct,
                       builder: (context, totalAmount, child) {
                         return Text(
-                          '\$$totalAmount',
+                          '$userCurrency$totalAmount',
                           style: context.textTheme.s12w300.copyWith(
                             color: colorScheme.colorScheme.onSurface,
                             fontSize: 14,
@@ -182,7 +196,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                     itemName: widget.item,
                     itemPrice:
                         double.parse(_sellingPriceController.text.trim()),
-                    itemQuantity: num.tryParse(quantityText) ?? 1,
+                    itemQuantity: num.tryParse(quantityText) ?? 0,
                   );
 
                   Navigator.pop(context, item);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/config/base_response/base_response.dart';
@@ -12,15 +14,19 @@ class LoginRepository {
   Future<BaseResponse<LoginResponse>> login(LoginRequest request) async {
     try {
       final res = await _restClient.login(request);
-      return BaseResponse(status: true, data: res);
+      log('This is res ${res}');
+      return BaseResponse(
+        status: res.status ?? false,
+        data: res,
+      );
     } on DioException catch (e) {
       return AppException.handleError(e);
     }
   }
 }
 
-final loginRepositoryProvider = Provider<LoginRepository>(
-  (ref) => LoginRepository(
+final loginRepositoryProvider = Provider<LoginRepository>((ref) {
+  return LoginRepository(
     ref.read(restClientProvider),
-  ),
-);
+  );
+});

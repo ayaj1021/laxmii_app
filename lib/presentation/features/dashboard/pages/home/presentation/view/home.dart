@@ -146,20 +146,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                       ? CachedNetworkImageProvider(
                                           userDetails.profile!.profilePicture!)
                                       : const AssetImage(
-                                          'assets/images/account_image.png')),
-
-                                  // userDetails?.profile?.profilePicture !=
-                                  //             null &&
-                                  //         userDetails!.profile!.profilePicture!
-                                  //             .isNotEmpty
-                                  //     ? CachedNetworkImageProvider(
-                                  //         userDetails.profile!.profilePicture!)
-                                  //     : userImage.isNotEmpty
-                                  //         ? NetworkImage(
-                                  //             userImage) // Changed from Image.network
-                                  //         : const AssetImage(
-                                  //                 'assets/images/user_image.png')
-                                  //             as ImageProvider<Object>,
+                                          'assets/logo/laxmii_image_logo.png')),
                                   fit: BoxFit.cover,
                                 ),
                               )),

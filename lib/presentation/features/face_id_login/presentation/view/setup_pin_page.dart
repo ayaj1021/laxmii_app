@@ -64,8 +64,7 @@ class _SetupPinPageState extends ConsumerState<SetupPinPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading =
-        ref.watch(loginNotifier.select((v) => v.loginState.isLoading));
+    final isLoading = ref.watch(loginNotifier.select((v) => v.state.isLoading));
 
     final isSetPinLoading =
         ref.watch(setPinNotifier.select((v) => v.state.isLoading));

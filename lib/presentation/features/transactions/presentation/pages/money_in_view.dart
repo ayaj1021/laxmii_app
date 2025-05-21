@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_sales_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/widgets/transactions_widget.dart';
@@ -20,12 +21,23 @@ class MoneyInPage extends ConsumerStatefulWidget {
 class _MoneyInPageState extends ConsumerState<MoneyInPage> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(getAllSalesNotifierProvider.notifier).getAllSales();
 
       ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -59,7 +71,7 @@ class _MoneyInPageState extends ConsumerState<MoneyInPage> {
                               TransactionsWidget(
                                 expenseName: '${data.inventory}',
                                 expenseType: 'Expenses | ${data.customerName}',
-                                expenseAmount: '\$${data.amount}',
+                                expenseAmount: '$userCurrency${data.amount}',
                                 expenseDate: formattedDate,
                                 amountColor: AppColors.primary198624,
                               ),
