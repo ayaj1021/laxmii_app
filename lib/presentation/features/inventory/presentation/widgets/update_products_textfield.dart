@@ -14,6 +14,7 @@ class UpdateProductsTextField extends StatelessWidget {
       this.isMoney,
       this.validator,
       this.inputFormatters,
+      this.increaseDecreaseButton,
       this.currency});
   final String title;
   final String? currency;
@@ -22,6 +23,7 @@ class UpdateProductsTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
+  final Widget? increaseDecreaseButton;
 
   @override
   Widget build(BuildContext context) {
@@ -44,33 +46,40 @@ class UpdateProductsTextField extends StatelessWidget {
                 border: Border.all(
                     width: 1.5,
                     color: AppColors.primary5E5E5E.withValues(alpha: 0.5))),
-            child: TextFormField(
-              style: context.textTheme.s12w500.copyWith(
-                color: colorScheme.colorScheme.onSurface,
-              ),
-              keyboardType: keyboardType,
-              inputFormatters: inputFormatters,
-              controller: product,
-              textCapitalization: TextCapitalization.words,
-              validator: validator,
-              decoration: InputDecoration(
-                  prefix: isMoney == true
-                      ? Text(
-                          '$currency',
-                          style: context.textTheme.s14w500.copyWith(
-                            color: colorScheme.colorScheme.onSurface,
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                  fillColor: Colors.transparent,
-                  border: InputBorder.none,
-                  filled: false,
-                  focusColor: Colors.transparent,
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    style: context.textTheme.s12w500.copyWith(
+                      color: colorScheme.colorScheme.onSurface,
                     ),
-                  )),
+                    keyboardType: keyboardType,
+                    inputFormatters: inputFormatters,
+                    controller: product,
+                    textCapitalization: TextCapitalization.words,
+                    validator: validator,
+                    decoration: InputDecoration(
+                        prefix: isMoney == true
+                            ? Text(
+                                '$currency',
+                                style: context.textTheme.s14w500.copyWith(
+                                  color: colorScheme.colorScheme.onSurface,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        fillColor: Colors.transparent,
+                        border: InputBorder.none,
+                        filled: false,
+                        focusColor: Colors.transparent,
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        )),
+                  ),
+                ),
+                increaseDecreaseButton ?? const SizedBox.shrink(),
+              ],
             ))
       ],
     );

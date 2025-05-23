@@ -30,6 +30,7 @@ class _OnboardingViewState extends State<OnboardingView>
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    //   final colorScheme = Theme.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -57,7 +58,9 @@ class _OnboardingViewState extends State<OnboardingView>
                             Text(
                               data.text,
                               style: context.textTheme.s16w400.copyWith(
-                                color: AppColors.white,
+                                color: AppColors.primaryColor,
+
+                                //colorScheme.colorScheme.onSurface,
                                 fontSize: 36,
                               ),
                               textAlign: TextAlign.center,

@@ -9,6 +9,7 @@ import 'package:laxmii_app/presentation/features/inventory/data/model/update_inv
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/delete_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_single_inventory_notifier.dart';
+import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/increase_count_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/update_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/inventory_view.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/widgets/update_products_textfield.dart';
@@ -91,6 +92,16 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
 
     final isUpdateInventoryLoading = ref.watch(updateInventoryNotifier
         .select((v) => v.updateInventoryState.isLoading));
+    final initial = int.tryParse(widget.itemQuantity) ?? 1;
+    final count = ref.watch(increaseCountProvider(initial));
+    final notifier = ref.read(increaseCountProvider(initial).notifier);
+
+    // keep the controller updated
+    _quantityController.value = TextEditingValue(
+      text: count.toString(),
+      selection: TextSelection.collapsed(offset: count.toString().length),
+    );
+
     return PageLoader(
       isLoading: isUpdateInventoryLoading,
       child: PageLoader(
@@ -123,6 +134,21 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                             UpdateProductsTextField(
                               product: _quantityController,
                               title: 'Quantity',
+                              increaseDecreaseButton: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      child: const Icon(Icons.remove),
+                                      onTap: () => notifier.decrement(),
+                                    ),
+                                    GestureDetector(
+                                      child: const Icon(Icons.add),
+                                      onTap: () => notifier.increment(),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const VerticalSpacing(15),
                             UpdateProductsTextField(
@@ -162,7 +188,22 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       hasBorder: true,
                       borderColor: AppColors.primaryColor,
                       textColor: AppColors.primaryColor,
-                      onTap: () => _updateInventory(inventoryId: widget.itemId),
+                      onTap: () {
+                        if (widget.serviceType.toLowerCase() == 'product'
+                            ? _productNameController.text.isEmpty ||
+                                _descriptionController.text.isEmpty ||
+                                _quantityController.text.isEmpty ||
+                                _supplierNameController.text.isEmpty ||
+                                _sellingPriceController.text.isEmpty ||
+                                _costPriceController.text.isEmpty
+                            : _productNameController.text.isEmpty ||
+                                _descriptionController.text.isEmpty ||
+                                _costPriceController.text.isEmpty) {
+                          context.showError(message: 'Please fill all fields');
+                          return;
+                        }
+                        _updateInventory(inventoryId: widget.itemId);
+                      },
                       title: 'Update'),
                   const VerticalSpacing(20),
                   LaxmiiOutlineSendButton(
@@ -206,13 +247,23 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   void _updateInventory({required String inventoryId}) async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(updateInventoryNotifier.notifier).updateInventory(
-          data: UpdateInventoryRequest(
-            productName: _productNameController.text,
-            description: _descriptionController.text,
-            quantity: int.parse(_quantityController.text),
-            sellingPrice: int.parse(_sellingPriceController.text),
-            costPrice: int.parse(_costPriceController.text),
-          ),
+          data: widget.serviceType.toLowerCase() == 'product'
+              ? UpdateInventoryRequest(
+                  productName: _productNameController.text.trim(),
+                  description: _descriptionController.text.trim(),
+                  supplierName: _supplierNameController.text.trim(),
+                  quantity: int.parse(_quantityController.text),
+                  sellingPrice: int.parse(_sellingPriceController.text),
+                  costPrice: int.parse(_costPriceController.text),
+                )
+              : UpdateInventoryRequest(
+                  productName: _productNameController.text.trim(),
+                  description: _descriptionController.text.trim(),
+                  supplierName: _supplierNameController.text.trim(),
+                  quantity: 0,
+                  sellingPrice: 0,
+                  costPrice: int.parse(_costPriceController.text),
+                ),
           inventoryId: inventoryId,
           onError: (error) {
             context.showError(message: error);

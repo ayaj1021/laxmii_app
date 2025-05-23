@@ -47,13 +47,17 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
   double totalAmount = 0.0;
 
   double calculateTotalAmount() {
-    return totalAmount = (widget.items ?? [])
-        .fold(0, (sum, item) => sum + (item.quantity * item.price));
+    return totalAmount = (widget.items ?? []).fold(
+        0,
+        (sum, item) =>
+            sum + ((item.quantity == 0 ? 1 : item.quantity) * item.price));
   }
 
   double calculateFilteredTotalAmount() {
-    return totalAmount = (widget.filteredInvoices ?? [])
-        .fold(0, (sum, items) => sum + (items.quantity * items.price));
+    return totalAmount = (widget.filteredInvoices ?? []).fold(
+        0,
+        (sum, items) =>
+            sum + ((items.quantity == 0 ? 1 : items.quantity) * items.price));
   }
 
   @override
@@ -159,11 +163,17 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                                 widget.filteredInvoices?.length ?? 0, (index) {
                               final reportData =
                                   widget.filteredInvoices?[index];
+
+                              final total =
+                                  '${(reportData?.quantity == 0 ? 1 : reportData?.quantity ?? 1) * reportData!.price}';
+
                               final rowDatas = [
-                                (reportData?.description ?? ''),
-                                '${reportData?.quantity ?? ''}',
-                                '${reportData?.price}',
-                                '${(reportData?.quantity ?? 0) * (reportData?.price ?? 0)}',
+                                (reportData.description ?? ''),
+                                // '${reportData?.quantity ?? ''}',
+                                '${reportData.quantity == 0 ? '' : reportData.quantity}',
+                                '${reportData.price}',
+                                // '${(reportData?.quantity ?? 0) * (reportData?.price ?? 0)}',
+                                ' ${num.parse(total).toStringAsFixed(2)}',
                               ];
 
                               return Table(

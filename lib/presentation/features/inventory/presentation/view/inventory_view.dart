@@ -70,11 +70,13 @@ class _InventoryState extends ConsumerState<InventoryView> {
             children: [
               GestureDetector(
                 onTap: () => context.pushNamed(CreateInventory.routeName),
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.add_circle,
-                    color: AppColors.primaryColor,
+                  child: Text(
+                    'Create Inventory',
+                    style: context.textTheme.s15w600.copyWith(
+                      color: AppColors.primaryColor,
+                    ),
                   ),
                 ),
               ),

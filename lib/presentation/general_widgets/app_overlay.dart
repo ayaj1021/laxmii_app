@@ -213,7 +213,7 @@ class AppOverLayState extends State<AppOverLay> {
         textDirection: TextDirection.ltr,
         children: [
           Image.asset(
-            'assets/icons/logo.png',
+            'assets/logo/laxmii_image_logo.png',
             fit: BoxFit.scaleDown,
             height: 30,
           ),

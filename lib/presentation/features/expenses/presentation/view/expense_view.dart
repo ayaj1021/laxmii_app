@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
+import 'package:laxmii_app/core/extensions/overlay_extension.dart';
+import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/presentation/features/expenses/presentation/notifier/delete_expense_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/notifier/get_all_expenses_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/create_expense_view.dart';
@@ -65,11 +68,13 @@ class _MoneyOutPageState extends ConsumerState<ExpenseView> {
               children: [
                 GestureDetector(
                   onTap: () => context.pushNamed(CreateExpenseView.routeName),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.add_circle,
-                      color: AppColors.primaryColor,
+                    child: Text(
+                      'Create Expense',
+                      style: context.textTheme.s15w600.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -90,19 +95,54 @@ class _MoneyOutPageState extends ConsumerState<ExpenseView> {
 
                                 String formattedDate =
                                     DateFormat("MMM d yyyy").format(parsedDate);
-                                return Column(
-                                  children: [
-                                    TransactionsWidget(
-                                      expenseName: '${data.expenseType}',
-                                      expenseType:
-                                          'Expenses | ${data.supplierName}',
-                                      expenseAmount:
-                                          '$userCurrency${data.amount}',
-                                      expenseDate: formattedDate,
-                                      amountColor: AppColors.primaryF94D4D,
-                                    ),
-                                    const VerticalSpacing(10)
-                                  ],
+                                return Dismissible(
+                                  key: Key(
+                                      data.id.toString()), // Use a unique key
+                                  direction: DismissDirection.endToStart,
+                                  background: Container(
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    color: Colors.red,
+                                    child: const Icon(Icons.delete,
+                                        color: Colors.white),
+                                  ),
+                                  onDismissed: (direction) {
+                                    // Remove the item from the list
+                                    ref
+                                        .read(deleteExpenseNotifierProvider
+                                            .notifier)
+                                        .deleteExpense(
+                                      data.id ?? '',
+                                      onSuccess: (message) {
+                                        setState(() {
+                                          expensesList.removeAt(index);
+                                        });
+                                        ref
+                                            .read(getAllExpensesNotifierProvider
+                                                .notifier)
+                                            .getAllExpenses();
+                                        context.showSuccess(message: message);
+                                      },
+                                      onError: (error) {
+                                        context.showError(message: error);
+                                      },
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      TransactionsWidget(
+                                        expenseName: '${data.expenseType}',
+                                        expenseType:
+                                            'Expenses | ${data.supplierName}',
+                                        expenseAmount:
+                                            '$userCurrency${data.amount}',
+                                        expenseDate: formattedDate,
+                                        amountColor: AppColors.primaryF94D4D,
+                                      ),
+                                      const VerticalSpacing(10)
+                                    ],
+                                  ),
                                 );
                               },
                             ),

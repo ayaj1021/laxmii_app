@@ -203,6 +203,17 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                       return LaxmiiOutlineSendButton(
                         isEnabled: !_isSubmitting,
                         onTap: () {
+                          if (_selectedServiceType == 'Product' &&
+                              (_productNameController.text.isEmpty ||
+                                  _quantityController.text.isEmpty ||
+                                  _descriptionController.text.isEmpty ||
+                                  _supplierNameController.text.isEmpty ||
+                                  _costPriceController.text.isEmpty ||
+                                  _sellingPriceController.text.isEmpty)) {
+                            context.showError(
+                                message: 'Please enter all fields');
+                            return;
+                          }
                           _validateInventoryInput();
                         },
                         title: 'Create Inventory',

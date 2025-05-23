@@ -18,6 +18,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presen
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/connect_spotify_button_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/delete_account_dialog.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/security_privacy_section.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/settings_options_button.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
@@ -146,6 +147,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                           color: colorScheme.colorScheme.tertiary,
                           fontWeight: FontWeight.w300),
                     ),
+                    const VerticalSpacing(10),
+                    const SecurityPrivacySection(),
                     const VerticalSpacing(24),
                     const Divider(
                       color: AppColors.primary5E5E5E,

@@ -121,11 +121,15 @@ class InvoicePdfGenerator {
                   ? pw.Column(
                       children: List.generate(filteredInvoices.length, (index) {
                         final reportData = filteredInvoices[index];
+                        final total =
+                            '${(reportData.quantity == 0 ? 1 : reportData.quantity) * reportData.price}';
                         final rowData = [
                           (reportData.description ?? ''),
-                          '${reportData.quantity}',
+                          //  '${reportData.quantity }',
+                          '${reportData.quantity == 0 ? '' : reportData.quantity}',
                           '${reportData.price}',
-                          '${(reportData.quantity) * (reportData.price)}',
+                          ' ${num.parse(total).toStringAsFixed(2)}',
+                          // '${(reportData.quantity) * (reportData.price)}',
                         ];
 
                         return pw.Table(

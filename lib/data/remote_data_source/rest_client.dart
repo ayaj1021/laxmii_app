@@ -12,6 +12,8 @@ import 'package:laxmii_app/presentation/features/ai_chat/data/model/chat_ai_resp
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_request.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_chat_history_response.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/get_recent_chats_response.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/send_report_request.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/data/model/send_request_response.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/data/model/start_new_chat_response.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_response.dart';
@@ -25,6 +27,7 @@ import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/m
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/settings_response.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_request.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/data/model/update_settings_response.dart';
+import 'package:laxmii_app/presentation/features/expenses/data/model/delete_expense_response.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_request.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_response.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/data/model/change_password_request.dart';
@@ -48,6 +51,7 @@ import 'package:laxmii_app/presentation/features/inventory/data/model/update_inv
 import 'package:laxmii_app/presentation/features/inventory/data/model/update_inventory_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_response.dart';
+import 'package:laxmii_app/presentation/features/invoice/data/model/delete_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_invoice_by_name_response.dart';
@@ -172,6 +176,11 @@ abstract class RestClient {
   @GET('/api/chat/ai_response')
   Future<ChatAiResponse> chatAi(
     @Body() ChatAiRequest chatAiRequest,
+  );
+
+  @POST('/api/chat/report')
+  Future<SendReportResponse> sendAiReport(
+    @Body() SendReportRequest sendReportRequest,
   );
 
   @POST('/api/chat/startNewChat')
@@ -356,6 +365,14 @@ abstract class RestClient {
 
   @GET('/api/invoices/')
   Future<GetAllInvoiceResponse> getAllInvoices();
+
+  @DELETE('/api/invoices/{invoiceId}')
+  Future<DeleteInvoiceResponse> deleteInvoice(
+      {@Path() required String invoiceId});
+
+  @DELETE('/api/expenses/{invoiceId}')
+  Future<DeleteExpenseResponse> deleteExpense(
+      {@Path() required String invoiceId});
 
   @GET('/api/get-invoice-no')
   Future<GetInvoiceNumberResponse> getInvoiceNumber();

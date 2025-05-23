@@ -39,7 +39,7 @@ class _LaxmiiOutlineSendButtonState extends State<LaxmiiOutlineSendButton> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.width,
-      child: InkWell(
+      child: GestureDetector(
         onTap: widget.isEnabled ? widget.onTap : null,
         child: Container(
           alignment: Alignment.center,

@@ -1,16 +1,18 @@
 class UpdateInventoryRequest {
   final String productName;
   final String description;
-  final int quantity;
-  final int sellingPrice;
-  final int costPrice;
+  final String? supplierName;
+  final int? quantity;
+  final int? sellingPrice;
+  final int? costPrice;
 
   UpdateInventoryRequest({
     required this.productName,
     required this.description,
-    required this.quantity,
-    required this.sellingPrice,
-    required this.costPrice,
+    this.quantity,
+    this.sellingPrice,
+    this.costPrice,
+    this.supplierName,
   });
 
   UpdateInventoryRequest copyWith({
@@ -19,12 +21,14 @@ class UpdateInventoryRequest {
     int? quantity,
     int? sellingPrice,
     int? costPrice,
+    String? supplierName,
   }) =>
       UpdateInventoryRequest(
         productName: productName ?? this.productName,
         description: description ?? this.description,
         quantity: quantity ?? this.quantity,
         sellingPrice: sellingPrice ?? this.sellingPrice,
+        supplierName: supplierName ?? this.supplierName,
         costPrice: costPrice ?? this.costPrice,
       );
 
@@ -34,6 +38,7 @@ class UpdateInventoryRequest {
         description: json["description"],
         quantity: json["quantity"],
         sellingPrice: json["sellingPrice"],
+        supplierName: json["supplierName"],
         costPrice: json["costPrice"],
       );
 
@@ -42,6 +47,7 @@ class UpdateInventoryRequest {
         "description": description,
         "quantity": quantity,
         "sellingPrice": sellingPrice,
+        "supplierName": supplierName,
         "costPrice": costPrice,
       };
 }

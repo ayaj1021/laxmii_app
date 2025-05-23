@@ -96,6 +96,16 @@ class AppDataStorage {
     return value == 'true'; // Convert the string back to a boolean
   }
 
+  Future<void> saveFaceId(bool value) async {
+    await _storage.write(key: 'face_id', value: value.toString());
+  }
+
+// Retrieve the boolean value
+  Future<bool> getFaceId() async {
+    final value = await _storage.read(key: 'face_id');
+    return value == 'true'; // Convert the string back to a boolean
+  }
+
   Future<void> setAppTheme(bool value) async {
     await _storage.write(key: 'app_theme', value: value.toString());
   }

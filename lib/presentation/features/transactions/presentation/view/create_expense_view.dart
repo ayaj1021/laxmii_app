@@ -414,25 +414,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
   void createSales() async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
     ref.read(createExpensesNotifier.notifier).createExpenses(
-          data:
-
-              // _selectedValue == expenseType[0]
-              //     ? CreateExpenseRequest(
-              //         expenseType: '${_selectedValue?.toLowerCase()}',
-              //         expense: '${_selectedExpense?.productName}',
-              //         amount: int.tryParse(
-              //           _amountController.text.trim(),
-              //         ),
-              //       )
-              //     :
-//           {
-//     "expenseType": "general",
-//     "expense": "electricity",
-//     "amount": 1600,
-//     "supplierName": "nepa"
-// }
-
-              CreateExpenseRequest(
+          data: CreateExpenseRequest(
             expenseType: '${_selectedValue?.toLowerCase()}',
             expense: _selectedValue == expenseType[0]
                 ? '${_selectedExpense?.productName}'

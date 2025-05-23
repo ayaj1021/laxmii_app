@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
@@ -11,6 +12,7 @@ import 'package:laxmii_app/presentation/features/ai_chat/presentation/notifier/c
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/notifier/get_chat_history_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/notifier/start_new_chat_notifier.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/widget/ai_message_card.dart';
+import 'package:laxmii_app/presentation/features/ai_chat/presentation/widget/dislike_dialog.dart';
 import 'package:laxmii_app/presentation/features/ai_chat/presentation/widget/user_chat_card.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -104,6 +106,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
         );
   }
 
+  final Set<String> _dislikedMessageIds = {};
+
   @override
   Widget build(BuildContext context) {
     final sessionId = ref.watch(startChatNotifier
@@ -171,6 +175,36 @@ class _ChatViewState extends ConsumerState<ChatView> {
                           return AiMessageCard(
                             type: message.sender.toString(),
                             message: message.message ?? '',
+                            onCopyTapped: () {
+                              copyToClipboard(
+                                message.message ?? '',
+                              );
+                              context.showToast(
+                                message: 'Copied to clipboard',
+                              );
+                            },
+                            isDisliked:
+                                _dislikedMessageIds.contains(message.id),
+                            onDislikeTapped: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: DislikeDialog(
+                                        sessionId: widget.sessionId,
+                                        messageId: message.id ?? '',
+                                      ),
+                                    );
+                                  }).then((_) {
+                                // After dialog is closed, add to disliked list
+                                setState(() {
+                                  _dislikedMessageIds.add(message.id ?? '');
+                                });
+                              });
+                            },
                           );
                         }
                         return const SizedBox.shrink();
@@ -254,5 +288,9 @@ class _ChatViewState extends ConsumerState<ChatView> {
         ),
       ),
     );
+  }
+
+  void copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
   }
 }
