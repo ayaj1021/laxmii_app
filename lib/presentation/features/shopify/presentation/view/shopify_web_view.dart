@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/import_shopify_dialog.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
@@ -74,7 +75,25 @@ Page resource error:
             } else if (request.url.contains(
                 'https://laxmii-latest.onrender.com/auth/shopify/callback?')) {
               //  'https://laxmii.onrender.com/auth/shopify/callback?')) {
-              context.pushReplacementNamed(Dashboard.routeName);
+              // context.pushReplacementNamed(Dashboard.routeName);
+
+              showDialog(
+                context: context,
+                builder: (_) => Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ImportShopifyDialog(),
+                ),
+              ).then((_) {
+                if (mounted) {
+                  // context.pushReplacementNamed(Dashboard.routeName);
+                  context.pushReplacementNamed(Dashboard.routeName);
+                }
+                // setState(() {
+                //   _dislikedMessageIds.add(message.id ?? '');
+                // });
+              });
             } else {
               debugPrint('allowing navigation to ${request.url}');
             }

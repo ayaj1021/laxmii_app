@@ -109,16 +109,18 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
       return const Center(child: Text("No activity data to display"));
     }
 
-    // Calculate a visible viewport width based on the number of items
-
-    return SizedBox(
-      height: 200,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      child: SizedBox(
+        height: 200,
+        width: max(
+          MediaQuery.of(context).size.width * 2, // Always 2x screen width
+          chartData.length * 70.0,
+        ),
         child: Row(
           children: [
             SizedBox(
-              // Set a minimum width to ensure scrollability
               width: max(
                   MediaQuery.of(context).size.width, chartData.length * 70.0),
               child: SfCartesianChart(
@@ -182,10 +184,10 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
                     );
                   },
                 ),
-                zoomPanBehavior: ZoomPanBehavior(
-                  enablePanning: true,
-                  zoomMode: ZoomMode.x,
-                ),
+                // zoomPanBehavior: ZoomPanBehavior(
+                //   enablePanning: true,
+                //   zoomMode: ZoomMode.x,
+                // ),
                 series: <CartesianSeries<_ChartData, String>>[
                   ColumnSeries<_ChartData, String>(
                     onPointTap: (pointInteractionDetails) {

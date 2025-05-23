@@ -14,16 +14,20 @@ class UpdateProductsTextField extends StatelessWidget {
       this.isMoney,
       this.validator,
       this.inputFormatters,
+      this.isEnabled,
       this.increaseDecreaseButton,
+      this.onChanged,
       this.currency});
   final String title;
   final String? currency;
   final bool? isMoney;
+  final bool? isEnabled;
   final TextEditingController product;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final Widget? increaseDecreaseButton;
+  final String? Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +62,8 @@ class UpdateProductsTextField extends StatelessWidget {
                     controller: product,
                     textCapitalization: TextCapitalization.words,
                     validator: validator,
+                    onChanged: onChanged,
+                    enabled: isEnabled,
                     decoration: InputDecoration(
                         prefix: isMoney == true
                             ? Text(

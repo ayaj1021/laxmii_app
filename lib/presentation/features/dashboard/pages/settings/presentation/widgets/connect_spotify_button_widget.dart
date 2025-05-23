@@ -98,13 +98,12 @@ class _ConnectSpotifyButtonWidgetState
                                 final url =
                                     'https://laxmii-latest.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
                                 //     'https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
-                                log('https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}');
+                                log('https://laxmii-latest.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}');
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(
                                 //     builder: (_) => ShopifyWebView(
-                                //       shopifyUrl:
-                                //           'https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}',
+                                //       shopifyUrl: url,
                                 //       // 'https://laxmii.onrender.com/auth/shopify?shop=abbyxl&id=${widget.userId}',
                                 //     ),
                                 //   ),
