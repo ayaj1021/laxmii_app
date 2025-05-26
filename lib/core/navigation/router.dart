@@ -3,7 +3,8 @@ import 'package:laxmii_app/presentation/features/ai_chat/presentation/view/ai_as
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/view/ai_insights_view.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/expenses/presentation/view/expense_view.dart';
-import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/face_id_login.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/face_id_login_view.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/passcode_login_view.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/setup_pin_page.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
 import 'package:laxmii_app/presentation/features/generate_report/presentation/view/generate_report.dart';
@@ -59,6 +60,7 @@ class AppRouter {
     WelcomeScreen.routeName: (context) => const WelcomeScreen(),
     ProfileSetupView.routeName: (context) => const ProfileSetupView(),
     ManageAccountView.routeName: (context) => const ManageAccountView(),
+    PasscodeLoginView.routeName: (context) => const PasscodeLoginView(),
     FaceIdLogin.routeName: (context) => const FaceIdLogin(),
     SetupPinPage.routeName: (context) => const SetupPinPage(),
   };

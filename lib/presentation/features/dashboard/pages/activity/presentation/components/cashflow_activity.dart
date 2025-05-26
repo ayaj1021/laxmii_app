@@ -263,7 +263,6 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Toggle control for week/year
             SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.23,
                 child: Container(

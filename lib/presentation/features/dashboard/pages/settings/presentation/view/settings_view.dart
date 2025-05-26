@@ -25,6 +25,7 @@ import 'package:laxmii_app/presentation/features/login/presentation/login_view.d
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/onboarding_view.dart';
+import 'package:laxmii_app/presentation/features/shopify/presentation/notifier/import_shopify_details_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -42,6 +43,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
   void initState() {
     // getUserId();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      importShopifyStore();
       await ref.read(settingsNotifer.notifier).getSettings();
       ref.read(getUserDetailsNotifier.notifier).getUserDetails();
     });
@@ -50,6 +52,16 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
 
   getAppTheme(bool value) async {
     await AppDataStorage().setAppTheme(value);
+  }
+
+  bool authenticated = false;
+
+  void importShopifyStore() {
+    final settings = ref.watch(settingsNotifer.select((v) => v.data));
+
+    if (settings?.settings?.shopifyConnected == true) {
+      ref.read(importSpopifyDetailsNotifier.notifier).importShopifyDetails();
+    }
   }
 
   @override
@@ -234,7 +246,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     ),
                     const VerticalSpacing(6),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        //   context.pushNamed(FaceIdLogin.routeName);
                         context.pushNamed(SetupPinPage.routeName);
                       },
                       child: const SettingsOptionsButton(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
-import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/notifications_options_widget.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_request.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/presentation/notifier/set_pin_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
@@ -141,16 +141,16 @@ class _SetupPinPageState extends ConsumerState<SetupPinPage> {
                       ),
                     ),
 
-                    const VerticalSpacing(30),
-                    NotificationsOptionsWidget(
-                        title: 'Enable Pin Sign in',
-                        onChanged: (v) {
-                          setState(() {
-                            enablePinSignIn = v;
-                          });
-                          storePinValue(v);
-                        },
-                        value: enablePinSignIn),
+                    // const VerticalSpacing(30),
+                    // NotificationsOptionsWidget(
+                    //     title: 'Enable Pin Sign in',
+                    //     onChanged: (v) {
+                    //       setState(() {
+                    //         enablePinSignIn = v;
+                    //       });
+                    //       storePinValue(v);
+                    //     },
+                    //     value: enablePinSignIn),
                   ],
                 ),
               ),
@@ -171,8 +171,10 @@ class _SetupPinPageState extends ConsumerState<SetupPinPage> {
         },
         onSuccess: (message) {
           context.showSuccess(message: message);
+          //  AppDataStorage().setEnablePin(true);
+          AppDataStorage().saveUserPin(otpController.text.trim());
           //   _login();
-          Navigator.pop(context);
+          context.pop();
         });
   }
 }

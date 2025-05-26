@@ -211,9 +211,9 @@ class AppDataStorage {
     await _storage.write(key: 'user_pin', value: userPin);
   }
 
-  Future<String?> getUserPin() async {
+  Future<String> getUserPin() async {
     String? value = await _storage.read(key: 'user_pin');
-    return value;
+    return value.toString();
   }
 
   Future<void> saveIsPinSet(bool value) async {

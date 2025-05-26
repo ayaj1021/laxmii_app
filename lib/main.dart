@@ -6,11 +6,14 @@ import 'package:laxmii_app/core/navigation/router.dart';
 import 'package:laxmii_app/core/theme/app_theme.dart';
 import 'package:laxmii_app/core/theme/theme_provider.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
+import 'package:laxmii_app/firebase_options.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_overlay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const ProviderScope(child: MyApp()));
 }
 

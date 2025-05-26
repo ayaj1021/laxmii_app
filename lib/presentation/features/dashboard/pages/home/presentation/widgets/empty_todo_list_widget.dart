@@ -39,6 +39,7 @@ class EmptyTodoListWidget extends StatelessWidget {
                   style: context.textTheme.s12w300.copyWith(
                     color: colorScheme.colorScheme.onSurface,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

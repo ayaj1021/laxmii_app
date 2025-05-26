@@ -4,9 +4,9 @@ import 'package:laxmii_app/core/config/exception/logger.dart';
 import 'package:laxmii_app/core/config/exception/message_exception.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
-import 'package:laxmii_app/presentation/features/face_id_login/data/model/repository/set_pin_repository.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_request.dart';
 import 'package:laxmii_app/presentation/features/face_id_login/data/model/set_pin_response.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/data/repository/set_pin_repository.dart';
 
 class SetPinNotifier extends AutoDisposeNotifier<BaseState<SetPinResponse>> {
   SetPinNotifier();

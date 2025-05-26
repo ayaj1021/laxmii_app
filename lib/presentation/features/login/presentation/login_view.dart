@@ -84,7 +84,57 @@ class _LoginViewState extends ConsumerState<LoginView> {
         '538188324651-2gt9uf174mlo5pqdpsc9ubuhe5tf29j3.apps.googleusercontent.com',
   );
 
-  Future<void> signInAndSendToken() async {
+  // Future<void> appleSignInAndSendToken() async {
+  //   try {
+  //     final appleCredientail =
+  //         await SignInWithApple.getAppleIDCredential(scopes: [
+  //       AppleIDAuthorizationScopes.email,
+  //       AppleIDAuthorizationScopes.fullName,
+  //     ]);
+
+  //     final OAuthCredential credential = OAuthProvider('apple.com').credential(
+  //       accessToken: appleCredientail.authorizationCode,
+  //       idToken: appleCredientail.identityToken,
+  //     );
+
+  //     final userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+
+  //     // Step 3: Get ID token
+  //     final idToken = await userCredential.user?.getIdToken();
+  //     final data = GoogleSignInRequest(idToken: idToken ?? '');
+
+  //     ref.read(googleSignInNotifier.notifier).googleSignIn(
+  //           data: data,
+  //           onError: (error) {
+  //             context.showError(message: error);
+  //           },
+  //           onSuccess: (message, isVerified, isAccountSetup) {
+  //             context.hideOverLay();
+  //             context.showSuccess(message: 'Login Successful');
+
+  //             isVerified == false
+  //                 ? Navigator.push(
+  //                     context,
+  //                     MaterialPageRoute(
+  //                         builder: (_) => VerifyEmail(
+  //                               email: _emailController.text.trim(),
+  //                               isForgotPassword: false,
+  //                             )))
+  //                 : isAccountSetup
+  //                     ? context.replaceAll(Dashboard.routeName)
+  //                     //   : context.pushReplacementNamed(Dashboard.routeName);
+  //                     : context
+  //                         .pushReplacementNamed(ProfileSetupView.routeName);
+  //             ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+  //           },
+  //         );
+  //   } catch (e) {
+  //     log('Error: $e');
+  //   }
+  // }
+
+  Future<void> googleSignInAndSendToken() async {
     try {
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
@@ -254,11 +304,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     const VerticalSpacing(20),
                     LaxmiiOutlineSendButton(
                       onTap: () {
-                        signInAndSendToken();
+                        googleSignInAndSendToken();
                       },
                       title: 'Continue with Google',
                       hasBorder: true,
                       icon: 'assets/icons/google.svg',
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.primary212121,
+                    ),
+                    const VerticalSpacing(20),
+                    LaxmiiOutlineSendButton(
+                      onTap: () {
+                        googleSignInAndSendToken();
+                      },
+                      title: 'Continue with Apple',
+                      hasBorder: true,
+                      icon: 'assets/icons/apple.svg',
                       backgroundColor: Colors.transparent,
                       borderColor: AppColors.primary212121,
                     ),

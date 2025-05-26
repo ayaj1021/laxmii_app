@@ -330,37 +330,43 @@ class Week {
 }
 
 class Day {
-  final int? invoice;
-  final int? expense;
-  final int? shopify;
+  final num? invoice;
+  final num? expense;
+  final num? shopify;
+  final String? date;
 
   Day({
     this.invoice,
     this.expense,
     this.shopify,
+    this.date,
   });
 
   Day copyWith({
     int? invoice,
     int? expense,
     int? shopify,
+    String? date,
   }) =>
       Day(
         invoice: invoice ?? this.invoice,
         expense: expense ?? this.expense,
         shopify: shopify ?? this.shopify,
+        date: date ?? this.date,
       );
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
         invoice: json["invoice"],
         expense: json["expense"],
         shopify: json["shopify"],
+        date: json["date"],
       );
 
   Map<String, dynamic> toJson() => {
         "invoice": invoice,
         "expense": expense,
         "shopify": shopify,
+        "date": date,
       };
 }
 
@@ -427,36 +433,42 @@ class Week3 {
 }
 
 class Monday {
-  final double? invoice;
-  final int? expense;
-  final int? shopify;
+  final num? invoice;
+  final num? expense;
+  final num? shopify;
+  final String? date;
 
   Monday({
     this.invoice,
     this.expense,
     this.shopify,
+    this.date,
   });
 
   Monday copyWith({
-    double? invoice,
-    int? expense,
-    int? shopify,
+    num? invoice,
+    num? expense,
+    num? shopify,
+    String? date,
   }) =>
       Monday(
         invoice: invoice ?? this.invoice,
         expense: expense ?? this.expense,
         shopify: shopify ?? this.shopify,
+        date: date ?? this.date,
       );
 
   factory Monday.fromJson(Map<String, dynamic> json) => Monday(
         invoice: json["invoice"]?.toDouble(),
         expense: json["expense"],
         shopify: json["shopify"],
+        date: json["date"],
       );
 
   Map<String, dynamic> toJson() => {
         "invoice": invoice,
         "expense": expense,
         "shopify": shopify,
+        "date": date,
       };
 }

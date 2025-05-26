@@ -13,8 +13,9 @@ class _ChartData {
   final String day;
   final double invoice;
   final double expense;
+  final String date;
 
-  _ChartData(this.day, this.invoice, this.expense);
+  _ChartData(this.day, this.invoice, this.expense, this.date);
 }
 
 class CashFlowWeekChart extends ConsumerStatefulWidget {
@@ -116,7 +117,8 @@ class _CashFlowWeekChartState extends ConsumerState<CashFlowWeekChart> {
         final shortDay = CashFlowWeekChart.weekAbbreviations[day] ?? day;
         final income = ((data?.invoice ?? 0) + (data?.shopify ?? 0)).toDouble();
         final expense = (data?.expense ?? 0).toDouble();
-        chartData.add(_ChartData(shortDay, income, expense));
+        final date = (data?.date ?? '');
+        chartData.add(_ChartData(shortDay, income, expense, date));
       });
     } else if (week is Week3) {
       // Process Week3 type specifically
@@ -134,18 +136,26 @@ class _CashFlowWeekChartState extends ConsumerState<CashFlowWeekChart> {
         final shortDay = CashFlowWeekChart.weekAbbreviations[day] ?? day;
         double income = 0;
         double expense = 0;
+        String date = "";
 
         // Handle Monday specifically (different type)
         if (day == "Monday" && data is Monday) {
           income = ((data.invoice ?? 0) + (data.shopify ?? 0)).toDouble();
           expense = (data.expense ?? 0).toDouble();
+          date = data.date ?? "";
         } else if (data is Day) {
           // Handle other days (Day type)
           income = ((data.invoice ?? 0) + (data.shopify ?? 0)).toDouble();
           expense = (data.expense ?? 0).toDouble();
+          date = data.date ?? "";
         }
 
-        chartData.add(_ChartData(shortDay, income, expense));
+        chartData.add(_ChartData(
+          shortDay,
+          income,
+          expense,
+          date,
+        ));
       });
     }
 
@@ -172,8 +182,6 @@ class _CashFlowWeekChartState extends ConsumerState<CashFlowWeekChart> {
     if (allWeeks.isEmpty) {
       return const Center(child: Text("No data available"));
     }
-
-    // Log data for debugging
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.2,
@@ -246,9 +254,19 @@ class _CashFlowWeekChartState extends ConsumerState<CashFlowWeekChart> {
                   series: <CartesianSeries<_ChartData, String>>[
                     ColumnSeries<_ChartData, String>(
                       onPointTap: (pointInteractionDetails) {
-                        final now = DateTime.now();
+                        final int index =
+                            pointInteractionDetails.pointIndex ?? 0;
+
+                        // Get the corresponding _ChartData object
+                        final tappedData = chartData[index];
+
+                        final String selectedDate = tappedData.date;
+                        final date =
+                            DateFormat('yyyy-MM-dd').parse(selectedDate);
+                        //  final now = DateTime.now();
                         final request = GetGraphDetailsRequest(
-                            type: 'income', queryBy: 'week', date: now);
+                            type: 'income', queryBy: 'week', date: date);
+                        // Use the ref to call the notifier
                         ref
                             .read(getCashFlowDetailsNotifierProvider.notifier)
                             .getCashFlowDetails(request: request);
@@ -267,13 +285,52 @@ class _CashFlowWeekChartState extends ConsumerState<CashFlowWeekChart> {
                       spacing: 0.2,
                     ),
                     ColumnSeries<_ChartData, String>(
+                      // onPointTap: (pointInteractionDetails) {
+                      //   final int index =
+                      //       pointInteractionDetails.pointIndex ?? 0;
+
+                      //   // Get the corresponding _ChartData object
+                      //   final tappedData = chartData[index];
+
+                      //   final String selectedDate = tappedData.date;
+                      //   final date = DateFormat().tryParse(selectedDate);
+
+                      //   if (date != null) {
+                      //     final request = GetGraphDetailsRequest(
+                      //       type: 'expense',
+                      //       queryBy: 'week',
+                      //       date: date,
+                      //     );
+                      //     ref
+                      //         .read(getCashFlowDetailsNotifierProvider.notifier)
+                      //         .getCashFlowDetails(request: request);
+                      //   } else {
+                      //     debugPrint('Invalid date format: $selectedDate');
+                      //   }
+                      // },
                       onPointTap: (pointInteractionDetails) {
-                        final now = DateTime.now();
-                        final request = GetGraphDetailsRequest(
-                            type: 'expense', queryBy: 'week', date: now);
-                        ref
-                            .read(getCashFlowDetailsNotifierProvider.notifier)
-                            .getCashFlowDetails(request: request);
+                        final int index =
+                            pointInteractionDetails.pointIndex ?? 0;
+
+                        final tappedData = chartData[index];
+                        final String selectedDate = tappedData.date;
+
+                        final date =
+                            DateFormat('yyyy-MM-dd').tryParse(selectedDate);
+
+                        if (date != null) {
+                          final request = GetGraphDetailsRequest(
+                            type: 'expense',
+                            queryBy: 'week',
+                            date: date,
+                          );
+
+                          ref
+                              .read(getCashFlowDetailsNotifierProvider.notifier)
+                              .getCashFlowDetails(request: request);
+                        } else {
+                          debugPrint('Invalid date format: $selectedDate');
+                        }
                       },
                       name: "Expense",
                       dataSource: chartData,

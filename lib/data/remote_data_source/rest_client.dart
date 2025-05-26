@@ -294,9 +294,7 @@ abstract class RestClient {
       );
 
   @GET('/api/settings')
-  Future<SettingsResponse> getSettings(
-      // @Queries() Map<String, dynamic> queries,
-      );
+  Future<SettingsResponse> getSettings();
 
   @GET('/auth/shopify/import-all')
   Future<ImportShopifyDetailsResponse> importShopifyDetails(

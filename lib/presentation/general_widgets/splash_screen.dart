@@ -9,7 +9,8 @@ import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
-import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/face_id_login.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/face_id_login_view.dart';
+import 'package:laxmii_app/presentation/features/face_id_login/presentation/view/passcode_login_view.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
@@ -39,6 +40,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     Future.delayed(const Duration(seconds: 4), () async {
       final data = await secureStorage.loadCurrentState();
       final isProfileSetup = await secureStorage.getProfileSetup();
+      final isFaceIdSet = await AppDataStorage().getFaceId();
       final isPinEnabled = await secureStorage.getEnablePin();
       final rememberMe = await secureStorage.getRememberMe();
 
@@ -48,10 +50,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               CurrentState.onboarded =>
                 context.replaceNamed(LoginView.routeName),
               CurrentState.loggedIn => isProfileSetup
-                  //  ? context.replaceNamed(Dashboard.routeName)
                   ? context.replaceNamed(isPinEnabled
-                      ? FaceIdLogin.routeName
-                      : LoginView.routeName)
+                      ? PasscodeLoginView.routeName
+                      : isFaceIdSet
+                          ? FaceIdLogin.routeName
+                          : LoginView.routeName)
+                  // : LoginView.routeName)
                   : context.replaceNamed(ProfileSetupView.routeName),
               _ => context.replaceNamed(WelcomeScreen.routeName)
               // _ => context.replaceNamed(SignUpView.routeName),

@@ -304,8 +304,8 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   late final TextEditingController _quantityController;
   late final TextEditingController _supplierNameController;
   late int _initialQuantity; // Store the original quantity
-  int get _currentQuantity =>
-      _initialQuantity + ref.read(increaseCountProvider(_initialQuantity));
+  // int get _currentQuantity =>
+  //     _initialQuantity + ref.read(increaseCountProvider(_initialQuantity));
 
   @override
   void initState() {
@@ -488,7 +488,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
       {required String inventoryId, required int quantityChange}) async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
 
-    final quantity = int.tryParse(_quantityController.text) ?? 0;
+    //  final quantity = int.tryParse(_quantityController.text) ?? 0;
 
     final data = widget.serviceType.toLowerCase() == 'product'
         ? UpdateInventoryRequest(
