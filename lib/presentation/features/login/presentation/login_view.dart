@@ -96,7 +96,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ],
         // webAuthenticationOptions: WebAuthenticationOptions(
         //   clientId: 'signin.laxmiiapp', // This is your Apple Service ID
-        //   redirectUri: Uri.parse('com.app.laxmii'),
+        //   redirectUri:
+        //       Uri.parse('https://laxmii-6a27c.firebaseapp.com//auth/handler'),
         //   // This must match your Apple config
         // ),
       );
