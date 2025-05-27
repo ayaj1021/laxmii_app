@@ -30,7 +30,7 @@ class ImportShopifyDetailsNotifier
       if (!value.status) throw value.message.toException;
 
       state = state.copyWith(state: LoadState.idle);
-      onSuccess(value.message.toString());
+      onSuccess(value.data?.message ?? 'Shopify data imported successfully');
     } catch (e) {
       onError(e.toString());
       state = state.copyWith(state: LoadState.idle);

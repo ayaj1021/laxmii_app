@@ -435,6 +435,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       currency: widget.currency,
                       title: 'Service Price',
                       product: _costPriceController,
+                      keyboardType: TextInputType.number,
                     ),
                   const VerticalSpacing(60),
                   LaxmiiOutlineSendButton(
@@ -519,6 +520,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
 
     final data = widget.serviceType.toLowerCase() == 'product'
         ? UpdateInventoryRequest(
+            type: widget.serviceType.toLowerCase(),
             productName: _productNameController.text.trim(),
             description: _descriptionController.text.trim(),
             supplierName: _supplierNameController.text.trim(),
@@ -527,11 +529,10 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
             costPrice: int.parse(_costPriceController.text),
           )
         : UpdateInventoryRequest(
+            type: widget.serviceType.toLowerCase(),
             productName: _productNameController.text.trim(),
             description: _descriptionController.text.trim(),
-            supplierName: _supplierNameController.text.trim(),
-            quantity: 0,
-            sellingPrice: 0,
+            //  supplierName: _supplierNameController.text.trim(),
             costPrice: int.parse(_costPriceController.text),
           );
 

@@ -62,6 +62,7 @@ class ImportShopifyDialog extends ConsumerWidget {
                     context.showError(message: message);
                   }, onSuccess: (message) {
                     context.showSuccess(message: message);
+                    Navigator.pop(context);
                   });
                 },
                 child: Container(

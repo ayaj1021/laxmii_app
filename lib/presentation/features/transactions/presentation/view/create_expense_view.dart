@@ -176,7 +176,10 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                               CustomDropdown<Inventory>(
                                   value: _selectedExpense,
                                   hintText: 'Select Inventory',
-                                  items: inventoryList?.map((item) {
+                                  items: (inventoryList ?? [])
+                                      .where((item) =>
+                                          item.type?.toLowerCase() == 'product')
+                                      .map((item) {
                                     return DropdownMenuItem(
                                       value: item,
                                       child: Text(
@@ -370,11 +373,12 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                     controller: _quantityController,
                     keyboardType: TextInputType.number,
                   ),
-                const VerticalSpacing(20),
-                AddSalesTextField(
-                  hintText: 'Expense name',
-                  controller: _expenseNameController,
-                ),
+                if (_selectedValue != expenseType[0]) const VerticalSpacing(20),
+                if (_selectedValue != expenseType[0])
+                  AddSalesTextField(
+                    hintText: 'Expense name',
+                    controller: _expenseNameController,
+                  ),
                 const VerticalSpacing(20),
                 AddSalesTextField(
                   hintText: 'Total Amount',
@@ -399,7 +403,18 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                           borderColor: AppColors.primaryColor,
                           textColor: AppColors.primaryColor,
                           onTap: () {
-                            createSales();
+                            if (_selectedValue == expenseType[0]) {
+                              if (_quantityController.text.isEmpty ||
+                                  _amountController.text.isEmpty ||
+                                  _supplierNameController.text.isEmpty) {
+                                context.showError(
+                                    message: 'Fields are necessary');
+                              } else {
+                                createSales();
+                              }
+                            } else {
+                              createSales();
+                            }
                           },
                           title: 'Add expense');
                     }),
@@ -423,12 +438,8 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
             frequency: _selectedRecurringType?.toLowerCase(),
             day: int.tryParse(_selectedDay ?? ''),
             month: int.tryParse(_selectedMonth ?? ''),
-
-            // _selectedGeneralExpense == 'Others'
-            //     ? _expenseNameController.text.trim()
-            //     : '$_selectedGeneralExpense',
+            quantity: int.tryParse(_quantityController.text.trim()),
             supplierName: _supplierNameController.text.trim(),
-
             amount: int.tryParse(
               _amountController.text.trim(),
             ),

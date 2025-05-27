@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
+import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
@@ -107,32 +108,40 @@ class _InventoryState extends ConsumerState<InventoryView> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => UpdateInventory(
-                                              supplierName:
-                                                  data?.supplierName ?? '',
-                                              currency: userCurrency,
-                                              serviceType: data?.type ?? '',
-                                              productName:
-                                                  data?.productName ?? '',
-                                              productDescription:
-                                                  data?.description ?? '',
-                                              sellingPrice:
-                                                  '${data?.sellingPrice}',
-                                              costPrice: '${data?.costPrice}',
-                                              itemQuantity: '${data?.quantity}',
-                                              itemId: '${data?.id}',
+                                        if (data?.type?.toLowerCase() ==
+                                            'shopify') {
+                                          context.showSuccess(
+                                              message:
+                                                  'You cannot edit Shopify inventory');
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => UpdateInventory(
+                                                supplierName:
+                                                    data?.supplierName ?? '',
+                                                currency: userCurrency,
+                                                serviceType: data?.type ?? '',
+                                                productName:
+                                                    data?.productName ?? '',
+                                                productDescription:
+                                                    data?.description ?? '',
+                                                sellingPrice:
+                                                    '${data?.sellingPrice}',
+                                                costPrice: '${data?.costPrice}',
+                                                itemQuantity:
+                                                    '${data?.quantity ?? 0}',
+                                                itemId: '${data?.id}',
+                                              ),
                                             ),
-                                          ),
-                                        ).then((_) {
-                                          ref
-                                              .read(
-                                                  getAllInventoryNotifierProvider
-                                                      .notifier)
-                                              .getAllInventory();
-                                        });
+                                          ).then((_) {
+                                            ref
+                                                .read(
+                                                    getAllInventoryNotifierProvider
+                                                        .notifier)
+                                                .getAllInventory();
+                                          });
+                                        }
                                       },
                                       child: ProductServicesWidget(
                                         itemName: data?.productName ?? '',

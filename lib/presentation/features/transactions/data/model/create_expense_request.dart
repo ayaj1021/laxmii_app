@@ -55,6 +55,7 @@ class CreateExpenseRequest {
   final String? generalType;
   final String? expense;
   final String? frequency;
+  final int? quantity;
   final int? day;
   final int? month;
   final int? amount;
@@ -63,6 +64,7 @@ class CreateExpenseRequest {
   CreateExpenseRequest({
     this.expenseType,
     this.generalType,
+    this.quantity,
     this.expense,
     this.frequency,
     this.day,
@@ -80,6 +82,7 @@ class CreateExpenseRequest {
     int? month,
     int? amount,
     String? supplierName,
+    int? quantity,
   }) =>
       CreateExpenseRequest(
         expenseType: expenseType ?? this.expenseType,
@@ -90,6 +93,7 @@ class CreateExpenseRequest {
         month: month ?? this.month,
         amount: amount ?? this.amount,
         supplierName: supplierName ?? this.supplierName,
+        quantity: quantity ?? this.quantity,
       );
 
   factory CreateExpenseRequest.fromJson(Map<String, dynamic> json) =>
@@ -102,6 +106,7 @@ class CreateExpenseRequest {
         month: json["month"],
         amount: json["amount"],
         supplierName: json["supplierName"],
+        quantity: json["quantity"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -113,5 +118,6 @@ class CreateExpenseRequest {
         "month": month,
         "amount": amount,
         "supplierName": supplierName,
+        "quantity": quantity,
       };
 }

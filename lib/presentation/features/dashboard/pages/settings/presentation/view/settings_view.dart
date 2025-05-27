@@ -70,8 +70,8 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     final isDeleteAccountLoading =
         ref.watch(deleteAccountNotifer.select((v) => v.state.isLoading));
     final settings = ref.watch(settingsNotifer.select((v) => v.data));
-    final userId = ref
-        .watch(getUserDetailsNotifier.select((v) => v.data?.profile?.id ?? ''));
+    final userId = ref.watch(
+        getUserDetailsNotifier.select((v) => v.data?.profile?.user ?? ''));
     final isLightTheme = ref.watch(themeProvider);
     final colorScheme = Theme.of(context);
     return PageLoader(
@@ -86,7 +86,6 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
               'Settings',
               style: context.textTheme.s20w500.copyWith(
                 color: colorScheme.colorScheme.onSurface,
-                //+447984247913
               ),
             ),
           ),
