@@ -347,6 +347,8 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
     super.dispose();
   }
 
+  bool _isSubmitting = false;
+
   @override
   Widget build(BuildContext context) {
     final isDeleting = ref.watch(deleteInventoryNotifier
@@ -442,7 +444,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       textColor: AppColors.primaryColor,
                       title: 'Update',
                       onTap: () {
-                        _handleUpdateTap(quantityChange);
+                        _validateInventoryInput(quantityChange);
                       }),
                   const VerticalSpacing(20),
                   LaxmiiOutlineSendButton(
@@ -458,6 +460,31 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
         ),
       ),
     );
+  }
+
+  void _validateInventoryInput(int quantityChange) {
+    if (_isSubmitting) return;
+    String costPriceText = _costPriceController.text;
+
+    try {
+      double costPriceValue = double.parse(costPriceText);
+
+      if (costPriceValue < 1) {
+        context.showError(message: 'Cost price cannot be less than 1');
+
+        _costPriceController.text = '1';
+      } else {
+        _isSubmitting = true;
+        setState(() {});
+        _handleUpdateTap(quantityChange);
+      }
+    } catch (e) {
+      context.showError(message: 'Please enter a valid number');
+
+      _quantityController.clear();
+      _sellingPriceController.clear();
+      _costPriceController.clear();
+    }
   }
 
   void _handleUpdateTap(int quantityChange) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
@@ -278,12 +276,7 @@ class _QuotePageState extends State<QuotePage> {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                      onTap: () {
-                                        log(item.itemQuantity.toString());
-                                      },
-                                      child:
-                                          Text(item.itemQuantity.toString())),
+                                  Text(item.itemQuantity.toString()),
                                   const VerticalSpacing(8)
                                 ],
                               );

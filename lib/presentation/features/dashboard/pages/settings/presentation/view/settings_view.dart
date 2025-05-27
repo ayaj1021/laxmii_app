@@ -25,7 +25,6 @@ import 'package:laxmii_app/presentation/features/login/presentation/login_view.d
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/manage_account/presentation/view/manage_account_view.dart';
 import 'package:laxmii_app/presentation/features/onboarding/presentation/view/onboarding_view.dart';
-import 'package:laxmii_app/presentation/features/shopify/presentation/notifier/import_shopify_details_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
@@ -60,7 +59,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
     final settings = ref.watch(settingsNotifer.select((v) => v.data));
 
     if (settings?.settings?.shopifyConnected == true) {
-      ref.read(importSpopifyDetailsNotifier.notifier).importShopifyDetails();
+      //  ref.read(importSpopifyDetailsNotifier.notifier).importShopifyDetails();
     }
   }
 

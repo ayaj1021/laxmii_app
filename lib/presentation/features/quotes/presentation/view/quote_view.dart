@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
+import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/date_format.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
@@ -69,9 +70,11 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
               onTap: () => context.pushNamed(CreateQuoteView.routeName),
-              child: const Icon(
-                Icons.add_circle,
-                color: AppColors.primaryColor,
+              child: Text(
+                'Create Quote',
+                style: context.textTheme.s15w600.copyWith(
+                  color: AppColors.primaryColor,
+                ),
               ),
             ),
           )

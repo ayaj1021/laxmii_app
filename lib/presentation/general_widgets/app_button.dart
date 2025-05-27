@@ -35,39 +35,37 @@ class _LaxmiiSendButtonState extends State<LaxmiiSendButton> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context);
-    return SizedBox(
-      width: widget.width,
-      child: InkWell(
-        onTap: widget.isEnabled ? widget.onTap : null,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: widget.isEnabled
-                  ? widget.backgroundColor
-                  : AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.fromBorderSide(
-                widget.hasBorder
-                    ? BorderSide(color: widget.borderColor)
-                    : BorderSide.none,
-              )),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    color: colorScheme.canvasColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+    return InkWell(
+      onTap: widget.isEnabled ? widget.onTap : null,
+      child: Container(
+        width: widget.width,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: widget.isEnabled
+                ? widget.backgroundColor
+                : AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.fromBorderSide(
+              widget.hasBorder
+                  ? BorderSide(color: widget.borderColor)
+                  : BorderSide.none,
+            )),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(
+                  color: colorScheme.canvasColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
-                if (widget.icon != null) const HorizontalSpacing(8),
-                widget.icon ?? const SizedBox.shrink()
-              ],
-            ),
+              ),
+              if (widget.icon != null) const HorizontalSpacing(8),
+              widget.icon ?? const SizedBox.shrink()
+            ],
           ),
         ),
       ),

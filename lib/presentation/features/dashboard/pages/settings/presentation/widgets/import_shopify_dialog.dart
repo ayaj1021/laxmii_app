@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/presentation/features/shopify/presentation/notifier/import_shopify_details_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
-class ImportShopifyDialog extends StatelessWidget {
+class ImportShopifyDialog extends ConsumerWidget {
   const ImportShopifyDialog({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref
+        .watch(importSpopifyDetailsNotifier.select((v) => v.state.isLoading));
     final colorScheme = Theme.of(context);
     return Container(
       width: double.infinity,
@@ -49,7 +55,15 @@ class ImportShopifyDialog extends StatelessWidget {
               ),
               const HorizontalSpacing(10),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  ref
+                      .read(importSpopifyDetailsNotifier.notifier)
+                      .importShopifyDetails(onError: (message) {
+                    context.showError(message: message);
+                  }, onSuccess: (message) {
+                    context.showSuccess(message: message);
+                  });
+                },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -58,7 +72,7 @@ class ImportShopifyDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Yes, Import',
+                    isLoading ? 'Importing...' : 'Yes, Import',
                     style: context.textTheme.s15w400.copyWith(
                       color: Colors.white,
                     ),

@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
-import 'package:laxmii_app/core/utils/utils.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/settings/presentation/widgets/shopify_store_name_dialog.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
+import 'package:laxmii_app/presentation/features/shopify/presentation/view/shopify_web_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class ConnectSpotifyButtonWidget extends ConsumerStatefulWidget {
@@ -99,17 +99,17 @@ class _ConnectSpotifyButtonWidgetState
                                     'https://laxmii-latest.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
                                 //     'https://laxmii.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}';
                                 log('https://laxmii-latest.onrender.com/auth/shopify?shop=${userStore.toLowerCase().trim()}&id=${widget.userId}');
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (_) => ShopifyWebView(
-                                //       shopifyUrl: url,
-                                //       // 'https://laxmii.onrender.com/auth/shopify?shop=abbyxl&id=${widget.userId}',
-                                //     ),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ShopifyWebView(
+                                      shopifyUrl: url,
+                                      // 'https://laxmii.onrender.com/auth/shopify?shop=abbyxl&id=${widget.userId}',
+                                    ),
+                                  ),
+                                );
 
-                                AppUtils.launchURL(url);
+                                //  AppUtils.launchURL(url);
                               }
                             },
                           ),

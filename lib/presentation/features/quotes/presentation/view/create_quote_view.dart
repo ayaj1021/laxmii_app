@@ -162,11 +162,18 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                 const VerticalSpacing(50),
                 LaxmiiSendButton(
                   onTap: () {
-                    items.isEmpty
-                        ? context.showError(message: 'Items cannot be empty')
-                        : generateQuotePdf(quotesNo: '$quotesNo');
+                    if (items.isEmpty) {
+                      context.showError(message: 'Items cannot be empty');
+                    } else {
+                      generateQuotePdf(quotesNo: '$quotesNo');
+                      createQuote(
+                          quotesNo: quotesNo ?? '', productItems: items);
+                    }
+                    // items.isEmpty
+                    //     ? context.showError(message: 'Items cannot be empty')
+                    //     : generateQuotePdf(quotesNo: '$quotesNo');
 
-                    createQuote(quotesNo: quotesNo ?? '', productItems: items);
+                    // createQuote(quotesNo: quotesNo ?? '', productItems: items);
                   },
                   title: 'Save',
                 )

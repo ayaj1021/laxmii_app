@@ -37,38 +37,36 @@ class LaxmiiOutlineSendButton extends StatefulWidget {
 class _LaxmiiOutlineSendButtonState extends State<LaxmiiOutlineSendButton> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      child: GestureDetector(
-        onTap: widget.isEnabled ? widget.onTap : null,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: widget.isEnabled
-                  ? widget.backgroundColor
-                  : AppColors.secondaryColor,
-              borderRadius: BorderRadius.circular(16),
-              border:
-                  Border.fromBorderSide(BorderSide(color: widget.borderColor))),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.icon != null
-                    ? SvgPicture.asset(widget.icon.toString())
-                    : const SizedBox.shrink(),
-                const HorizontalSpacing(5),
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    color: widget.textColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+    return InkWell(
+      onTap: widget.isEnabled ? widget.onTap : null,
+      child: Container(
+        width: widget.width,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: widget.isEnabled
+                ? widget.backgroundColor
+                : AppColors.secondaryColor,
+            borderRadius: BorderRadius.circular(16),
+            border:
+                Border.fromBorderSide(BorderSide(color: widget.borderColor))),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widget.icon != null
+                  ? SvgPicture.asset(widget.icon.toString())
+                  : const SizedBox.shrink(),
+              const HorizontalSpacing(5),
+              Text(
+                widget.title,
+                style: TextStyle(
+                  color: widget.textColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
