@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/forgot_password/presentation/view/forgot_password.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/google_sign_in_request.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/login_request.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/apple_sign_in_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/google_sign_in_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/login_notifier.dart';
@@ -30,6 +32,7 @@ import 'package:laxmii_app/presentation/general_widgets/laxmii_email_field.dart'
 import 'package:laxmii_app/presentation/general_widgets/laxmii_password_field.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -84,55 +87,61 @@ class _LoginViewState extends ConsumerState<LoginView> {
         '538188324651-2gt9uf174mlo5pqdpsc9ubuhe5tf29j3.apps.googleusercontent.com',
   );
 
-  // Future<void> appleSignInAndSendToken() async {
-  //   try {
-  //     final appleCredientail =
-  //         await SignInWithApple.getAppleIDCredential(scopes: [
-  //       AppleIDAuthorizationScopes.email,
-  //       AppleIDAuthorizationScopes.fullName,
-  //     ]);
+  Future<void> appleSignInAndSendToken() async {
+    try {
+      final appleCredientail = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          //  AppleIDAuthorizationScopes.fullName,
+        ],
+        // webAuthenticationOptions: WebAuthenticationOptions(
+        //   clientId: 'signin.laxmiiapp', // This is your Apple Service ID
+        //   redirectUri: Uri.parse('com.app.laxmii'),
+        //   // This must match your Apple config
+        // ),
+      );
 
-  //     final OAuthCredential credential = OAuthProvider('apple.com').credential(
-  //       accessToken: appleCredientail.authorizationCode,
-  //       idToken: appleCredientail.identityToken,
-  //     );
+      final OAuthCredential credential = OAuthProvider('apple.com').credential(
+        accessToken: appleCredientail.authorizationCode,
+        idToken: appleCredientail.identityToken,
+      );
 
-  //     final userCredential =
-  //         await FirebaseAuth.instance.signInWithCredential(credential);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-  //     // Step 3: Get ID token
-  //     final idToken = await userCredential.user?.getIdToken();
-  //     final data = GoogleSignInRequest(idToken: idToken ?? '');
+      // Step 3: Get ID token
+      final idToken = await userCredential.user?.getIdToken();
+      final data = GoogleSignInRequest(idToken: idToken ?? '');
 
-  //     ref.read(googleSignInNotifier.notifier).googleSignIn(
-  //           data: data,
-  //           onError: (error) {
-  //             context.showError(message: error);
-  //           },
-  //           onSuccess: (message, isVerified, isAccountSetup) {
-  //             context.hideOverLay();
-  //             context.showSuccess(message: 'Login Successful');
+      ref.read(appleSignInNotifier.notifier).appleSignIn(
+            data: data,
+            onError: (error) {
+              context.showError(message: error);
+            },
+            onSuccess: (message, isVerified, isAccountSetup) {
+              context.hideOverLay();
+              context.showSuccess(message: 'Login Successful');
 
-  //             isVerified == false
-  //                 ? Navigator.push(
-  //                     context,
-  //                     MaterialPageRoute(
-  //                         builder: (_) => VerifyEmail(
-  //                               email: _emailController.text.trim(),
-  //                               isForgotPassword: false,
-  //                             )))
-  //                 : isAccountSetup
-  //                     ? context.replaceAll(Dashboard.routeName)
-  //                     //   : context.pushReplacementNamed(Dashboard.routeName);
-  //                     : context
-  //                         .pushReplacementNamed(ProfileSetupView.routeName);
-  //             ref.read(getUserDetailsNotifier.notifier).getUserDetails();
-  //           },
-  //         );
-  //   } catch (e) {
-  //     log('Error: $e');
-  //   }
-  // }
+              isVerified == false
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => VerifyEmail(
+                                email: _emailController.text.trim(),
+                                isForgotPassword: false,
+                              )))
+                  : isAccountSetup
+                      ? context.replaceAll(Dashboard.routeName)
+                      //   : context.pushReplacementNamed(Dashboard.routeName);
+                      : context
+                          .pushReplacementNamed(ProfileSetupView.routeName);
+              ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+            },
+          );
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
 
   Future<void> googleSignInAndSendToken() async {
     try {
@@ -313,16 +322,17 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       borderColor: AppColors.primary212121,
                     ),
                     const VerticalSpacing(20),
-                    LaxmiiOutlineSendButton(
-                      onTap: () {
-                        googleSignInAndSendToken();
-                      },
-                      title: 'Continue with Apple',
-                      hasBorder: true,
-                      icon: 'assets/icons/apple.svg',
-                      backgroundColor: Colors.transparent,
-                      borderColor: AppColors.primary212121,
-                    ),
+                    if (Platform.isIOS)
+                      LaxmiiOutlineSendButton(
+                        onTap: () {
+                          appleSignInAndSendToken();
+                        },
+                        title: 'Continue with Apple',
+                        hasBorder: true,
+                        icon: 'assets/icons/apple.svg',
+                        backgroundColor: Colors.transparent,
+                        borderColor: AppColors.primary212121,
+                      ),
                     const VerticalSpacing(150),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -138,6 +138,11 @@ abstract class RestClient {
     @Body() GoogleSignInRequest googleRequest,
   );
 
+  @POST('/auth/apple')
+  Future<LoginResponse> appleAuth(
+    @Body() GoogleSignInRequest googleRequest,
+  );
+
   @POST('/auth/verify-otp/')
   Future<VerifyEmailOtpResponse> verifyEmailOtp(
     @Body() VerifyEmailOtpRequest verifyEmailOtpRequest,

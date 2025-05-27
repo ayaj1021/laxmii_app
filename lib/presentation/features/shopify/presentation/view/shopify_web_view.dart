@@ -83,7 +83,7 @@ Page resource error:
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: ImportShopifyDialog(),
+                  child: const ImportShopifyDialog(),
                 ),
               ).then((_) {
                 if (mounted) {
