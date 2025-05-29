@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
@@ -14,6 +13,7 @@ import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/login/data/model/google_sign_in_request.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/login_view.dart';
+import 'package:laxmii_app/presentation/features/login/presentation/notifier/apple_sign_in_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_user_details_notifier.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/google_sign_in_notifier.dart';
 import 'package:laxmii_app/presentation/features/profile_setup/presentation/view/profile_setup_view.dart';
@@ -24,10 +24,10 @@ import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/si
 import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/sign_up_input_section.dart';
 import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
-import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_checkbox.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class SignUpView extends ConsumerStatefulWidget {
   const SignUpView({super.key});
@@ -88,6 +88,63 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
       final data = GoogleSignInRequest(idToken: idToken ?? '');
 
       ref.read(googleSignInNotifier.notifier).googleSignIn(
+            data: data,
+            onError: (error) {
+              context.showError(message: error);
+            },
+            onSuccess: (message, isVerified, isAccountSetup) {
+              context.hideOverLay();
+              context.showSuccess(message: 'Login Successful');
+
+              isVerified == false
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => VerifyEmail(
+                                email: _emailController.text.trim(),
+                                isForgotPassword: false,
+                              )))
+                  : isAccountSetup
+                      ? context.replaceAll(Dashboard.routeName)
+                      //   : context.pushReplacementNamed(Dashboard.routeName);
+                      : context
+                          .pushReplacementNamed(ProfileSetupView.routeName);
+              ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+            },
+          );
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  Future<void> appleSignInAndSendToken() async {
+    try {
+      final appleCredientail = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          //  AppleIDAuthorizationScopes.fullName,
+        ],
+        // webAuthenticationOptions: WebAuthenticationOptions(
+        //   clientId: 'signin.laxmiiapp', // This is your Apple Service ID
+        //   redirectUri:
+        //       Uri.parse('https://laxmii-6a27c.firebaseapp.com//auth/handler'),
+        //   // This must match your Apple config
+        // ),
+      );
+
+      final OAuthCredential credential = OAuthProvider('apple.com').credential(
+        accessToken: appleCredientail.authorizationCode,
+        idToken: appleCredientail.identityToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Step 3: Get ID token
+      final idToken = await userCredential.user?.getIdToken();
+      final data = GoogleSignInRequest(idToken: idToken ?? '');
+
+      ref.read(appleSignInNotifier.notifier).appleSignIn(
             data: data,
             onError: (error) {
               context.showError(message: error);
@@ -226,42 +283,54 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                             title: 'Sign Up');
                       }),
                   const VerticalSpacing(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 135.w,
-                        child: Divider(
-                          color: colorScheme.colorScheme.onSurface,
-                        ),
-                      ),
-                      const HorizontalSpacing(7),
-                      Text(
-                        'Or',
-                        style: context.textTheme.s14w400.copyWith(
-                            color: colorScheme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w300),
-                      ),
-                      const HorizontalSpacing(7),
-                      SizedBox(
-                        width: 135.w,
-                        child: Divider(
-                          color: colorScheme.colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const VerticalSpacing(20),
-                  LaxmiiOutlineSendButton(
-                    onTap: () {
-                      signInAndSendToken();
-                    },
-                    title: 'Continue with Google',
-                    hasBorder: true,
-                    icon: 'assets/icons/google.svg',
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.primary212121,
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     SizedBox(
+                  //       width: 135.w,
+                  //       child: Divider(
+                  //         color: colorScheme.colorScheme.onSurface,
+                  //       ),
+                  //     ),
+                  //     const HorizontalSpacing(7),
+                  //     Text(
+                  //       'Or',
+                  //       style: context.textTheme.s14w400.copyWith(
+                  //           color: colorScheme.colorScheme.onSurface,
+                  //           fontWeight: FontWeight.w300),
+                  //     ),
+                  //     const HorizontalSpacing(7),
+                  //     SizedBox(
+                  //       width: 135.w,
+                  //       child: Divider(
+                  //         color: colorScheme.colorScheme.onSurface,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const VerticalSpacing(20),
+                  // LaxmiiOutlineSendButton(
+                  //   onTap: () {
+                  //     signInAndSendToken();
+                  //   },
+                  //   title: 'Continue with Google',
+                  //   hasBorder: true,
+                  //   icon: 'assets/icons/google.svg',
+                  //   backgroundColor: Colors.transparent,
+                  //   borderColor: AppColors.primary212121,
+                  // ),
+                  // const VerticalSpacing(20),
+                  // if (Platform.isIOS)
+                  //   LaxmiiOutlineSendButton(
+                  //     onTap: () {
+                  //       appleSignInAndSendToken();
+                  //     },
+                  //     title: 'Continue with Apple',
+                  //     hasBorder: true,
+                  //     icon: 'assets/icons/apple.svg',
+                  //     backgroundColor: Colors.transparent,
+                  //     borderColor: AppColors.primary212121,
+                  //   ),
                   const VerticalSpacing(100),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
