@@ -70,9 +70,9 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
                     ? const SizedBox.shrink()
                     : ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: (widget.tasksList?.length ?? 0) < 2
+                            itemCount: (widget.tasksList?.length ?? 0) < 3
                                 ? widget.tasksList?.length
-                                : 2,
+                                : 3,
                             itemBuilder: (_, index) {
                               final data = widget.tasksList?[index];
                               return Animate(
@@ -107,7 +107,7 @@ class _TodoListSectionState extends ConsumerState<TodoListSection> {
                                         completed: true,
                                       ),
                                     ),
-                                    const VerticalSpacing(16)
+                                    const VerticalSpacing(8)
                                   ],
                                 ),
                               );

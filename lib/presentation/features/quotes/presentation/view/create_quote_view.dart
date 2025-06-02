@@ -138,7 +138,8 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                   nameController: nameController,
                   quoteStartDate: _quoteStartDate == null
                       ? 'Dated today'
-                      : _formatQuoteSelectDate(_quoteStartDate!),
+                      : _formatQuoteSelectDate(
+                          _quoteStartDate ?? DateTime.now()),
                   quoteExpiryDate: _quoteStartDate == null
                       ? 'When does it expire?'
                       : _formatQuoteExpiryDate(
@@ -194,8 +195,10 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                   businessAddress: profileResponse?.profile?.address ?? '',
                   clientName: nameController.text.trim(),
                   quoteNo: quotesNo,
-                  issueDate: _formatQuoteSelectDate(_quoteStartDate!),
-                  dueDate: _formatQuoteExpiryDate(_quoteExpiryDate!),
+                  issueDate:
+                      _formatQuoteSelectDate(_quoteStartDate ?? DateTime.now()),
+                  dueDate: _formatQuoteExpiryDate(
+                      _quoteExpiryDate ?? DateTime.now()),
                   items: items,
                 )));
   }
@@ -208,8 +211,10 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
     ref.read(createQuotesNotifier.notifier).createQuotes(
           data: CreateQuotesRequest(
             customerName: nameController.text.trim(),
-            issueDate: _formatQuoteSelectDate(_quoteStartDate!),
-            expiryDate: _formatQuoteExpiryDate(_quoteExpiryDate!),
+            issueDate:
+                _formatQuoteSelectDate(_quoteStartDate ?? DateTime.now()),
+            expiryDate:
+                _formatQuoteExpiryDate(_quoteExpiryDate ?? DateTime.now()),
             quoteNumber: quotesNo,
             items: items,
             totalAmount: balanceAmount.toInt(),

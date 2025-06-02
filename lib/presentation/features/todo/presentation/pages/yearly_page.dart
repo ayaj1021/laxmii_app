@@ -36,7 +36,7 @@ class _YearlyPageState extends ConsumerState<YearlyPage> {
     final tasks =
         ref.watch(getAllTasksNotifierProvider.select((v) => v.getAllTasks));
     final tasksList =
-        tasks.data?.tasks?.where((task) => task.priority == 'month').toList();
+        tasks.data?.tasks?.where((task) => task.priority == 'year').toList();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(

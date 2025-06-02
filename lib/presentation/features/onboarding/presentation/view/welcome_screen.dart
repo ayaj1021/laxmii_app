@@ -19,51 +19,54 @@ class WelcomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           const OnboardingPageBackground(),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 29, right: 29, top: 370, bottom: 30),
-              child: Column(
-                children: [
-                  Text(
-                    'Master Your Money. Move Different',
-                    style: context.textTheme.s14w400.copyWith(
-                      color: colorScheme.colorScheme.onSurface,
-                      fontSize: 40,
+          SingleChildScrollView(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 29, right: 29, top: 200, bottom: 30),
+                child: Column(
+                  children: [
+                    Text(
+                      'Master Your Money. Move Different',
+                      style: context.textTheme.s14w400.copyWith(
+                        color: colorScheme.colorScheme.onSurface,
+                        fontSize: 40,
+                      ),
                     ),
-                  ),
-                  const VerticalSpacing(135),
-                  LaxmiiSendButton(
-                      onTap: () {
-                        context.pushReplacementNamed(OnboardingView.routeName);
-                      },
-                      title: 'Get Started'),
-                  const VerticalSpacing(24),
-                  InkWell(
-                    onTap: () => context.pushNamed(LoginView.routeName),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account? ',
-                          style: context.textTheme.s14w400.copyWith(
-                              color: colorScheme.colorScheme.onSurface,
-                              fontWeight: FontWeight.w300),
-                        ),
-                        GestureDetector(
-                          onTap: () => context.pushNamed(LoginView.routeName),
-                          child: Text(
-                            'Sign in',
-                            style: context.textTheme.s14w500.copyWith(
-                              color: AppColors.primaryColor,
+                    const VerticalSpacing(165),
+                    LaxmiiSendButton(
+                        onTap: () {
+                          context
+                              .pushReplacementNamed(OnboardingView.routeName);
+                        },
+                        title: 'Get Started'),
+                    const VerticalSpacing(24),
+                    InkWell(
+                      onTap: () => context.pushNamed(LoginView.routeName),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account? ',
+                            style: context.textTheme.s14w400.copyWith(
+                                color: colorScheme.colorScheme.onSurface,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          GestureDetector(
+                            onTap: () => context.pushNamed(LoginView.routeName),
+                            child: Text(
+                              'Sign in',
+                              style: context.textTheme.s14w500.copyWith(
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const VerticalSpacing(34),
-                ],
+                    const VerticalSpacing(34),
+                  ],
+                ),
               ),
             ),
           ),

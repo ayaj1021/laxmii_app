@@ -7,14 +7,12 @@ class OnboardingPageBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Image.asset('assets/images/blur_image_one.png'),
-          Image.asset('assets/images/blur_image_two.png'),
-          Image.asset('assets/images/blur_image_three.png'),
-        ],
-      ),
+    return ListView(
+      children: [
+        Image.asset('assets/images/blur_image_one.png'),
+        Image.asset('assets/images/blur_image_two.png'),
+        Image.asset('assets/images/blur_image_three.png'),
+      ],
     );
   }
 }
