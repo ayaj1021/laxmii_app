@@ -99,10 +99,12 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
             shortMonth,
             (data.invoice ?? 0).toDouble(),
             (data.expense ?? 0).toDouble(),
+            data.date ?? '',
           ),
         );
       }
     }
+// final String? date;
 
     // If no chart data, show a message
     if (chartData.isEmpty) {
@@ -191,9 +193,14 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
                 series: <CartesianSeries<_ChartData, String>>[
                   ColumnSeries<_ChartData, String>(
                     onPointTap: (pointInteractionDetails) {
-                      final now = DateTime.now();
+                      final int index = pointInteractionDetails.pointIndex ?? 0;
+
+                      final tappedData = chartData[index];
+
+                      final String selectedDate = tappedData.date;
+                      final date = DateFormat('yyyy-MM-dd').parse(selectedDate);
                       final request = GetGraphDetailsRequest(
-                          type: 'income', queryBy: 'year', date: now);
+                          type: 'income', queryBy: 'year', date: date);
                       ref
                           .read(getCashFlowDetailsNotifierProvider.notifier)
                           .getCashFlowDetails(request: request);
@@ -213,9 +220,15 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
                   ),
                   ColumnSeries<_ChartData, String>(
                     onPointTap: (pointInteractionDetails) {
-                      final now = DateTime.now();
+                      final int index = pointInteractionDetails.pointIndex ?? 0;
+
+                      final tappedData = chartData[index];
+
+                      final String selectedDate = tappedData.date;
+                      final date = DateFormat('yyyy-MM-dd').parse(selectedDate);
+
                       final request = GetGraphDetailsRequest(
-                          type: 'expense', queryBy: 'year', date: now);
+                          type: 'expense', queryBy: 'year', date: date);
                       ref
                           .read(getCashFlowDetailsNotifierProvider.notifier)
                           .getCashFlowDetails(request: request);
@@ -249,9 +262,10 @@ class _CashFlowYearChartState extends ConsumerState<CashFlowYearChart> {
 }
 
 class _ChartData {
-  _ChartData(this.month, this.invoice, this.expense);
+  _ChartData(this.month, this.invoice, this.expense, this.date);
 
   final String month;
   final double invoice;
   final double expense;
+  final String date;
 }
