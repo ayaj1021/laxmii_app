@@ -36,7 +36,7 @@ class Sale {
   final String? id;
   final String? user;
   final String? inventory;
-  final int? amount;
+  final num? amount;
   final String? customerName;
   final DateTime? createdAt;
   final int? v;
@@ -55,7 +55,7 @@ class Sale {
     String? id,
     String? user,
     String? inventory,
-    int? amount,
+    num? amount,
     String? customerName,
     DateTime? createdAt,
     int? v,

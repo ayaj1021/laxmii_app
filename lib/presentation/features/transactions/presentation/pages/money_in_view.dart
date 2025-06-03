@@ -69,9 +69,11 @@ class _MoneyInPageState extends ConsumerState<MoneyInPage> {
                           return Column(
                             children: [
                               TransactionsWidget(
-                                expenseName: '${data.inventory}',
-                                expenseType: 'Expenses | ${data.customerName}',
-                                expenseAmount: '$userCurrency${data.amount}',
+                                expenseName: data.inventory ?? '',
+                                expenseType:
+                                    'Expenses | ${data.customerName ?? ''}',
+                                expenseAmount:
+                                    '$userCurrency${data.amount?.toStringAsFixed(2) ?? ''}',
                                 expenseDate: formattedDate,
                                 amountColor: AppColors.primary198624,
                               ),

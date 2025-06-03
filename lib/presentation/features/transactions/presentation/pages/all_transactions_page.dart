@@ -94,10 +94,11 @@ class _AllTransactionsPageState extends ConsumerState<AllTransactionsPage> {
                           return Column(
                             children: [
                               TransactionsWidget(
-                                expenseName: '$expenseName',
+                                expenseName: expenseName ?? '',
                                 expenseType:
-                                    '${expense?.toUpperCase()} | $supplierName',
-                                expenseAmount: '$userCurrency${data.amount}',
+                                    '${expense?.toUpperCase() ?? ''} | ${supplierName ?? ''}',
+                                expenseAmount:
+                                    '$userCurrency${data.amount?.toStringAsFixed(2) ?? ''}',
                                 expenseDate: formattedDate,
                                 amountColor: data.type == 'expense'
                                     ? AppColors.primaryF94D4D

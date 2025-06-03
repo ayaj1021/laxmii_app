@@ -103,10 +103,11 @@ class _MoneyOutPageState extends ConsumerState<RecurringPage> {
                             child: Column(
                               children: [
                                 TransactionsWidget(
-                                  expenseName: '${data.expense}',
+                                  expenseName: data.expense ?? '',
                                   expenseType:
-                                      'Expenses | ${data.supplierName}',
-                                  expenseAmount: '$userCurrency${data.amount}',
+                                      'Expenses | ${data.supplierName ?? ''}',
+                                  expenseAmount:
+                                      '$userCurrency${data.amount?.toStringAsFixed(2) ?? ''}',
                                   expenseDate: formattedDate,
                                   frequency: data.frequency,
                                   amountColor: AppColors.primaryF94D4D,
