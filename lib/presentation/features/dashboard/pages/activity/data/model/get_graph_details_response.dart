@@ -47,7 +47,7 @@ class Expense {
   final String? id;
   final String? user;
   final String? expenseType;
-  final int? amount;
+  final num? amount;
   final String? supplierName;
   final DateTime? createdAt;
   final int? v;
@@ -66,7 +66,7 @@ class Expense {
     String? id,
     String? user,
     String? expenseType,
-    int? amount,
+    num? amount,
     String? supplierName,
     DateTime? createdAt,
     int? v,
@@ -108,7 +108,7 @@ class Income {
   final String? id;
   final String? user;
   final String? inventory;
-  final int? amount;
+  final num? amount;
   final String? customerName;
   final DateTime? createdAt;
   final int? v;
@@ -127,7 +127,7 @@ class Income {
     String? id,
     String? user,
     String? inventory,
-    int? amount,
+    num? amount,
     String? customerName,
     DateTime? createdAt,
     int? v,
@@ -168,7 +168,7 @@ class Income {
 class Item {
   final String? description;
   final int? quantity;
-  final double? price;
+  final num? price;
   final String? id;
 
   Item({
@@ -181,7 +181,7 @@ class Item {
   Item copyWith({
     String? description,
     int? quantity,
-    double? price,
+    num? price,
     String? id,
   }) =>
       Item(

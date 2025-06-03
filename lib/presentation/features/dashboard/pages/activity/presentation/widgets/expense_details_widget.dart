@@ -48,7 +48,8 @@ class _ExpenseDetailsWidgetState extends State<ExpenseDetailsWidget> {
             TransactionsWidget(
               expenseName: data.expenseType ?? '',
               expenseType: 'Expense | ${data.supplierName}',
-              expenseAmount: '$userCurrency${data.amount ?? ''}',
+              expenseAmount:
+                  '$userCurrency${data.amount?.toStringAsFixed(2) ?? ''}',
               expenseDate: formattedDate,
               amountColor: AppColors.red,
             ),

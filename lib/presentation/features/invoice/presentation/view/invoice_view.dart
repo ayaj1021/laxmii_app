@@ -273,12 +273,12 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                                     child: Column(
                                       children: [
                                         InvoiceViewWidget(
-                                          invoiceName: '${data?.customerName}',
+                                          invoiceName: data?.customerName ?? '',
                                           invoiceNumber:
-                                              '${data?.invoiceNumber}',
+                                              data?.invoiceNumber ?? '',
                                           invoiceAmount:
-                                              '\$${data?.totalAmount}',
-                                          invoiceStatus: '${data?.status}',
+                                              '\$${data?.totalAmount?.toStringAsFixed(2) ?? ''}',
+                                          invoiceStatus: data?.status ?? '',
                                           invoiceDate: formattedDate,
                                           invoiceStatusColor: data?.status ==
                                                   'unpaid'
