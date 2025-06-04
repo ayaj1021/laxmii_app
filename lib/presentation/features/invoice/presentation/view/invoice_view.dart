@@ -8,6 +8,7 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/delete_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_all_invoice_notifier.dart';
@@ -33,6 +34,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
 
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllInvoiceNotifierProvider.notifier).getAllInvoices();
 
@@ -40,6 +42,16 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -201,101 +213,102 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                         )
                       : Expanded(
                           child: ListView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: filteredInvoices?.length,
-                              itemBuilder: (_, index) {
-                                final data = filteredInvoices?[index];
-                                String inputDate = "${data?.createdAt}";
-                                DateTime parsedDate = DateTime.parse(inputDate);
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: filteredInvoices?.length,
+                            itemBuilder: (_, index) {
+                              final data = filteredInvoices?[index];
+                              String inputDate = "${data?.createdAt}";
+                              DateTime parsedDate = DateTime.parse(inputDate);
 
-                                String formattedDate =
-                                    DateFormat("MMM d yyyy").format(parsedDate);
-                                return Dismissible(
-                                  key: Key(data?.id ?? ''),
-                                  direction: DismissDirection.endToStart,
-                                  background: Container(
-                                    color: AppColors.red.withValues(alpha: 0.5),
-                                    alignment: Alignment.centerRight,
-                                    padding: const EdgeInsets.only(right: 20),
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                    ),
+                              String formattedDate =
+                                  DateFormat("MMM d yyyy").format(parsedDate);
+                              return Dismissible(
+                                key: Key(data?.id ?? ''),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  color: AppColors.red.withValues(alpha: 0.5),
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
                                   ),
-                                  onDismissed: (direction) {
-                                    // Remove the item from the list
-                                    ref
-                                        .read(deleteInvoiceNotifierProvider
-                                            .notifier)
-                                        .deleteInvoice(
-                                      data?.id ?? '',
-                                      onSuccess: (message) {
-                                        setState(() {
-                                          allInvoiceList
-                                              .removeAt(index); // local removal
-                                        });
-                                        ref
-                                            .read(getAllInvoiceNotifierProvider
-                                                .notifier)
-                                            .getAllInvoices();
+                                ),
+                                onDismissed: (direction) {
+                                  // Remove the item from the list
+                                  ref
+                                      .read(deleteInvoiceNotifierProvider
+                                          .notifier)
+                                      .deleteInvoice(
+                                    data?.id ?? '',
+                                    onSuccess: (message) {
+                                      setState(() {
+                                        allInvoiceList
+                                            .removeAt(index); // local removal
+                                      });
+                                      ref
+                                          .read(getAllInvoiceNotifierProvider
+                                              .notifier)
+                                          .getAllInvoices();
 
-                                        context.showSuccess(
-                                          message: message,
-                                        );
-                                      },
-                                      onError: (message) {
-                                        context.showError(
-                                          message: message,
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => ConfirmInvoiceView(
-                                            filteredInvoices: data?.items,
-                                            customerName:
-                                                '${data?.customerName}',
-                                            issueDate: '${data?.issueDate}',
-                                            dueDate: '${data?.dueDate}',
-                                            invoiceNumber:
-                                                '${data?.invoiceNumber}',
-                                            invoiceId: '${data?.id}',
-                                            invoiceStatus: '${data?.status}',
-                                          ),
-                                        ),
+                                      context.showSuccess(
+                                        message: message,
                                       );
                                     },
-                                    child: Column(
-                                      children: [
-                                        InvoiceViewWidget(
-                                          invoiceName: data?.customerName ?? '',
+                                    onError: (message) {
+                                      context.showError(
+                                        message: message,
+                                      );
+                                    },
+                                  );
+                                },
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ConfirmInvoiceView(
+                                          filteredInvoices: data?.items,
+                                          customerName: '${data?.customerName}',
+                                          issueDate: '${data?.issueDate}',
+                                          dueDate: '${data?.dueDate}',
                                           invoiceNumber:
-                                              data?.invoiceNumber ?? '',
-                                          invoiceAmount:
-                                              '\$${data?.totalAmount?.toStringAsFixed(2) ?? ''}',
-                                          invoiceStatus: data?.status ?? '',
-                                          invoiceDate: formattedDate,
-                                          invoiceStatusColor: data?.status ==
-                                                  'unpaid'
-                                              ? AppColors.primary861919
-                                                  .withValues(alpha: 0.7)
-                                              : data?.status == 'overdue'
-                                                  ? AppColors.primaryA67C00
-                                                      .withValues(alpha: 0.7)
-                                                  : AppColors.primary075427
-                                                      .withValues(alpha: 0.7),
+                                              '${data?.invoiceNumber}',
+                                          invoiceId: '${data?.id}',
+                                          invoiceStatus: '${data?.status}',
                                         ),
-                                        const VerticalSpacing(10)
-                                      ],
-                                    ),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      InvoiceViewWidget(
+                                        invoiceName: data?.customerName ?? '',
+                                        invoiceNumber:
+                                            data?.invoiceNumber ?? '',
+                                        invoiceAmount:
+                                            '$userCurrency${data?.totalAmount?.toStringAsFixed(2) ?? ''}',
+                                        invoiceStatus: data?.status ?? '',
+                                        invoiceDate: formattedDate,
+                                        invoiceStatusColor:
+                                            data?.status == 'unpaid'
+                                                ? AppColors.primary861919
+                                                    .withValues(alpha: 0.7)
+                                                : data?.status == 'overdue'
+                                                    ? AppColors.primaryA67C00
+                                                        .withValues(alpha: 0.7)
+                                                    : AppColors.primary075427
+                                                        .withValues(alpha: 0.7),
+                                      ),
+                                      const VerticalSpacing(10)
+                                    ],
                                   ),
-                                );
-                              }))
+                                ),
+                              );
+                            },
+                          ),
+                        )
             ],
           ),
         )),

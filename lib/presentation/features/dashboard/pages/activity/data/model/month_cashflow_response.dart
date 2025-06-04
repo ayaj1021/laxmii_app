@@ -90,14 +90,14 @@ class MonthData {
       );
 
   factory MonthData.fromJson(Map<String, dynamic> json) => MonthData(
-        invoice: json["invoice"],
+        invoice: json["sales"],
         expense: json["expense"],
         shopify: json["shopify"],
         date: json["date"],
       );
 
   Map<String, dynamic> toJson() => {
-        "invoice": invoice,
+        "sales": invoice,
         "expense": expense,
         "shopify": shopify,
         "date": date,

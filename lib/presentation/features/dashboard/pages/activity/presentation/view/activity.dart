@@ -4,6 +4,7 @@ import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/components/cashflow_activity.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_details_notifier.dart';
+import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/notifier/get_cashflow_notifier.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/expense_details_widget.dart';
 import 'package:laxmii_app/presentation/features/dashboard/pages/activity/presentation/widgets/income_details_widget.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
@@ -22,6 +23,9 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
     getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
+      await ref
+          .read(getCashFlowNotifierProvider.notifier)
+          .getCashFlow(query: 'week');
     });
     super.initState();
   }

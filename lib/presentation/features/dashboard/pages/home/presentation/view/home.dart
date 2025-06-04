@@ -39,11 +39,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     getUserName();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
-      await ref.read(getAccessTokenNotifier.notifier).accessToken();
-      await ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+      ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
+      ref.read(getAccessTokenNotifier.notifier).accessToken();
       ref.read(getUserDetailsNotifier.notifier).getUserDetails();
-      await ref
+      ref.read(getUserDetailsNotifier.notifier).getUserDetails();
+      ref
           .read(getAiIsightsNotifierProvider.notifier)
           .getAiInsights(request: data);
     });

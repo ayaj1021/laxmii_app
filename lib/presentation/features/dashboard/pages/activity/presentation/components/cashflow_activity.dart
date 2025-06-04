@@ -196,9 +196,11 @@ class CashFlowActivity extends ConsumerStatefulWidget {
 }
 
 class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
+  int _selectedIndex = 0;
   @override
   void initState() {
     getUserCurrency();
+    _selectedIndex = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // First load with week data
       await ref
@@ -210,7 +212,7 @@ class _CashFlowActivityState extends ConsumerState<CashFlowActivity> {
     super.initState();
   }
 
-  int _selectedIndex = 0; // Default to 'week' (index 0)
+  // Default to 'week' (index 0)
 
   String userCurrency = '\$';
 

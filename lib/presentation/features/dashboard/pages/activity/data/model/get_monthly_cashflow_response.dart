@@ -263,22 +263,22 @@ class CashFlowWeekData {
 }
 
 class CashflowValue {
-  final int? invoice;
+  final int? sales;
   final int? expense;
   final int? shopify;
 
-  CashflowValue({this.invoice, this.expense, this.shopify});
+  CashflowValue({this.sales, this.expense, this.shopify});
 
   factory CashflowValue.fromJson(Map<String, dynamic> json) {
     return CashflowValue(
-      invoice: json['invoice'],
+      sales: json['sales'],
       expense: json['expense'],
       shopify: json['shopify'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'invoice': invoice,
+        'sales': sales,
         'expense': expense,
         'shopify': shopify,
       };

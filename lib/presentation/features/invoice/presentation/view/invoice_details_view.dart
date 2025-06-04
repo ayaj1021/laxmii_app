@@ -5,13 +5,13 @@ import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
-import 'package:laxmii_app/presentation/features/dashboard/dashboard.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/create_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/update_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/confirm_invoice_view.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
+import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_app_bar.dart';
@@ -241,7 +241,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
               invoiceNumber: widget.invoiceNumber,
               items: widget.items,
               totalAmount: totalAmount,
-              status: "paid"),
+              status: "unpaid"),
           onError: (error) {
             context.showError(message: error);
           },
@@ -257,7 +257,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                     context.hideOverLay();
                     context.showSuccess(message: message);
                     //  context.popUntil(ModalRoute.withName(InvoiceView.routeName));
-                    context.pushReplacementNamed(Dashboard.routeName);
+                    context.popAndPushNamed(TransactionsView.routeName);
                   },
                   invoiceId: id,
                 );

@@ -121,10 +121,10 @@ class SetAiPreferenceWidget extends StatelessWidget {
             scaleY: 0.9,
             scaleX: 1,
             child: Switch(
-                // activeTrackColor: AppColors.primaryColor,
-                // inactiveTrackColor: AppColors.primary101010,
-                thumbColor: WidgetStateProperty.all(AppColors.white),
-                trackColor: WidgetStateProperty.all(AppColors.primary3B3522),
+                activeTrackColor: AppColors.primaryColor,
+                inactiveTrackColor: colorScheme.cardColor,
+                // thumbColor: WidgetStateProperty.all(AppColors.white),
+                // trackColor: WidgetStateProperty.all(AppColors.primary3B3522),
                 value: value,
                 onChanged: onChanged))
       ],
