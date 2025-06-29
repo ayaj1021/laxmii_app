@@ -255,7 +255,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                       InvoiceWidget(
                         title: 'Total',
                         subTitle:
-                            '$userCurrency${totalAmount.toStringAsFixed(0)}',
+                            '$userCurrency${totalAmount.toStringAsFixed(2)}',
                       ),
                       const VerticalSpacing(14),
                       // InvoiceWidget(

@@ -131,7 +131,7 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                           builder: (_) => AddItemSection(
                                             serviceType: data.type ?? '',
                                             item: data.productName ?? '',
-                                            quantity: data.quantity ?? 0,
+                                            quantity: data.quantity ?? 1,
                                             sellingPrice: data.sellingPrice ??
                                                 data.costPrice ??
                                                 0,
@@ -140,10 +140,6 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                       );
 
                                       if (item != null) {
-                                        widget.itemsNotifier.value = [
-                                          ...widget.itemsNotifier.value,
-                                          item
-                                        ];
                                         widget.addItem(item);
                                       }
                                       //${data?.sellingPrice ?? data?.costPrice}
@@ -216,10 +212,17 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                                                       .toStringAsFixed(
                                                                           2)),
                                                               onItemDelete: () {
-                                                                setState(() {
-                                                                  items.remove(
-                                                                      item);
-                                                                });
+                                                                List<ProductItem>
+                                                                    updatedItems =
+                                                                    List.from(widget
+                                                                        .itemsNotifier
+                                                                        .value);
+                                                                updatedItems
+                                                                    .remove(
+                                                                        item);
+                                                                widget.itemsNotifier
+                                                                        .value =
+                                                                    updatedItems;
                                                                 //    removeItem(item);
                                                               },
                                                             ),

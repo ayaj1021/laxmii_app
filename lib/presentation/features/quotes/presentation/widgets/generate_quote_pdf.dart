@@ -76,6 +76,7 @@ class _QuotePageState extends State<QuotePage> {
     return Scaffold(
       appBar: LaxmiiAppBar(
         title: 'Quote',
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
@@ -347,7 +348,7 @@ class _QuotePageState extends State<QuotePage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     //  Text('\$$totalAmount'),
-                    Text('$userCurrency$totalAmount'),
+                    Text('$userCurrency${totalAmount.toStringAsFixed(2)}'),
                   ],
                 ),
               ],

@@ -30,6 +30,8 @@ class CreateQuoteView extends ConsumerStatefulWidget {
 
 class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
   GetUserDetailsResponse? profileResponse;
+  ValueNotifier<List<ProductItem>> quoteItemsNotifier =
+      ValueNotifier<List<ProductItem>>([]);
   @override
   void initState() {
     getProfile();
@@ -90,26 +92,47 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
     return DateFormat('MMM d, yyyy').format(date);
   }
 
-  List<ProductItem> items = []; // List of items
+  // List<ProductItem> items = []; // List of items
   double totalAmount = 0.0; // Total amount
   double taxAmount = 0.0; // Total amount
   double balanceAmount = 0.0; // Total amount
 
+  // void addItem(ProductItem newItem) {
+  //   setState(() {
+  //     items.add(newItem); // Add the new item
+  //     totalAmount +=
+  //         newItem.itemQuantity * newItem.itemPrice; // Update the total amount
+
+  //     taxAmount = totalAmount * 0.08;
+
+  //     balanceAmount = totalAmount + taxAmount;
+  //   });
+  // }
+
+  // void calculateTotalAmount() {
+  //   totalAmount = items.fold(
+  //       0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
+  // }
+
   void addItem(ProductItem newItem) {
+    // Create a new list with the added item
+    List<ProductItem> updatedItems = List.from(quoteItemsNotifier.value)
+      ..add(newItem);
+
+    // Update the notifier with the new list
+    quoteItemsNotifier.value = updatedItems;
+
     setState(() {
-      items.add(newItem); // Add the new item
-      totalAmount +=
-          newItem.itemQuantity * newItem.itemPrice; // Update the total amount
-
+      // Calculate totals using the updated list
+      calculateTotalAmount();
       taxAmount = totalAmount * 0.08;
-
       balanceAmount = totalAmount + taxAmount;
     });
   }
 
   void calculateTotalAmount() {
-    totalAmount = items.fold(
-        0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
+    totalAmount = quoteItemsNotifier.value
+        .fold(0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
   }
 
   @override
@@ -159,25 +182,26 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
                 const VerticalSpacing(36),
                 AddQuotesSection(
                   addItem: addItem,
+                  quoteItemsNotifier: quoteItemsNotifier,
                 ),
                 const VerticalSpacing(50),
-                LaxmiiSendButton(
-                  onTap: () {
-                    if (items.isEmpty) {
-                      context.showError(message: 'Items cannot be empty');
-                    } else {
-                      generateQuotePdf(quotesNo: '$quotesNo');
-                      createQuote(
-                          quotesNo: quotesNo ?? '', productItems: items);
-                    }
-                    // items.isEmpty
-                    //     ? context.showError(message: 'Items cannot be empty')
-                    //     : generateQuotePdf(quotesNo: '$quotesNo');
-
-                    // createQuote(quotesNo: quotesNo ?? '', productItems: items);
-                  },
-                  title: 'Save',
-                )
+                ValueListenableBuilder(
+                    valueListenable: quoteItemsNotifier,
+                    builder: (context, items, child) {
+                      return LaxmiiSendButton(
+                        onTap: () {
+                          if (items.isEmpty) {
+                            context.showError(message: 'Items cannot be empty');
+                          } else {
+                            generateQuotePdf(
+                                quotesNo: '$quotesNo', items: items);
+                            createQuote(
+                                quotesNo: quotesNo ?? '', productItems: items);
+                          }
+                        },
+                        title: 'Save',
+                      );
+                    })
               ],
             ),
           )),
@@ -186,7 +210,12 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
     );
   }
 
-  void generateQuotePdf({required String quotesNo}) {
+  List<Item> getItemsForRequest() {
+    return convertProductItemsToQuoteItems(quoteItemsNotifier.value);
+  }
+
+  void generateQuotePdf(
+      {required String quotesNo, required List<ProductItem> items}) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -207,7 +236,7 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
       {required String quotesNo,
       required List<ProductItem> productItems}) async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
-    final items = convertProductItemsToQuoteItems(productItems);
+    final items = getItemsForRequest();
     ref.read(createQuotesNotifier.notifier).createQuotes(
           data: CreateQuotesRequest(
             customerName: nameController.text.trim(),

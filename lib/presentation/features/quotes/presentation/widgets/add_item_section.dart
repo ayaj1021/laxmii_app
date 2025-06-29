@@ -170,7 +170,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                       valueListenable: _calculateProduct,
                       builder: (context, totalAmount, child) {
                         return Text(
-                          '$userCurrency$totalAmount',
+                          '$userCurrency ${totalAmount.toStringAsFixed(2)}',
                           style: context.textTheme.s12w300.copyWith(
                             color: colorScheme.colorScheme.onSurface,
                             fontSize: 14,
@@ -188,14 +188,18 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
             const VerticalSpacing(29),
             GestureDetector(
               onTap: () {
+                if (widget.serviceType == 'product' &&
+                    _quantityController.text.isEmpty) {
+                  context.showError(message: 'Quantity cannot be empty');
+                  return;
+                }
                 if (_sellingPriceController.text.isEmpty) {
                   context.showError(message: 'All fields are required');
                 } else {
                   final quantityText = _quantityController.text.trim();
                   final item = ProductItem(
                     itemName: widget.item,
-                    itemPrice:
-                        double.parse(_sellingPriceController.text.trim()),
+                    itemPrice: num.parse(_sellingPriceController.text.trim()),
                     itemQuantity: num.tryParse(quantityText) ?? 0,
                   );
 

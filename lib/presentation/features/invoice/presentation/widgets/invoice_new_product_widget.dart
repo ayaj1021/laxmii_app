@@ -40,7 +40,7 @@ class InvoiceNewProductWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '$currency$totalItemPrice',
+                  '$currency${totalItemPrice.toStringAsFixed(2)}',
                   style: context.textTheme.s14w400.copyWith(
                     color: AppColors.primary5E5E5E,
                   ),

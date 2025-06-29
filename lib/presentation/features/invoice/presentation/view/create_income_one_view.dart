@@ -398,7 +398,8 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                   children: [
                     InvoiceWidget(
                       title: 'Total',
-                      subTitle: '$userCurrency${calculateTotalAmount()}',
+                      subTitle:
+                          '$userCurrency${calculateTotalAmount().toStringAsFixed(2)}',
                       //'\$${totalAmount.toStringAsFixed(2)}',
                     ),
                     const VerticalSpacing(30),

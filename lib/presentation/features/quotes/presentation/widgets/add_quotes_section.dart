@@ -8,17 +8,19 @@ import 'package:laxmii_app/presentation/features/quotes/presentation/view/quotes
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
 
 class AddQuotesSection extends StatefulWidget {
-  const AddQuotesSection({super.key, required this.addItem});
+  const AddQuotesSection({
+    super.key,
+    required this.addItem,
+    required this.quoteItemsNotifier,
+  });
   final Function(ProductItem newItem) addItem;
+  final ValueNotifier<List<ProductItem>> quoteItemsNotifier;
 
   @override
   State<AddQuotesSection> createState() => _AddQuotesSectionState();
 }
 
 class _AddQuotesSectionState extends State<AddQuotesSection> {
-  ValueNotifier<List<ProductItem>> quoteItemsNotifier =
-      ValueNotifier<List<ProductItem>>([]);
-
   @override
   void initState() {
     getUserCurrency();
@@ -28,7 +30,6 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
 
   @override
   void dispose() {
-    quoteItemsNotifier.dispose();
     super.dispose();
   }
 
@@ -47,7 +48,7 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
     return Column(
       children: [
         ValueListenableBuilder(
-            valueListenable: quoteItemsNotifier,
+            valueListenable: widget.quoteItemsNotifier,
             builder: (context, items, child) {
               return items.isEmpty
                   ? const SizedBox.shrink()
@@ -58,7 +59,9 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
                           itemCount: items.length,
                           itemBuilder: (_, index) {
                             final item = items[index];
-                            final price = item.itemQuantity * item.itemPrice;
+                            final price = item.itemQuantity == 0
+                                ? 1
+                                : item.itemQuantity * item.itemPrice;
                             return Column(
                               children: [
                                 InvoiceNewProductWidget(
@@ -68,9 +71,11 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
                                   itemPrice: item.itemPrice.toDouble(),
                                   totalItemPrice: price.toDouble(),
                                   onItemDelete: () {
-                                    setState(() {
-                                      items.remove(item);
-                                    });
+                                    List<ProductItem> updatedItems = List.from(
+                                        widget.quoteItemsNotifier.value);
+                                    updatedItems.remove(item);
+                                    widget.quoteItemsNotifier.value =
+                                        updatedItems;
                                   },
                                 ),
                                 const VerticalSpacing(5),
@@ -85,18 +90,12 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
             }),
         InkWell(
           onTap: () async {
-            // final item = await context.pushNamed(AddItemSection.routeName);
-            // if (item != null) {
-            //   quoteItemsNotifier.value = [...quoteItemsNotifier.value, item];
-            //   widget.addItem(item);
-            // }
-
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => QuoteInventoryListView(
                           addItem: widget.addItem,
-                          itemsNotifier: quoteItemsNotifier,
+                          itemsNotifier: widget.quoteItemsNotifier,
                         )));
           },
           child: Row(
