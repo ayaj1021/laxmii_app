@@ -27,7 +27,7 @@ class AddNewInvoiceView extends ConsumerStatefulWidget {
 
   final String type;
 
-  final int quantity;
+  final num quantity;
   final num sellingPrice;
   static const routeName = '/addNewInvoiceView';
 

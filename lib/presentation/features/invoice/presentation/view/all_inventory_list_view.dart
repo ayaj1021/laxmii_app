@@ -5,6 +5,7 @@ import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/notifier/get_all_inventory_notifier.dart';
 import 'package:laxmii_app/presentation/features/inventory/presentation/view/create_inventory_view.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/add_product_notifier.dart';
@@ -33,6 +34,7 @@ class AllInventoryListView extends ConsumerStatefulWidget {
 class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
       await ref
@@ -40,6 +42,16 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
           .getAllInventory();
     });
     super.initState();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -55,7 +67,7 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
     return Scaffold(
       appBar: LaxmiiAppBar(
         title: 'Inventory',
-        // centerTitle: true,
+        centerTitle: true,
         actions: [
           GestureDetector(
             onTap: () => context.pushNamed(CreateInventory.routeName),
@@ -223,6 +235,8 @@ class _AllInventoryListViewState extends ConsumerState<AllInventoryListView> {
                                                           return Column(
                                                             children: [
                                                               InvoiceNewProductWidget(
+                                                                currency:
+                                                                    userCurrency,
                                                                 itemName: item
                                                                     .itemName,
                                                                 itemQuantity: item

@@ -10,6 +10,7 @@ import 'package:laxmii_app/presentation/features/todo/presentation/notifier/dele
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/update_task_notifier.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/pages/monthly_page.dart';
+import 'package:laxmii_app/presentation/features/todo/presentation/pages/once_page.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/pages/weekly_page.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/pages/yearly_page.dart';
 import 'package:laxmii_app/presentation/features/todo/presentation/view/create_task_view.dart';
@@ -30,7 +31,7 @@ class _TodoViewState extends ConsumerState<TodoView>
   late TabController _tabController;
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
@@ -97,6 +98,7 @@ class _TodoViewState extends ConsumerState<TodoView>
                                 .copyWith(color: AppColors.primary3B3522),
                             controller: _tabController,
                             tabs: const [
+                              Text('Once'),
                               Text('Weekly'),
                               Text('Monthly'),
                               Text('Yearly'),
@@ -121,6 +123,7 @@ class _TodoViewState extends ConsumerState<TodoView>
                   child: TabBarView(
                     controller: _tabController,
                     children: const [
+                      OncePage(),
                       WeeklyPage(),
                       MonthlyPage(),
                       YearlyPage(),

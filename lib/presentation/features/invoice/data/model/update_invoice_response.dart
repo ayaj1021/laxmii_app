@@ -129,8 +129,8 @@ class Invoice {
 
 class Item {
   final String? description;
-  final int? quantity;
-  final int? price;
+  final num? quantity;
+  final num? price;
   final String? id;
 
   Item({
@@ -142,8 +142,8 @@ class Item {
 
   Item copyWith({
     String? description,
-    int? quantity,
-    int? price,
+    num? quantity,
+    num? price,
     String? id,
   }) =>
       Item(

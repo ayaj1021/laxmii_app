@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/invoice_new_product_widget.dart';
 import 'package:laxmii_app/presentation/features/quotes/data/model/create_quotes_request.dart';
 import 'package:laxmii_app/presentation/features/quotes/presentation/view/quotes_inventory_view.dart';
@@ -19,9 +20,26 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
       ValueNotifier<List<ProductItem>>([]);
 
   @override
+  void initState() {
+    getUserCurrency();
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
     quoteItemsNotifier.dispose();
     super.dispose();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -44,6 +62,7 @@ class _AddQuotesSectionState extends State<AddQuotesSection> {
                             return Column(
                               children: [
                                 InvoiceNewProductWidget(
+                                  currency: userCurrency,
                                   itemName: item.itemName,
                                   itemQuantity: item.itemQuantity,
                                   itemPrice: item.itemPrice.toDouble(),

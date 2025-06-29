@@ -15,7 +15,7 @@ class TodoPriorityDropDown extends StatefulWidget {
 }
 
 class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
-  List<String> priorityList = ['Week', 'Month', 'Year'];
+  List<String> priorityList = ['Weekly', 'Monthly', 'Yearly', 'Once'];
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context);
@@ -58,7 +58,7 @@ class _TodoPriorityDropDownState extends State<TodoPriorityDropDown> {
                 return DropdownMenuItem(
                   value: item,
                   child: Text(
-                    '${item}ly',
+                    item,
                     style: context.textTheme.s14w400.copyWith(
                       color: AppColors.primary5E5E5E,
                     ),

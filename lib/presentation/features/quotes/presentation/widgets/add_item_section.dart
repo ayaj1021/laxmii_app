@@ -22,7 +22,7 @@ class AddItemSection extends ConsumerStatefulWidget {
   });
   final String item;
   final String serviceType;
-  final int quantity;
+  final num quantity;
   final num sellingPrice;
 
   @override

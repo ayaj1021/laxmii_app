@@ -40,6 +40,7 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
   GetUserDetailsResponse? profileResponse;
   @override
   void initState() {
+    getUserCurrency();
     getProfile();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref
@@ -83,6 +84,16 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
       // Update the UI
       setState(() {});
     }
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -221,6 +232,8 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                         itemBuilder: (_, index) {
                           final data = quoteDetails?.items?[index];
                           return InvoiceNewProductWidget(
+                            currency: userCurrency,
+                            hasDelete: false,
                             itemName: data?.description?.capitalize ?? '',
                             itemQuantity: data?.quantity ?? 0,
                             itemPrice: data?.price?.toDouble() ?? 0,
@@ -241,7 +254,8 @@ class _QuoteDetailsViewState extends ConsumerState<QuoteDetailsView> {
                     children: [
                       InvoiceWidget(
                         title: 'Total',
-                        subTitle: '\$${totalAmount.toStringAsFixed(2)}',
+                        subTitle:
+                            '$userCurrency${totalAmount.toStringAsFixed(0)}',
                       ),
                       const VerticalSpacing(14),
                       // InvoiceWidget(

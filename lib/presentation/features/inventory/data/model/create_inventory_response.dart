@@ -40,7 +40,7 @@ class SavedInventory {
   final String? user;
   final String? productName;
   final String? description;
-  final int? quantity;
+  final num? quantity;
   final num? sellingPrice;
   final num? costPrice;
   final String? id;
@@ -63,7 +63,7 @@ class SavedInventory {
     String? user,
     String? productName,
     String? description,
-    int? quantity,
+    num? quantity,
     num? sellingPrice,
     num? costPrice,
     String? id,

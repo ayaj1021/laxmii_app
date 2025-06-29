@@ -438,9 +438,9 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
             frequency: _selectedRecurringType?.toLowerCase(),
             day: int.tryParse(_selectedDay ?? ''),
             month: int.tryParse(_selectedMonth ?? ''),
-            quantity: int.tryParse(_quantityController.text.trim()),
+            quantity: num.tryParse(_quantityController.text.trim()),
             supplierName: _supplierNameController.text.trim(),
-            amount: int.tryParse(
+            amount: num.tryParse(
               _amountController.text.trim(),
             ),
           ),

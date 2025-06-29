@@ -69,7 +69,7 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
     return Scaffold(
       appBar: LaxmiiAppBar(
         title: 'Inventory',
-        //centerTitle: true,
+        centerTitle: true,
         actions: [
           GestureDetector(
               onTap: () => context.pushNamed(CreateInventory.routeName),
@@ -203,6 +203,8 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                                         return Column(
                                                           children: [
                                                             InvoiceNewProductWidget(
+                                                              currency:
+                                                                  userCurrency,
                                                               itemName:
                                                                   item.itemName,
                                                               itemQuantity: item

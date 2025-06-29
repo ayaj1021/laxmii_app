@@ -8,14 +8,18 @@ class InvoiceNewProductWidget extends StatelessWidget {
   const InvoiceNewProductWidget(
       {super.key,
       required this.itemName,
+      required this.currency,
       required this.itemQuantity,
       required this.itemPrice,
       this.onItemDelete,
+      this.hasDelete = true,
       required this.totalItemPrice});
   final String itemName;
+  final String currency;
   final num itemQuantity;
   final num itemPrice;
   final double totalItemPrice;
+  final bool? hasDelete;
   final Function()? onItemDelete;
 
   @override
@@ -36,26 +40,27 @@ class InvoiceNewProductWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '\$$totalItemPrice',
+                  '$currency$totalItemPrice',
                   style: context.textTheme.s14w400.copyWith(
                     color: AppColors.primary5E5E5E,
                   ),
                 ),
                 const HorizontalSpacing(2),
-                GestureDetector(
-                  onTap: onItemDelete,
-                  child: const Icon(
-                    Icons.delete,
-                    size: 18,
-                    color: AppColors.red,
-                  ),
-                )
+                if (hasDelete == true)
+                  GestureDetector(
+                    onTap: onItemDelete,
+                    child: const Icon(
+                      Icons.delete,
+                      size: 18,
+                      color: AppColors.red,
+                    ),
+                  )
               ],
             ),
           ],
         ),
         Text(
-          '${itemQuantity == 0 ? 1 : itemQuantity} x \$$itemPrice',
+          '${itemQuantity == 0 ? 1 : itemQuantity} x $currency$itemPrice',
           style: context.textTheme.s12w400.copyWith(
             color: AppColors.primaryC4C4C4,
           ),

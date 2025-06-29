@@ -146,7 +146,7 @@ class _SalesReportDetailState extends ConsumerState<SalesReportDetail> {
                 Positioned(
                   bottom: 0,
                   child: BottomSection(
-                    totalAmount: '$totalAmount ',
+                    totalAmount: '${totalAmount.toStringAsFixed(2)} ',
                     onGeneratePdf: () {
                       ReportPdfGenerator().generateAndSharePDF(
                           isHeader: true,

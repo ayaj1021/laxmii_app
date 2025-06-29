@@ -167,7 +167,7 @@ class Income {
 
 class Item {
   final String? description;
-  final int? quantity;
+  final num? quantity;
   final num? price;
   final String? id;
 
@@ -180,7 +180,7 @@ class Item {
 
   Item copyWith({
     String? description,
-    int? quantity,
+    num? quantity,
     num? price,
     String? id,
   }) =>

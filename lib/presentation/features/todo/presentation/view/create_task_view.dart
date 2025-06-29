@@ -230,10 +230,11 @@ class _CreateTaskViewState extends ConsumerState<CreateTaskView> {
 
   void createTask() async {
     await ref.read(getAccessTokenNotifier.notifier).accessToken();
+    final selectedTaskPeriod = _selectedPriority?.replaceAll('ly', '');
     ref.read(createTasksNotifier.notifier).createTasks(
           data: CreateTaskRequest(
             title: _titleController.text.trim(),
-            priority: _selectedPriority!.toLowerCase().toString(),
+            priority: selectedTaskPeriod?.toLowerCase().toString() ?? '',
           ),
           onError: (error) {
             context.showError(message: error);

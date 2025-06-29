@@ -49,7 +49,7 @@ class TableSection extends StatelessWidget {
                         _formatDate(reportData.date),
                         '${reportData.expenseType ?? reportData.inventory ?? reportData.invoiceNumber}',
                         '${reportData.supplier ?? reportData.customer ?? reportData.customerName}',
-                        '${reportData.amount}'
+                        '${reportData.amount?.toStringAsFixed(2)}'
                       ];
 
                       return Table(

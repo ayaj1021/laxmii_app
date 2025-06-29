@@ -55,10 +55,10 @@ class CreateExpenseRequest {
   final String? generalType;
   final String? expense;
   final String? frequency;
-  final int? quantity;
+  final num? quantity;
   final int? day;
   final int? month;
-  final int? amount;
+  final num? amount;
   final String? supplierName;
 
   CreateExpenseRequest({
@@ -80,9 +80,9 @@ class CreateExpenseRequest {
     String? frequency,
     int? day,
     int? month,
-    int? amount,
+    num? amount,
     String? supplierName,
-    int? quantity,
+    num? quantity,
   }) =>
       CreateExpenseRequest(
         expenseType: expenseType ?? this.expenseType,

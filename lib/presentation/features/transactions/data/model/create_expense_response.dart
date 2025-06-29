@@ -39,7 +39,7 @@ class CreateExpenseResponse {
 class SavedExpense {
   final String? user;
   final String? expenseType;
-  final int? amount;
+  final num? amount;
   final String? supplierName;
   final DateTime? createdAt;
   final String? id;
@@ -58,7 +58,7 @@ class SavedExpense {
   SavedExpense copyWith({
     String? user,
     String? expenseType,
-    int? amount,
+    num? amount,
     String? supplierName,
     DateTime? createdAt,
     String? id,

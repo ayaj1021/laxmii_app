@@ -2,7 +2,7 @@ class CreateInventoryRequest {
   final String type;
   final String productName;
   final String description;
-  final int? quantity;
+  final num? quantity;
   final String? supplierName;
   final num? sellingPrice;
   final num costPrice;
@@ -21,10 +21,10 @@ class CreateInventoryRequest {
     String? type,
     String? productName,
     String? description,
-    int? quantity,
+    num? quantity,
     String? supplierName,
-    int? sellingPrice,
-    int? costPrice,
+    num? sellingPrice,
+    num? costPrice,
   }) =>
       CreateInventoryRequest(
         type: type ?? this.type,

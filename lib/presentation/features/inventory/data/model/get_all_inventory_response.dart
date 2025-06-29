@@ -40,7 +40,7 @@ class Inventory {
   final String? productName;
   final String? description;
   final String? supplierName;
-  final int? quantity;
+  final num? quantity;
   final num? sellingPrice;
   final num? costPrice;
   final DateTime? createdAt;
@@ -67,7 +67,7 @@ class Inventory {
     String? productName,
     String? description,
     String? supplierName,
-    int? quantity,
+    num? quantity,
     num? sellingPrice,
     num? costPrice,
     DateTime? createdAt,

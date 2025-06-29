@@ -57,14 +57,14 @@ class _InventoryState extends ConsumerState<InventoryView> {
     final isLoading = ref.watch(
         getAllInventoryNotifierProvider.select((v) => v.loadState.isLoading));
     final colorScheme = Theme.of(context);
-    return PageLoader(
-      isLoading: isLoading,
-      child: Scaffold(
-        appBar: const LaxmiiAppBar(
-          title: 'Product/Services',
-          centerTitle: true,
-        ),
-        body: SafeArea(
+    return Scaffold(
+      appBar: const LaxmiiAppBar(
+        title: 'Product/Services',
+        centerTitle: true,
+      ),
+      body: PageLoader(
+        isLoading: isLoading,
+        child: SafeArea(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
           child: Column(

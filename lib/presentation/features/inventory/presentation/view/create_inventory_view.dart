@@ -229,13 +229,12 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
 
   void _createInventory() async {
     try {
-      await ref.read(getAccessTokenNotifier.notifier).accessToken();
       final data = _selectedServiceType == 'Product'
           ? CreateInventoryRequest(
               type: '${_selectedServiceType?.toLowerCase()}',
               productName: _productNameController.text.trim(),
               description: _descriptionController.text.trim(),
-              quantity: int.parse(_quantityController.text.trim()),
+              quantity: num.parse(_quantityController.text.trim()),
               sellingPrice: num.parse(_sellingPriceController.text.trim()),
               costPrice: num.parse(
                 _costPriceController.text.trim(),
@@ -272,6 +271,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
               setState(() {});
             },
           );
+      await ref.read(getAccessTokenNotifier.notifier).accessToken();
     } catch (e) {
       _isSubmitting = false;
       setState(() {});

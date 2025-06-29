@@ -2,9 +2,9 @@ class UpdateInventoryRequest {
   final String productName;
   final String description;
   final String? supplierName;
-  final int? quantity;
-  final int? sellingPrice;
-  final int? costPrice;
+  final num? quantity;
+  final num? sellingPrice;
+  final num? costPrice;
   final String type;
 
   UpdateInventoryRequest({
@@ -20,9 +20,9 @@ class UpdateInventoryRequest {
   UpdateInventoryRequest copyWith({
     String? productName,
     String? description,
-    int? quantity,
-    int? sellingPrice,
-    int? costPrice,
+    num? quantity,
+    num? sellingPrice,
+    num? costPrice,
     String? supplierName,
     String? type,
   }) =>

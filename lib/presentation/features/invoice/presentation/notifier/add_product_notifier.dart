@@ -3,8 +3,8 @@ import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoi
 class ProductItems {
   final String itemName;
   final String type;
-  final int itemQuantity;
-  final double itemPrice;
+  final num itemQuantity;
+  final num itemPrice;
 
   ProductItems({
     required this.itemName,

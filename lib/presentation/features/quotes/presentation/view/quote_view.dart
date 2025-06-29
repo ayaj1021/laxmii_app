@@ -105,7 +105,8 @@ class _QuoteViewState extends ConsumerState<QuoteView> {
                           children: [
                             GetQuotesWidget(
                               quoteTitle: '${data.customerName}',
-                              quoteAmount: '$userCurrency${data.totalAmount}',
+                              quoteAmount:
+                                  '$userCurrency${data.totalAmount?.toStringAsFixed(2)}',
                               quoteDate:
                                   formatDateTimeFromString('${data.issueDate}'),
                             ),

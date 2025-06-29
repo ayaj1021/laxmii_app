@@ -35,9 +35,9 @@ class InventoryItem {
   final String? user;
   final String? productName;
   final String? description;
-  final int? quantity;
-  final int? sellingPrice;
-  final int? costPrice;
+  final num? quantity;
+  final num? sellingPrice;
+  final num? costPrice;
   final DateTime? createdAt;
   final int? v;
 
@@ -58,9 +58,9 @@ class InventoryItem {
     String? user,
     String? productName,
     String? description,
-    int? quantity,
-    int? sellingPrice,
-    int? costPrice,
+    num? quantity,
+    num? sellingPrice,
+    num? costPrice,
     DateTime? createdAt,
     int? v,
   }) =>

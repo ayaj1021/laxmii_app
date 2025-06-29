@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
+import 'package:laxmii_app/data/local_data_source/local_storage_impl.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/add_product_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/get_invoice_number_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/all_inventory_list_view.dart';
@@ -32,6 +33,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
 
   @override
   void initState() {
+    getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(getAccessTokenNotifier.notifier).accessToken();
       ref.read(getInvoiceNumberNotifierProvider.notifier).getAllInvoices();
@@ -142,6 +144,16 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
     itemsNotifier.dispose();
 
     super.dispose();
+  }
+
+  String userCurrency = '\$';
+
+  void getUserCurrency() async {
+    final currency = await AppDataStorage().getUserCurrency();
+
+    setState(() {
+      userCurrency = currency ?? '\$';
+    });
   }
 
   @override
@@ -314,6 +326,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                   return Column(
                                     children: [
                                       InvoiceNewProductWidget(
+                                        currency: userCurrency,
                                         itemName: item.itemName,
                                         itemQuantity: item.itemQuantity,
                                         itemPrice: item.itemPrice,
@@ -385,7 +398,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                   children: [
                     InvoiceWidget(
                       title: 'Total',
-                      subTitle: '\$${calculateTotalAmount()}',
+                      subTitle: '$userCurrency${calculateTotalAmount()}',
                       //'\$${totalAmount.toStringAsFixed(2)}',
                     ),
                     const VerticalSpacing(30),
