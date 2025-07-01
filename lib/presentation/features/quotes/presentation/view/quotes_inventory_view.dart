@@ -193,9 +193,14 @@ class _AllInventoryListViewState extends ConsumerState<QuoteInventoryListView> {
                                                       itemBuilder: (_, index) {
                                                         final item =
                                                             items[index];
-                                                        final price =
-                                                            item.itemQuantity *
-                                                                item.itemPrice;
+                                                        final quantity =
+                                                            item.itemQuantity ==
+                                                                    0
+                                                                ? 1
+                                                                : item
+                                                                    .itemQuantity;
+                                                        final price = quantity *
+                                                            item.itemPrice;
                                                         return Column(
                                                           children: [
                                                             InvoiceNewProductWidget(

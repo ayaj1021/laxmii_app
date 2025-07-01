@@ -92,27 +92,9 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
     return DateFormat('MMM d, yyyy').format(date);
   }
 
-  // List<ProductItem> items = []; // List of items
   double totalAmount = 0.0; // Total amount
   double taxAmount = 0.0; // Total amount
   double balanceAmount = 0.0; // Total amount
-
-  // void addItem(ProductItem newItem) {
-  //   setState(() {
-  //     items.add(newItem); // Add the new item
-  //     totalAmount +=
-  //         newItem.itemQuantity * newItem.itemPrice; // Update the total amount
-
-  //     taxAmount = totalAmount * 0.08;
-
-  //     balanceAmount = totalAmount + taxAmount;
-  //   });
-  // }
-
-  // void calculateTotalAmount() {
-  //   totalAmount = items.fold(
-  //       0, (sum, item) => sum + (item.itemQuantity * item.itemPrice));
-  // }
 
   void addItem(ProductItem newItem) {
     // Create a new list with the added item
@@ -125,8 +107,8 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
     setState(() {
       // Calculate totals using the updated list
       calculateTotalAmount();
-      taxAmount = totalAmount * 0.08;
-      balanceAmount = totalAmount + taxAmount;
+
+      balanceAmount = totalAmount;
     });
   }
 
@@ -254,8 +236,6 @@ class _CreateQuoteViewState extends ConsumerState<CreateQuoteView> {
           onSuccess: (message) {
             context.hideOverLay();
             context.showSuccess(message: message);
-            //  context.popAndPushNamed(InvoiceView.routeName);
-            // context.popUntil(ModalRoute.withName(QuoteView.routeName));
           },
         );
   }

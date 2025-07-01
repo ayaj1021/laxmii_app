@@ -36,7 +36,7 @@ class QoutesInfoInputSection extends StatelessWidget {
             //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SvgPicture.asset('assets/icons/user.svg'),
-              const HorizontalSpacing(22),
+              const HorizontalSpacing(14),
               QuoteTextField(
                 width: MediaQuery.of(context).size.width * 0.73,
                 controller: nameController,
@@ -50,7 +50,7 @@ class QoutesInfoInputSection extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/calendar.svg'),
-                const HorizontalSpacing(10),
+                //  const HorizontalSpacing(10),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Column(
@@ -64,7 +64,7 @@ class QoutesInfoInputSection extends StatelessWidget {
                       ),
                       const VerticalSpacing(10),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.72,
                         decoration: const BoxDecoration(
                             border: Border(
                           bottom: BorderSide(
@@ -83,7 +83,7 @@ class QoutesInfoInputSection extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/timer.svg'),
-                const HorizontalSpacing(10),
+                // const HorizontalSpacing(10),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Column(

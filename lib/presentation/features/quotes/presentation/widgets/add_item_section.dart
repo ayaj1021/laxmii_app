@@ -200,7 +200,7 @@ class _AddItemSectionState extends ConsumerState<AddItemSection> {
                   final item = ProductItem(
                     itemName: widget.item,
                     itemPrice: num.parse(_sellingPriceController.text.trim()),
-                    itemQuantity: num.tryParse(quantityText) ?? 0,
+                    itemQuantity: num.tryParse(quantityText) ?? 1,
                   );
 
                   Navigator.pop(context, item);
