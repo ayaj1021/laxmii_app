@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
@@ -24,6 +25,7 @@ import 'package:laxmii_app/presentation/features/todo/presentation/notifier/dele
 import 'package:laxmii_app/presentation/features/todo/presentation/notifier/get_all_tasks_notifier.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
+import 'package:laxmii_app/presentation/general_widgets/upgrade_app_bottom_sheet.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -37,6 +39,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   final _pageController = PageController();
   @override
   void initState() {
+    checkForUpdate();
     getUserName();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(getAllTasksNotifierProvider.notifier).getAllTasks();
@@ -80,6 +83,38 @@ class _HomeViewState extends ConsumerState<HomeView> {
     'Tax Insight',
     'Investment Insight',
   ];
+
+  Future<void> checkForUpdate() async {
+    try {
+      final info = await InAppUpdate.checkForUpdate();
+      if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+        // Ask user for confirmation before updating
+        if (!mounted) return;
+        final shouldUpdate = await showModalBottomSheet<bool>(
+          context: context,
+          isDismissible: false,
+          enableDrag: false,
+          showDragHandle: true,
+          builder: (_) => const UpdateAppBottomSheet(),
+        );
+
+        if (shouldUpdate == true) {
+          await startUpdate();
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> startUpdate() async {
+    try {
+      await InAppUpdate.startFlexibleUpdate();
+      await InAppUpdate.completeFlexibleUpdate();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

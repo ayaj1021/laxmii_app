@@ -55,6 +55,7 @@ dependencies:
   sign_in_with_apple: ^7.0.1
   local_auth_android: ^1.0.49
   local_auth_darwin: ^1.4.3
+  in_app_update: ^4.2.3
   # google_maps_flutter: ^2.10.0
 
 dev_dependencies:
