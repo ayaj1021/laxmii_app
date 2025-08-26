@@ -27,19 +27,28 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _controller = OverLayController();
 
-  bool? appTheme;
-
   @override
   void initState() {
-    getAppTheme();
+    _initializeTheme();
     super.initState();
   }
 
-  getAppTheme() async {
+  // getAppTheme() async {
+  //   final theme = await AppDataStorage().getAppTheme();
+  //   setState(() {
+  //     appTheme = theme;
+  //   });
+  // }
+
+  _initializeTheme() async {
     final theme = await AppDataStorage().getAppTheme();
-    setState(() {
-      appTheme = theme;
-    });
+    if (mounted) {
+      // Initialize the provider with stored value
+      final container = ProviderScope.containerOf(context);
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      container.read(themeProvider.notifier).state = theme;
+      setState(() {});
+    }
   }
 
   @override

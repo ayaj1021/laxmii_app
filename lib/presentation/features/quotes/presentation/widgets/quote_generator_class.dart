@@ -14,6 +14,7 @@ class QuoteGenerator {
     required String totalAmount,
     required String address,
     required String businessName,
+    required String currency,
     required List<ProductItem> items,
   }) async {
     final pdf = pw.Document();
@@ -227,7 +228,7 @@ class QuoteGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
                       // pw.Text('£600.00'),
-                      pw.Text(totalAmount),
+                      pw.Text('$currency$totalAmount'),
                     ],
                   ),
                 ],

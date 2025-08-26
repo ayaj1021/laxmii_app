@@ -88,15 +88,16 @@ class _AiAssistantState extends ConsumerState<AiAssistant> {
                   },
                   title: 'New Chat'),
               const VerticalSpacing(30),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Previous 7 days',
-                  style: context.textTheme.s16w500.copyWith(
-                    color: AppColors.primary5E5E5E,
+              if (recentChats.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Previous 7 days',
+                    style: context.textTheme.s16w500.copyWith(
+                      color: AppColors.primary5E5E5E,
+                    ),
                   ),
                 ),
-              ),
               const VerticalSpacing(20),
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.6,

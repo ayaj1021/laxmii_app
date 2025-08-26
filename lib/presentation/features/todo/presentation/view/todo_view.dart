@@ -57,7 +57,7 @@ class _TodoViewState extends ConsumerState<TodoView>
     return Scaffold(
       appBar: const LaxmiiAppBar(
         centerTitle: true,
-        title: 'My Task',
+        title: 'My Tasks',
       ),
       body: PageLoader(
         isLoading: isUpdateLoading,

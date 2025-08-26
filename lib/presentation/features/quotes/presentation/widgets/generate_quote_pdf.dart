@@ -90,6 +90,7 @@ class _QuotePageState extends State<QuotePage> {
               totalAmount: '$totalAmount',
               address: address,
               businessName: businessName,
+              currency: userCurrency,
             ),
           ),
         ],

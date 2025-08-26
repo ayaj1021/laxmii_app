@@ -13,12 +13,13 @@ class ProgressIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.23,
-      height: 7,
-      decoration: BoxDecoration(
-        color: isActive ? color : AppColors.primary212121,
-        borderRadius: BorderRadius.circular(2),
+    return Expanded(
+      child: Container(
+        height: 7,
+        decoration: BoxDecoration(
+          color: isActive ? color : AppColors.primary212121,
+          borderRadius: BorderRadius.circular(2),
+        ),
       ),
     );
   }

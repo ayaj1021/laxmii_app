@@ -17,7 +17,7 @@ class HomeBottomNav extends StatelessWidget {
     final colorScheme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 27),
-      height: MediaQuery.of(context).size.height * 0.4,
+      // height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
           color: colorScheme.scaffoldBackgroundColor,
           borderRadius: const BorderRadius.only(
@@ -25,6 +25,7 @@ class HomeBottomNav extends StatelessWidget {
             topRight: Radius.circular(20),
           )),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           HomeBottomNavSelectionsWidget(
             onTap: () => context.pushNamed(CreateInventory.routeName),

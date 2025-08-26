@@ -158,7 +158,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                           Navigator.pop(context, item);
                           context.showSuccess(message: 'Product added');
                           // return;
-                        } else if (int.parse(_quantityController.text) >
+                        } else if (double.parse(_quantityController.text) >
                             (widget.quantity)) {
                           context.showError(
                               message:
@@ -170,7 +170,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                             itemPrice: double.parse(
                                 _sellingPriceController.text.trim()),
                             itemQuantity:
-                                int.parse(_quantityController.text.trim()),
+                                double.parse(_quantityController.text.trim()),
                           );
 
                           Navigator.pop(context, item);

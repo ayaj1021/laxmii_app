@@ -23,7 +23,7 @@ class FinancialGoalsSetupView extends ConsumerWidget {
           ),
         ),
         Text(
-          'Select all that applies',
+          'Select all that apply',
           style: context.textTheme.s14w400.copyWith(
             color: colorScheme.colorScheme.onSurface,
           ),

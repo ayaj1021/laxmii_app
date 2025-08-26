@@ -42,9 +42,9 @@ class InventoryTableSection extends StatelessWidget {
                     itemBuilder: (_, index) {
                       final reportData = report[index];
                       final rowData = [
-                        '${reportData.productName}',
-                        '${reportData.quantity}',
-                        '${reportData.costPrice}',
+                        (reportData.productName ?? ''),
+                        '${reportData.quantity ?? ''}',
+                        '${reportData.costPrice ?? ''}',
                         '${reportData.sellingPrice ?? reportData.costPrice}',
                       ];
 

@@ -141,8 +141,7 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                     NotificationsOptionsWidget(
                       title: 'Change Theme',
                       onChanged: (v) {
-                        ref.read(themeProvider.notifier).state = v;
-                        getAppTheme(isLightTheme);
+                        ref.read(themeProvider.notifier).toggleTheme(v);
                       },
                       value: isLightTheme,
                     ),

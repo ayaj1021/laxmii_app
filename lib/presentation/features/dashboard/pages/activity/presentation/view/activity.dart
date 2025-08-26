@@ -22,10 +22,8 @@ class _ActivityViewState extends ConsumerState<ActivityView> {
   void initState() {
     getUserCurrency();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(getCashFlowNotifierProvider.notifier).getCashFlow(query: 'week');
       await ref.read(getAccessTokenNotifier.notifier).accessToken();
-      await ref
-          .read(getCashFlowNotifierProvider.notifier)
-          .getCashFlow(query: 'week');
     });
     super.initState();
   }
