@@ -40,7 +40,7 @@ class RecurringExpense {
   final int? day;
   final int? month;
   final String? expense;
-  final int? amount;
+  final num? amount;
   final String? supplierName;
   final DateTime? createdAt;
   final int? v;
@@ -65,7 +65,7 @@ class RecurringExpense {
     int? day,
     int? month,
     String? expense,
-    int? amount,
+    num? amount,
     String? supplierName,
     DateTime? createdAt,
     int? v,

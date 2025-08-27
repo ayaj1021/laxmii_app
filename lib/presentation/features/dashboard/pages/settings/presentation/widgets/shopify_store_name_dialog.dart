@@ -33,6 +33,7 @@ class ShopifyStoreNameDialog extends StatelessWidget {
           ),
           const VerticalSpacing(10),
           LaxmiiFormfield(
+            backgroundColor: Colors.transparent,
             label: 'Store name',
             hintText: 'Enter Store name',
             controller: storeNameController,
@@ -42,7 +43,7 @@ class ShopifyStoreNameDialog extends StatelessWidget {
           ),
           const Align(
             alignment: Alignment.centerLeft,
-            child: Text('e.g johndoe'),
+            child: Text('e.g johndoe '),
           ),
           const VerticalSpacing(20),
           LaxmiiSendButton(onTap: onTap, title: 'Submit')
