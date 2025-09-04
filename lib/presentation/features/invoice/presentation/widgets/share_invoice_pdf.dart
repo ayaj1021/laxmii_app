@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:laxmii_app/core/utils/utils.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/create_invoice_request.dart';
 import 'package:laxmii_app/presentation/features/invoice/data/model/get_all_invoice_response.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +17,7 @@ class InvoicePdfGenerator {
     required double filteredInvoiceTotal,
     required String customerName,
     required String dueDate,
+    required String currency,
     required String invoiceNumber,
     required List<CreateInvoiceItem> invoiceItems,
     required List<Item> filteredInvoices,
@@ -76,7 +78,7 @@ class InvoicePdfGenerator {
                           ),
                           pw.SizedBox(width: 3),
                           pw.Text(
-                            formatAppDate(dueDate),
+                            AppDateFormatter.formatAppDate(dueDate),
                             style: pw.TextStyle(
                               fontSize: 15, // Match font size
                               fontWeight:
@@ -198,27 +200,19 @@ class InvoicePdfGenerator {
                         );
                       }),
                     ),
+              pw.SizedBox(height: 20),
+              pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(horizontal: 16),
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text('Total ($currency)'),
+                      pw.Text(
+                        '$currency${total.toStringAsFixed(2).toString()}',
+                      )
+                    ]),
+              ),
               pw.SizedBox(height: 50),
-              // pw.Padding(
-              //   padding: const pw.EdgeInsets.symmetric(horizontal: 16),
-              //   child: pw.Row(
-              //     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       pw.Text(
-              //         'Total(\$)',
-              //         style: pw.TextStyle(
-              //             fontSize: 16, fontWeight: pw.FontWeight.bold),
-              //       ),
-              //       pw.Text(
-              //         invoiceItems.isEmpty
-              //             ? '\$$total'
-              //             : '\$$filteredInvoiceTotal',
-              //         style: pw.TextStyle(
-              //             fontSize: 16, fontWeight: pw.FontWeight.bold),
-              //       )
-              //     ],
-              //   ),
-              // ),
             ],
           );
         },
