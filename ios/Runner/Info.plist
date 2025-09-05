@@ -52,18 +52,19 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
-	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
 		<string>whatsapp</string>
-        <string>whatsapp-sme</string>
-        <string>wabloks</string>
-        <string>wa</string>
-        <string>wabs</string>
-
+		<string>whatsapp-sme</string>
+		<string>wabloks</string>
+		<string>wa</string>
+		<string>wabs</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
