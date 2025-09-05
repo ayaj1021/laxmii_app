@@ -433,6 +433,7 @@ class _AddSalesViewState extends ConsumerState<CreateIncomeOneView> {
                                           invoiceNumber: invoiceNumber,
                                           items: items,
                                           totalAmount: balanceAmount,
+                                          currency: userCurrency,
                                         );
                                       },
                                     ),

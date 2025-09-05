@@ -269,6 +269,7 @@ class _InvoiceViewState extends ConsumerState<InvoiceView> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => ConfirmInvoiceView(
+                                          currency: userCurrency,
                                           filteredInvoices: data?.items,
                                           customerName: '${data?.customerName}',
                                           issueDate: '${data?.issueDate}',

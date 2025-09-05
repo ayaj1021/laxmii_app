@@ -23,6 +23,7 @@ class ConfirmInvoiceView extends ConsumerStatefulWidget {
       {required this.customerName,
       required this.issueDate,
       required this.dueDate,
+      required this.currency,
       required this.invoiceNumber,
       required this.invoiceId,
       required this.invoiceStatus,
@@ -32,6 +33,7 @@ class ConfirmInvoiceView extends ConsumerStatefulWidget {
   final String customerName;
   final String issueDate;
   final String dueDate;
+  final String currency;
   final String invoiceNumber;
   final String invoiceId;
   final String invoiceStatus;
@@ -262,33 +264,35 @@ class _InvoiceDetailsViewState extends ConsumerState<ConfirmInvoiceView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.87,
-                            child: LaxmiiOutlineSendButton(
-                              backgroundColor: Colors.transparent,
-                              textColor: AppColors.primary212121,
-                              hasBorder: true,
-                              icon: 'assets/icons/share.svg',
-                              borderColor: AppColors.primary212121,
-                              onTap: () {
-                                InvoicePdfGenerator().generateAndSharePDF(
-                                    customerName: widget.customerName,
-                                    dueDate: widget.dueDate,
-                                    invoiceNumber: widget.invoiceNumber,
-                                    total: calculateTotalAmount(),
-                                    filteredInvoiceTotal:
-                                        calculateFilteredTotalAmount(),
-                                    invoiceItems: widget.items ?? [],
-                                    filteredInvoices:
-                                        widget.filteredInvoices ?? [],
-                                    cells: [
-                                      'Product',
-                                      'Quantity',
-                                      'Price',
-                                      'Amount'
-                                    ]);
-                              },
-                              title: 'Share',
-                            )),
+                          width: MediaQuery.of(context).size.width * 0.87,
+                          child: LaxmiiOutlineSendButton(
+                            backgroundColor: Colors.transparent,
+                            textColor: AppColors.primary212121,
+                            hasBorder: true,
+                            icon: 'assets/icons/share.svg',
+                            borderColor: AppColors.primary212121,
+                            onTap: () {
+                              InvoicePdfGenerator().generateAndSharePDF(
+                                currency: widget.currency,
+                                customerName: widget.customerName,
+                                dueDate: widget.dueDate,
+                                invoiceNumber: widget.invoiceNumber,
+                                total: calculateTotalAmount(),
+                                filteredInvoiceTotal:
+                                    calculateFilteredTotalAmount(),
+                                invoiceItems: widget.items ?? [],
+                                filteredInvoices: widget.filteredInvoices ?? [],
+                                cells: [
+                                  'Product',
+                                  'Quantity',
+                                  'Price',
+                                  'Amount'
+                                ],
+                              );
+                            },
+                            title: 'Share',
+                          ),
+                        ),
                       ],
                     ),
                     const VerticalSpacing(20),

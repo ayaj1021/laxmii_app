@@ -125,7 +125,8 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                     UpdateProductsTextField(
                       product: _quantityController,
                       title: 'Quantity  ${widget.quantity}',
-                      keyboardType: TextInputType.number,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ],
                 ),
@@ -135,7 +136,7 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                 currency: userCurrency,
                 product: _sellingPriceController,
                 title: widget.type == 'product' ? 'Selling Price' : 'Price',
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
               ),
               const VerticalSpacing(150),
               ValueListenableBuilder(

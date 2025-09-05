@@ -10,6 +10,7 @@ import 'package:laxmii_app/presentation/features/invoice/data/model/update_invoi
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/create_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/notifier/update_invoice_notifier.dart';
 import 'package:laxmii_app/presentation/features/invoice/presentation/view/confirm_invoice_view.dart';
+import 'package:laxmii_app/presentation/features/invoice/presentation/widgets/share_invoice_pdf.dart';
 import 'package:laxmii_app/presentation/features/login/presentation/notifier/get_access_token_notifier.dart';
 import 'package:laxmii_app/presentation/features/transactions/presentation/view/transactions_view.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
@@ -25,11 +26,13 @@ class InvoiceDetailsView extends ConsumerStatefulWidget {
       required this.issueDate,
       required this.dueDate,
       required this.invoiceNumber,
+      required this.currency,
       required this.totalAmount,
       required this.items,
       super.key});
   final String customerName;
   final String issueDate;
+  final String currency;
   final String dueDate;
   final String invoiceNumber;
   final double totalAmount;
@@ -189,7 +192,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Total(\$)',
+                              'Total(${widget.currency})',
                               style: context.textTheme.s16w500.copyWith(
                                 color: AppColors.black,
                               ),
@@ -197,7 +200,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                             Padding(
                               padding: const EdgeInsets.only(right: 40),
                               child: Text(
-                                '\$${calculateTotalAmount()}',
+                                '${widget.currency}${calculateTotalAmount()}',
                                 style: context.textTheme.s16w500.copyWith(
                                   color: AppColors.black,
                                 ),
@@ -213,12 +216,51 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
                           },
                           title: 'Mark as paid'),
                       const VerticalSpacing(20),
-                      LaxmiiOutlineSendButton(
-                        onTap: () {
-                          createInvoice();
-                        },
-                        title: 'Mark as unpaid',
-                        // textColor: AppColors.black,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: LaxmiiOutlineSendButton(
+                              onTap: () {
+                                createInvoice();
+                              },
+                              title: 'Mark as unpaid',
+                              // textColor: AppColors.black,
+                            ),
+                          ),
+                          const HorizontalSpacing(10),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: LaxmiiOutlineSendButton(
+                              backgroundColor: Colors.transparent,
+                              textColor: AppColors.primary212121,
+                              hasBorder: true,
+                              icon: 'assets/icons/share.svg',
+                              borderColor: AppColors.primary212121,
+                              onTap: () {
+                                InvoicePdfGenerator().generateAndSharePDF(
+                                  currency: widget.currency,
+                                  customerName: widget.customerName,
+                                  dueDate: widget.dueDate,
+                                  invoiceNumber: widget.invoiceNumber,
+                                  total: calculateTotalAmount(),
+                                  filteredInvoiceTotal: calculateTotalAmount(),
+                                  invoiceItems: widget.items,
+                                  filteredInvoices: [],
+                                  //     filteredInvoices: widget.filteredInvoices ?? [],
+                                  cells: [
+                                    'Product',
+                                    'Quantity',
+                                    'Price',
+                                    'Amount'
+                                  ],
+                                );
+                              },
+                              title: 'Share',
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -288,6 +330,7 @@ class _InvoiceDetailsViewState extends ConsumerState<InvoiceDetailsView> {
               context,
               MaterialPageRoute(
                 builder: (_) => ConfirmInvoiceView(
+                  currency: widget.currency,
                   customerName: widget.customerName,
                   issueDate: widget.issueDate,
                   dueDate: widget.dueDate,
