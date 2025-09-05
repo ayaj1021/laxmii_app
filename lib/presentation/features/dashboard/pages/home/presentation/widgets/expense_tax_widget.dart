@@ -83,34 +83,34 @@ class _ExpensesTaxWidgetState extends State<ExpensesTaxWidget> {
                         children: [
                           Row(
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(5.33),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.primary075427,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '%12',
-                                          style: context.textTheme.s10w600
-                                              .copyWith(
-                                            color: AppColors.primary1FCB4F,
-                                          ),
-                                        ),
-                                        const HorizontalSpacing(5),
-                                        SvgPicture.asset(
-                                            'assets/icons/arrow_up.svg'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const HorizontalSpacing(16),
+                              // Container(
+                              //   padding: const EdgeInsets.all(5.33),
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(
+                              //       color: AppColors.primary075427,
+                              //     ),
+                              //     borderRadius: BorderRadius.circular(10),
+                              //   ),
+                              //   child: Row(
+                              //     children: [
+                              //       Row(
+                              //         children: [
+                              //           Text(
+                              //             '%12',
+                              //             style: context.textTheme.s10w600
+                              //                 .copyWith(
+                              //               color: AppColors.primary1FCB4F,
+                              //             ),
+                              //           ),
+                              //           const HorizontalSpacing(5),
+                              //           SvgPicture.asset(
+                              //               'assets/icons/arrow_up.svg'),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+                              // const HorizontalSpacing(16),
                               SvgPicture.asset('assets/icons/expense_icon.svg')
                             ],
                           ),

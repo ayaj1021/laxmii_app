@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
-import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/enums.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/data/model/ai_insights_request.dart';
 import 'package:laxmii_app/presentation/features/ai_insights/presentation/notifier/get_ai_insights_notifier.dart';
@@ -123,32 +122,32 @@ class AiInsightsWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(5.33),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.primary075427,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            '%12',
-                            style: context.textTheme.s10w600.copyWith(
-                              color: AppColors.primary1FCB4F,
-                            ),
-                          ),
-                          const HorizontalSpacing(5),
-                          SvgPicture.asset('assets/icons/arrow_up.svg'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const HorizontalSpacing(16),
+                // Container(
+                //   padding: const EdgeInsets.all(5.33),
+                //   decoration: BoxDecoration(
+                //     border: Border.all(
+                //       color: AppColors.primary075427,
+                //     ),
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Row(
+                //         children: [
+                //           Text(
+                //             '%12',
+                //             style: context.textTheme.s10w600.copyWith(
+                //               color: AppColors.primary1FCB4F,
+                //             ),
+                //           ),
+                //           const HorizontalSpacing(5),
+                //           SvgPicture.asset('assets/icons/arrow_up.svg'),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const HorizontalSpacing(16),
                 SvgPicture.asset('assets/icons/expense_icon.svg')
               ],
             ),
