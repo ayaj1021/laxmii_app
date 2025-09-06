@@ -371,7 +371,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   AddSalesTextField(
                     hintText: 'Quantity',
                     controller: _quantityController,
-                    keyboardType: TextInputType.number,
+                    
                   ),
                 if (_selectedValue != expenseType[0]) const VerticalSpacing(20),
                 if (_selectedValue != expenseType[0])
@@ -385,7 +385,7 @@ class _AddSalesViewState extends ConsumerState<CreateExpenseView> {
                   controller: _amountController,
                   isMoney: true,
                   currency: userCurrency,
-                  keyboardType: TextInputType.number,
+                
                 ),
                 const VerticalSpacing(20),
                 AddSalesTextField(

@@ -42,7 +42,7 @@ class AddQuoteItemTextField extends StatelessWidget {
               color: colorScheme.colorScheme.onSurface,
             ),
             onChanged: onChanged,
-            keyboardType: TextInputType.number,
+            // keyboardType: TextInputType.number,
             decoration: InputDecoration(
                 prefix: isMoney == true
                     ? Text(

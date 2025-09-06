@@ -146,7 +146,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       title:
                           'Quantity (initial: $_initialQuantity, current: $currentQuantity)',
                       product: _quantityController,
-                      keyboardType: TextInputType.number,
+                      // keyboardType: TextInputType.number,
                       increaseDecreaseButton: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Column(
@@ -185,7 +185,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
                       currency: widget.currency,
                       title: 'Service Price',
                       product: _costPriceController,
-                      keyboardType: TextInputType.number,
+                      // keyboardType: TextInputType.number,
                     ),
                   const VerticalSpacing(60),
                   LaxmiiOutlineSendButton(
