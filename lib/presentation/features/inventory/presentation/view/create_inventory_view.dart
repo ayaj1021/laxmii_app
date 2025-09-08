@@ -135,7 +135,6 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                           const VerticalSpacing(15),
                           UpdateProductsTextField(
                             product: _quantityController,
-                            keyboardType: TextInputType.number,
                             title: 'Quantity',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -161,7 +160,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                             isMoney: true,
                             currency: userCurrency,
                             product: _sellingPriceController,
-                            keyboardType: TextInputType.number,
+                            // keyboardType: TextInputType.number,
                             title: 'Selling Price',
                           ),
                           const VerticalSpacing(15),
@@ -169,7 +168,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                             isMoney: true,
                             currency: userCurrency,
                             product: _costPriceController,
-                            keyboardType: TextInputType.number,
+                            // keyboardType: TextInputType.number,
                             title: 'Cost Price',
                           ),
                         ],
@@ -191,7 +190,7 @@ class _CreateInventoryState extends ConsumerState<CreateInventory> {
                             isMoney: true,
                             currency: userCurrency,
                             product: _costPriceController,
-                            keyboardType: TextInputType.number,
+                            // keyboardType: TextInputType.number,
                             title: 'Service Price',
                           ),
                         ],

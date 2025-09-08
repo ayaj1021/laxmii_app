@@ -1,11 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:laxmii_app/core/extensions/string_extensions.dart';
 import 'package:laxmii_app/core/extensions/text_theme_extension.dart';
 import 'package:laxmii_app/core/theme/app_colors.dart';
 import 'package:laxmii_app/core/utils/naira_input_formatter.dart';
-
 
 class DSAmountField extends StatefulWidget {
   const DSAmountField({
@@ -92,7 +89,7 @@ class _DSAmountFieldState extends State<DSAmountField> {
                 textAlign: TextAlign.center,
                 onChanged: widget.onChanged,
                 controller: widget.controller,
-                keyboardType: TextInputType.number,
+                // keyboardType: TextInputType.number,
                 inputFormatters: [
                   // FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
                   NairaInputFormatter(),
