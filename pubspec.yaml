@@ -25,9 +25,9 @@ dependencies:
   flutter_load_kit: ^0.0.2
   flutter_secure_storage: ^9.2.2
   dio: ^5.7.0
-  retrofit: ^4.4.1
+  retrofit: ^4.4.2
   json_annotation: ^4.9.0
-  json_serializable: ^6.9.0
+  json_serializable: ^6.8.0
   equatable: ^2.0.7
   google_sign_in: ^6.3.0
   share_plus: ^10.1.4
@@ -37,7 +37,7 @@ dependencies:
   # fl_chart: ^0.70.2
   pdf: ^3.11.3
   cross_file: ^0.3.4+2
-  pdf_render: ^1.4.12
+  # pdf_render: ^1.4.6
   local_auth: ^2.3.0
   webview_flutter: ^4.10.0
   webview_flutter_wkwebview: ^3.18.4

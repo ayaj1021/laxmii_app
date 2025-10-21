@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
 import 'package:laxmii_app/core/extensions/string_extensions.dart';
@@ -125,7 +126,12 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                     UpdateProductsTextField(
                       product: _quantityController,
                       title: 'Quantity  ${widget.quantity}',
-                   
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true, signed: false),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d*\.?\d*$')),
+                      ],
                     ),
                   ],
                 ),
@@ -135,7 +141,6 @@ class _AddNewInvoiceViewState extends ConsumerState<AddNewInvoiceView> {
                 currency: userCurrency,
                 product: _sellingPriceController,
                 title: widget.type == 'product' ? 'Selling Price' : 'Price',
-                
               ),
               const VerticalSpacing(150),
               ValueListenableBuilder(

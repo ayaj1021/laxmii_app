@@ -63,9 +63,9 @@ class AppThemes {
         elevation: .2,
         foregroundColor: AppColors.white,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
-        color: AppColors.white,
-      ),
+      // bottomAppBarTheme:  BottomAppBarTheme(
+      //   color: AppColors.white,
+      // ),
     );
   }
 
@@ -131,9 +131,9 @@ class AppThemes {
         elevation: .2,
         foregroundColor: AppColors.white,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
-        color: AppColors.white,
-      ),
+      // bottomAppBarTheme: const BottomAppBarTheme(
+      //   color: AppColors.white,
+      // ),
     );
   }
 }

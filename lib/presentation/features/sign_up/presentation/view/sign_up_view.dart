@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:laxmii_app/core/extensions/build_context_extension.dart';
 import 'package:laxmii_app/core/extensions/overlay_extension.dart';
@@ -24,6 +26,7 @@ import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/si
 import 'package:laxmii_app/presentation/features/sign_up/presentation/widgets/sign_up_input_section.dart';
 import 'package:laxmii_app/presentation/features/verify_email/presentation/view/verify_email.dart';
 import 'package:laxmii_app/presentation/general_widgets/app_button.dart';
+import 'package:laxmii_app/presentation/general_widgets/app_outline_button.dart';
 import 'package:laxmii_app/presentation/general_widgets/laxmii_checkbox.dart';
 import 'package:laxmii_app/presentation/general_widgets/page_loader.dart';
 import 'package:laxmii_app/presentation/general_widgets/spacing.dart';
@@ -283,54 +286,54 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                             title: 'Sign Up');
                       }),
                   const VerticalSpacing(20),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     SizedBox(
-                  //       width: 135.w,
-                  //       child: Divider(
-                  //         color: colorScheme.colorScheme.onSurface,
-                  //       ),
-                  //     ),
-                  //     const HorizontalSpacing(7),
-                  //     Text(
-                  //       'Or',
-                  //       style: context.textTheme.s14w400.copyWith(
-                  //           color: colorScheme.colorScheme.onSurface,
-                  //           fontWeight: FontWeight.w300),
-                  //     ),
-                  //     const HorizontalSpacing(7),
-                  //     SizedBox(
-                  //       width: 135.w,
-                  //       child: Divider(
-                  //         color: colorScheme.colorScheme.onSurface,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const VerticalSpacing(20),
-                  // LaxmiiOutlineSendButton(
-                  //   onTap: () {
-                  //     signInAndSendToken();
-                  //   },
-                  //   title: 'Continue with Google',
-                  //   hasBorder: true,
-                  //   icon: 'assets/icons/google.svg',
-                  //   backgroundColor: Colors.transparent,
-                  //   borderColor: AppColors.primary212121,
-                  // ),
-                  // const VerticalSpacing(20),
-                  // if (Platform.isIOS)
-                  //   LaxmiiOutlineSendButton(
-                  //     onTap: () {
-                  //       appleSignInAndSendToken();
-                  //     },
-                  //     title: 'Continue with Apple',
-                  //     hasBorder: true,
-                  //     icon: 'assets/icons/apple.svg',
-                  //     backgroundColor: Colors.transparent,
-                  //     borderColor: AppColors.primary212121,
-                  //   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 135.w,
+                        child: Divider(
+                          color: colorScheme.colorScheme.onSurface,
+                        ),
+                      ),
+                      const HorizontalSpacing(7),
+                      Text(
+                        'Or',
+                        style: context.textTheme.s14w400.copyWith(
+                            color: colorScheme.colorScheme.onSurface,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      const HorizontalSpacing(7),
+                      SizedBox(
+                        width: 135.w,
+                        child: Divider(
+                          color: colorScheme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const VerticalSpacing(20),
+                  LaxmiiOutlineSendButton(
+                    onTap: () {
+                      signInAndSendToken();
+                    },
+                    title: 'Continue with Google',
+                    hasBorder: true,
+                    icon: 'assets/icons/google.svg',
+                    backgroundColor: Colors.transparent,
+                    borderColor: AppColors.primary212121,
+                  ),
+                  const VerticalSpacing(20),
+                  if (Platform.isIOS)
+                    LaxmiiOutlineSendButton(
+                      onTap: () {
+                        appleSignInAndSendToken();
+                      },
+                      title: 'Continue with Apple',
+                      hasBorder: true,
+                      icon: 'assets/icons/apple.svg',
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.primary212121,
+                    ),
                   const VerticalSpacing(100),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
